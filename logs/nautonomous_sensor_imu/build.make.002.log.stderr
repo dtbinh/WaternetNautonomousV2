@@ -1,0 +1,19 @@
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:25:1:[m[K [01;31m[Kerror: [m[K‘[01m[KImu[m[K’ does not name a type
+ Imu::Info info;
+[01;32m[K ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:26:1:[m[K [01;31m[Kerror: [m[K‘[01m[KImu[m[K’ does not name a type
+ Imu::DiagnosticFields fields;
+[01;32m[K ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:24:[m[K [01;31m[Kerror: [m[K‘[01m[KImu[m[K’ does not name a type
+ void publishData(const Imu::IMUData &data) {
+[01;32m[K                        ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:37:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+ void publishData(const Imu::IMUData &data) {
+[01;32m[K                                     ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:37:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:38:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[Kdata[m[K’
+ void publishData(const Imu::IMUData &data) {
+[01;32m[K                                      ^[m[K
+make[2]: *** [CMakeFiles/nautonomous_sensor_imu.dir/src/imu_3dm_gx4.cpp.o] Error 1
+make[1]: *** [CMakeFiles/nautonomous_sensor_imu.dir/all] Error 2
+make: *** [all] Error 2

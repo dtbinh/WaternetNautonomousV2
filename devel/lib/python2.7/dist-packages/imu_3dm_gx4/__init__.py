@@ -1,0 +1,1 @@
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/imu_3dm_gx4/lib/python2.7/dist-packages/imu_3dm_gx4/__init__.py

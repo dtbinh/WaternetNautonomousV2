@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC   -shared -Wl,-soname,libgtest.so -o libgtest.so CMakeFiles/gtest.dir/src/gtest-all.cc.o  -L/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/gtest/src -lpthread -Wl,-rpath,/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/gtest/src 

@@ -1,0 +1,6 @@
+devel_space: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel
+install: false
+install_space: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/install
+profile: default
+source_space: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src
+workspace: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2

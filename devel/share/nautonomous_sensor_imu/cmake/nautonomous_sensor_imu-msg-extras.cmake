@@ -1,0 +1,1 @@
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/share/nautonomous_sensor_imu/cmake/nautonomous_sensor_imu-msg-extras.cmake

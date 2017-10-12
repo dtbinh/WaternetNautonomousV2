@@ -1,0 +1,53 @@
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:[m[K In function ‘[01m[Kvoid publishFilter(const imu_3dm_gx4::Imu::FilterData&)[m[K’:
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:94:3:[m[K [01;31m[Kerror: [m[K‘[01m[KFilterOutput[m[K’ is not a member of ‘[01m[Kimu_3dm_gx4[m[K’
+   imu_3dm_gx4::FilterOutput output;
+[01;32m[K   ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:94:3:[m[K [01;36m[Knote: [m[Ksuggested alternative:
+In file included from [01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:12:0[m[K:
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/include/nautonomous_sensor_imu/FilterOutput.h:99:72:[m[K [01;36m[Knote: [m[K  ‘[01m[Knautonomous_sensor_imu::FilterOutput[m[K’
+ typedef ::nautonomous_sensor_imu::FilterOutput_<std::allocator<void> > FilterOutput;
+[01;32m[K                                                                        ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:95:3:[m[K [01;31m[Kerror: [m[K‘[01m[Koutput[m[K’ was not declared in this scope
+   output.header.stamp = ros::Time::now();
+[01;32m[K   ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:200:30:[m[K [01;31m[Kerror: [m[K‘[01m[KFilterOutput[m[K’ is not a member of ‘[01m[Kimu_3dm_gx4[m[K’
+     pubFilter = nh.advertise<imu_3dm_gx4::FilterOutput>("filter", 1);
+[01;32m[K                              ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:200:30:[m[K [01;36m[Knote: [m[Ksuggested alternative:
+In file included from [01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:12:0[m[K:
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/include/nautonomous_sensor_imu/FilterOutput.h:99:72:[m[K [01;36m[Knote: [m[K  ‘[01m[Knautonomous_sensor_imu::FilterOutput[m[K’
+ typedef ::nautonomous_sensor_imu::FilterOutput_<std::allocator<void> > FilterOutput;
+[01;32m[K                                                                        ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:200:30:[m[K [01;31m[Kerror: [m[K‘[01m[KFilterOutput[m[K’ is not a member of ‘[01m[Kimu_3dm_gx4[m[K’
+     pubFilter = nh.advertise<imu_3dm_gx4::FilterOutput>("filter", 1);
+[01;32m[K                              ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:200:30:[m[K [01;36m[Knote: [m[Ksuggested alternative:
+In file included from [01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:12:0[m[K:
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/include/nautonomous_sensor_imu/FilterOutput.h:99:72:[m[K [01;36m[Knote: [m[K  ‘[01m[Knautonomous_sensor_imu::FilterOutput[m[K’
+ typedef ::nautonomous_sensor_imu::FilterOutput_<std::allocator<void> > FilterOutput;
+[01;32m[K                                                                        ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:200:68:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kros::NodeHandle::advertise(const char [7], int)[m[K’
+     pubFilter = nh.advertise<imu_3dm_gx4::FilterOutput>("filter", 1);
+[01;32m[K                                                                    ^[m[K
+In file included from [01m[K/opt/ros/kinetic/include/ros/ros.h:45:0[m[K,
+                 from [01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:1[m[K:
+[01m[K/opt/ros/kinetic/include/ros/node_handle.h:248:15:[m[K [01;36m[Knote: [m[Kcandidate: template<class M> ros::Publisher ros::NodeHandle::advertise(const string&, uint32_t, bool)
+     Publisher advertise(const std::string& topic, uint32_t queue_size, bool latch = false)
+[01;32m[K               ^[m[K
+[01m[K/opt/ros/kinetic/include/ros/node_handle.h:248:15:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:200:68:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+     pubFilter = nh.advertise<imu_3dm_gx4::FilterOutput>("filter", 1);
+[01;32m[K                                                                    ^[m[K
+In file included from [01m[K/opt/ros/kinetic/include/ros/ros.h:45:0[m[K,
+                 from [01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:1[m[K:
+[01m[K/opt/ros/kinetic/include/ros/node_handle.h:314:13:[m[K [01;36m[Knote: [m[Kcandidate: template<class M> ros::Publisher ros::NodeHandle::advertise(const string&, uint32_t, const SubscriberStatusCallback&, const SubscriberStatusCallback&, const VoidConstPtr&, bool)
+   Publisher advertise(const std::string& topic, uint32_t queue_size,
+[01;32m[K             ^[m[K
+[01m[K/opt/ros/kinetic/include/ros/node_handle.h:314:13:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:200:68:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+     pubFilter = nh.advertise<imu_3dm_gx4::FilterOutput>("filter", 1);
+[01;32m[K                                                                    ^[m[K
+make[2]: *** [CMakeFiles/nautonomous_sensor_imu.dir/src/imu_3dm_gx4.cpp.o] Error 1
+make[1]: *** [CMakeFiles/nautonomous_sensor_imu.dir/all] Error 2
+make: *** [all] Error 2

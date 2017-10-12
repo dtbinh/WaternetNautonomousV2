@@ -1,0 +1,8 @@
+prefix=/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/imu_3dm_gx4
+
+Name: imu_3dm_gx4
+Description: Description of imu_3dm_gx4
+Version: 0.0.5
+Cflags: -I/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/imu_3dm_gx4/include
+Libs: -L/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/imu_3dm_gx4/lib 
+Requires: message_runtime geometry_msgs sensor_msgs

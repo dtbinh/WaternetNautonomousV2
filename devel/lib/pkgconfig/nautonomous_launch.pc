@@ -1,0 +1,1 @@
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_launch/lib/pkgconfig/nautonomous_launch.pc

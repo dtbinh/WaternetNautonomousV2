@@ -1,0 +1,20 @@
+(cl:in-package nautonomous_sensor_imu-msg)
+(cl:export '(HEADER-VAL
+          HEADER
+          QUAT_STATUS-VAL
+          QUAT_STATUS
+          BIAS_STATUS-VAL
+          BIAS_STATUS
+          ORIENTATION-VAL
+          ORIENTATION
+          ORIENTATION_COVARIANCE-VAL
+          ORIENTATION_COVARIANCE
+          BIAS-VAL
+          BIAS
+          BIAS_COVARIANCE-VAL
+          BIAS_COVARIANCE
+          BIAS_COVARIANCE_STATUS-VAL
+          BIAS_COVARIANCE_STATUS
+          ORIENTATION_COVARIANCE_STATUS-VAL
+          ORIENTATION_COVARIANCE_STATUS
+))

@@ -1,0 +1,1 @@
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/share/gennodejs/ros/nautonomous_sensor_imu/_index.js

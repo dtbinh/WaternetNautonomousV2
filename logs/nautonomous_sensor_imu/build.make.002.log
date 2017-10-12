@@ -1,0 +1,61 @@
+[  0%] Built target geometry_msgs_generate_messages_py
+[  0%] Built target roscpp_generate_messages_nodejs
+[  0%] Built target rosgraph_msgs_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target roscpp_generate_messages_lisp
+[  0%] Built target _nautonomous_sensor_imu_generate_messages_check_deps_FilterOutput
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target roscpp_generate_messages_cpp
+[  0%] Built target geometry_msgs_generate_messages_eus
+[  0%] Built target rosgraph_msgs_generate_messages_cpp
+[  0%] Built target diagnostic_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_lisp
+[  0%] Built target geometry_msgs_generate_messages_lisp
+[  0%] Built target diagnostic_msgs_generate_messages_cpp
+[  0%] Built target roscpp_generate_messages_eus
+[  0%] Built target diagnostic_msgs_generate_messages_lisp
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_eus
+[  0%] Built target diagnostic_msgs_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_nodejs
+[  0%] Built target rosgraph_msgs_generate_messages_py
+[  0%] Built target diagnostic_msgs_generate_messages_py
+[  0%] Built target rosgraph_msgs_generate_messages_nodejs
+[  0%] Built target geometry_msgs_generate_messages_cpp
+[  0%] Built target sensor_msgs_generate_messages_nodejs
+[ 10%] Built target nautonomous_sensor_imu_generate_messages_nodejs
+[ 10%] Built target sensor_msgs_generate_messages_cpp
+[ 10%] Built target std_msgs_generate_messages_nodejs
+[ 10%] Built target sensor_msgs_generate_messages_lisp
+[ 20%] Built target nautonomous_sensor_imu_generate_messages_lisp
+[ 20%] Built target sensor_msgs_generate_messages_py
+[ 20%] Built target roscpp_generate_messages_py
+[ 30%] Built target nautonomous_sensor_imu_generate_messages_cpp
+[ 50%] Built target nautonomous_sensor_imu_generate_messages_eus
+[ 70%] Built target nautonomous_sensor_imu_generate_messages_py
+[35m[1mScanning dependencies of target nautonomous_sensor_imu[0m
+[ 70%] Built target nautonomous_sensor_imu_generate_messages
+[ 80%] [32mBuilding CXX object CMakeFiles/nautonomous_sensor_imu.dir/src/imu_3dm_gx4.cpp.o[0m
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:25:1:[m[K [01;31m[Kerror: [m[K‘[01m[KImu[m[K’ does not name a type
+ Imu::Info info;
+[01;32m[K ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:26:1:[m[K [01;31m[Kerror: [m[K‘[01m[KImu[m[K’ does not name a type
+ Imu::DiagnosticFields fields;
+[01;32m[K ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:24:[m[K [01;31m[Kerror: [m[K‘[01m[KImu[m[K’ does not name a type
+ void publishData(const Imu::IMUData &data) {
+[01;32m[K                        ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:37:[m[K [01;31m[Kerror: [m[Kexpected unqualified-id before ‘[01m[K&[m[K’ token
+ void publishData(const Imu::IMUData &data) {
+[01;32m[K                                     ^[m[K
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:37:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K)[m[K’ before ‘[01m[K&[m[K’ token
+[01m[K/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_sensor_imu_razor/src/imu_3dm_gx4.cpp:34:38:[m[K [01;31m[Kerror: [m[Kexpected initializer before ‘[01m[Kdata[m[K’
+ void publishData(const Imu::IMUData &data) {
+[01;32m[K                                      ^[m[K
+CMakeFiles/nautonomous_sensor_imu.dir/build.make:62: recipe for target 'CMakeFiles/nautonomous_sensor_imu.dir/src/imu_3dm_gx4.cpp.o' failed
+make[2]: *** [CMakeFiles/nautonomous_sensor_imu.dir/src/imu_3dm_gx4.cpp.o] Error 1
+CMakeFiles/Makefile2:101: recipe for target 'CMakeFiles/nautonomous_sensor_imu.dir/all' failed
+make[1]: *** [CMakeFiles/nautonomous_sensor_imu.dir/all] Error 2
+Makefile:138: recipe for target 'all' failed
+make: *** [all] Error 2
