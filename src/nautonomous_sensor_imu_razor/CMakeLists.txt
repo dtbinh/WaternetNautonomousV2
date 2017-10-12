@@ -1,34 +1,31 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(razor_imu_9dof)
-
-find_package(catkin REQUIRED COMPONENTS dynamic_reconfigure)
-
-generate_dynamic_reconfigure_options(cfg/imu.cfg)
-
-catkin_package(DEPENDS CATKIN DEPENDS dynamic_reconfigure)
-
-install(DIRECTORY launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+project(imu_3dm_gx4)
+find_package(catkin REQUIRED COMPONENTS
+  diagnostic_updater
+  message_generation
+  roscpp
+  geometry_msgs
+  sensor_msgs
 )
 
-install(DIRECTORY config
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+add_message_files(DIRECTORY msg)
+generate_messages(DEPENDENCIES geometry_msgs)
+
+catkin_package(
+  CATKIN_DEPENDS message_runtime geometry_msgs sensor_msgs)
+
+# include boost
+find_package(Boost REQUIRED)
+include_directories(${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIR})
+
+add_definitions("-std=c++0x -Wall -Werror")
+
+add_executable(${PROJECT_NAME} src/imu_3dm_gx4.cpp src/imu.cpp)
+target_link_libraries(${PROJECT_NAME}
+  ${catkin_LIBRARIES}
 )
 
-install(DIRECTORY cfg
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
-install(DIRECTORY src
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
-install(DIRECTORY magnetometer_calibration
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
-catkin_install_python(PROGRAMS 
-	nodes/imu_node.py
-	nodes/display_3D_visualization.py
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/nodes
+add_dependencies(${PROJECT_NAME}
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
 )

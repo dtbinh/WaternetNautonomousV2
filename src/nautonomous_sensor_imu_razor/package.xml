@@ -1,35 +1,25 @@
-<package>
-  <name>razor_imu_9dof</name>
-  <version>1.1.1</version>
-  <description>
-     razor_imu_9dof is a package that provides a ROS driver
-     for the Sparkfun Razor IMU 9DOF. It also provides Arduino
-     firmware that runs on the Razor board, and which must be
-     installed on the Razor board for the system to work. A node
-     which displays the attitude (roll, pitch and yaw) of the Razor board 
-     (or any IMU) is provided for testing.
-  </description>
+<?xml version="1.0"?>
+<package format="2">
+  <name>imu_3dm_gx4</name>
+  <version>0.0.5</version>
+  <description>Driver for Microstrain 3DM-GX4-25 IMU</description>
 
-  <maintainer email="krirobo@gmail.com">Kristof Robot</maintainer>
+  <maintainer email="gcross.code@icloud.com">gcross</maintainer>
+  <maintainer email="kartikmohta@gmail.com">Kartik Mohta</maintainer>
 
-  <license>BSD</license>
-
-  <author>Tang Tiong Yew</author>
-  <author>Kristof Robot</author>
-  <author>Paul Bouchier</author>
-  <author>Peter Bartz</author>
-
-  <url type="website">http://ros.org/wiki/razor_imu_9dof</url>
+  <author>Gareth Cross</author>
+  <license>Apache 2</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
 
-  <run_depend>rospy</run_depend>
-  <run_depend>tf</run_depend>
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>python-serial</run_depend>
-  <run_depend>dynamic_reconfigure</run_depend>
+  <depend>diagnostic_updater</depend>
+  <depend>geometry_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+
+  <export>
+  </export>
 </package>
-
-
