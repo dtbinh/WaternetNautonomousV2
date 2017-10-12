@@ -1,0 +1,6 @@
+geometry_msgs/Pose2D start
+geometry_msgs/Pose2D destination
+---
+geometry_msgs/Pose2D[] route
+int32[] route_ids
+

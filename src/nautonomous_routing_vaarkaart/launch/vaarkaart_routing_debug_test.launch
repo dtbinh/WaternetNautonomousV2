@@ -1,0 +1,10 @@
+<launch>
+	<arg name="debug" value="True"/>
+	<arg name="test" value="True"/>
+	
+	<include file="$(find nautonomous_routing_vaarkaart)/launch/vaarkaart_routing.launch">
+ 		<arg name="debug" value="$(arg debug)"/>
+		<arg name="test" value="$(arg test)"/>
+	</include>
+
+</launch>

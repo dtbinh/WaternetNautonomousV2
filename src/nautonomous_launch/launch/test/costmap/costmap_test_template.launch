@@ -1,0 +1,25 @@
+<launch>
+
+    <include file="$(find nautonomous_launch)/launch/test/nautonomous_test_template.launch">
+        
+        <arg name="sensors_group" value="true"/>
+        <arg name="scan_group" value="true"/>
+
+        <arg name="state_group" value="true"/>
+        <arg name="tf_group" value="true"/> 
+
+        <arg name="navigation_group" value="true"/> 
+        <arg name="coordinator_group" value="true"/> 
+        <arg name="coordinate_simulate_group" value="true"/>
+        <arg name="map_group" value="true"/>
+        <arg name="navigate_group" value="true"/> 
+
+        <arg name="operation_name_param" value="amsterdam_test"/>
+
+        <arg name="test_map_param" default="true"/>
+
+	</include>
+
+    <node name="rviz_visualizer" pkg="rviz" type="rviz" args="-d $(find nautonomous_configuration)/config/rviz/nautonomous_costmap_test.rviz"/>
+
+</launch>

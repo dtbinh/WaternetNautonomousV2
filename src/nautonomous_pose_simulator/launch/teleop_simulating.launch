@@ -1,0 +1,8 @@
+<launch>
+	  <arg name="log" default="false"/>
+
+	<node name="teleop_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen">
+		<remap from="cmd_vel" to="/navigation/propulsion/twist"/>
+
+	</node>
+</launch>

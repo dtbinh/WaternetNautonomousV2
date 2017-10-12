@@ -1,0 +1,6 @@
+<launch>
+
+    <node pkg="rosauth" type="ros_mac_authentication" name="ros_mac_authentication" output="screen" >
+        <param name="secret_file_location" value="/var/ssl/secret/nautonomous1.secret" />
+    </node>
+</launch>

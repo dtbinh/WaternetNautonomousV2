@@ -1,0 +1,11 @@
+<launch>
+
+    <arg name="gps_config_file" default="$(find nautonomous_configuration)/config/sensor/gps/ublox.yaml"/>
+
+    <node ns="/sensor/" name="gps" pkg="ublox_gps" type="ublox_gps" output="screen">
+
+        <rosparam file="$(arg gps_config_file)" command="load"/>
+
+    </node>
+    
+</launch>

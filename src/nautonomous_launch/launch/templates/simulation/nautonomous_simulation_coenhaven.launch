@@ -1,0 +1,7 @@
+<launch>
+
+	<include file="$(find nautonomous_launch)/launch/templates/simulation/nautonomous_simulation_template.launch">
+		<arg name="operation_name_param" value="coenhaven"/>
+	</include>
+
+</launch>

@@ -1,0 +1,10 @@
+<launch>
+
+    <include file="$(find nautonomous_launch)/launch/templates/test/sensors/sensor_test_template.launch">
+
+        <arg name="gps_group" value="true"/>
+        <arg name="imu_group" value="true"/>
+
+	</include>
+
+</launch>

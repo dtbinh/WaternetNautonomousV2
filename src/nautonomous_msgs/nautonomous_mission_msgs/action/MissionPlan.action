@@ -1,0 +1,10 @@
+#goal definition
+string mac
+string token
+nautonomous_mission_msgs/OperationPlan[] operations
+---
+#result definition
+nautonomous_mission_msgs/MissionStatus result
+---
+#feedback
+nautonomous_mission_msgs/MissionStatus feedback

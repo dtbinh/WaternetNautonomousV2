@@ -1,0 +1,17 @@
+local_costmap:
+  global_frame: /odom
+  robot_base_frame: base_link
+
+  static_map: false
+
+  rolling_window: true
+  width: 50.0
+  height: 50.0
+
+  escape_vel: -3.0
+  sim_time: 5.0
+  max_vel_x: 10.0
+  min_vel_x: 0.05
+  controller_frequency: 10.0
+
+

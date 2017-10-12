@@ -1,0 +1,19 @@
+<launch>
+	
+	<arg name="cmd_vel_topic" default="cmd_vel_topic"/>
+
+	<arg name="left_motor_topic" default="left_motor_topic"/>
+	<arg name="right_motor_topic" default="right_motor_topic"/>
+
+	<node name="twist_to_motors" pkg="nautonomous_propulsion_differential" type="twist_to_motors.py" output="screen">
+		<param name="base_width" value="0.5" />
+        <param name="rate" value="10" />
+
+        <remap from="cmd_vel_topic" to="$(arg cmd_vel_topic)"/>
+
+		<remap from="left_motor_topic" to="$(arg left_motor_topic)"/>
+		<remap from="right_motor_topic" to="$(arg right_motor_topic)"/>
+	</node>
+
+</launch>
+

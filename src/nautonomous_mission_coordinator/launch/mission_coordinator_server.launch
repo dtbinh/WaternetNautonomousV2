@@ -1,0 +1,31 @@
+<launch>
+
+	<arg name="routing_enabled" default="true"/>
+	<arg name="map_enabled" default="true"/>
+	<arg name="planner_enabled" default="true"/>
+	
+	<arg name="map_center_topic" default="map_center"/>
+
+	<arg name="route" default="route"/>
+	<arg name="crop" default="crop"/>
+	<arg name="load" default="load"/>
+
+	<arg name="move_base" default="move_base"/>
+	<arg name="coordinator_mission_action_server" default="/mission/coordinator/server"/>
+
+	<node name="mission_coordinator_manager" pkg="nautonomous_mission_coordinator" type="mission_coordinator_node" output="screen">
+		<param name="routing_enabled" type="bool" value="$(arg routing_enabled)"/>
+		<param name="map_enabled" type="bool" value="$(arg map_enabled)"/>
+		<param name="planner_enabled" type="bool" value="$(arg planner_enabled)"/>
+	
+		<remap from="map_center_topic" to="$(arg map_center_topic)"/>
+
+		<remap from="route" to="$(arg route)"/>
+		<remap from="crop" to="$(arg crop)"/>		
+		<remap from="load" to="$(arg load)"/>
+
+		<remap from="move_base" to="$(arg move_base)"/>
+
+	</node>
+
+</launch>

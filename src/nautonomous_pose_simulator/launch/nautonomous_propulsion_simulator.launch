@@ -1,0 +1,24 @@
+<launch>
+
+	<arg name="rosbag_enabled" default="false"/>
+	<arg name="rosbag_prefix_url" default="/tmp"/>
+
+	<arg name="cmd_vel_topic" default="cmd_vel_topic"/>
+	<arg name="disturbance_topic" default="disturbance_topic"/>
+
+	<arg name="map_topic" default="map_topic"/>
+	<arg name="initial_position_topic" default="initial_position_topic"/>
+
+	<arg name="odom_combined_topic" default="odom_combined_topic"/>
+	
+	<node name="nautonomous_propulsion_simulator" pkg="nautonomous_pose_simulator" type="nautonomous_propulsion_simulator" output="screen">
+			<remap from="cmd_vel_topic" to="$(arg cmd_vel_topic)"/>
+			<remap from="disturbance_topic" to="$(arg disturbance_topic)"/>
+
+			<remap from="map_topic" to="$(arg map_topic)"/>
+			<remap from="initial_position_topic" to="$(arg initial_position_topic)"/>
+
+			<remap from="odom_combined_topic" to="$(arg odom_combined_topic)"/>
+	</node>
+
+</launch>

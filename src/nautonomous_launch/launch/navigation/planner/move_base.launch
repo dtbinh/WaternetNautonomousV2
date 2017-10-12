@@ -1,0 +1,25 @@
+<launch>
+
+	<arg name="cmd_vel_topic" default="cmd_vel_topic"/>
+	<arg name="odom_combined_topic" default="odom_combined_topic"/>
+
+	<arg name="map_topic" default="map_topic"/>
+   	<arg name="scan_topic" default="/base_scan"/>
+
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+		<rosparam file="$(find nautonomous_configuration)/config/navigation/costmap/common_costmap_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find nautonomous_configuration)/config/navigation/costmap/common_costmap_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find nautonomous_configuration)/config/navigation/costmap/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find nautonomous_configuration)/config/navigation/costmap/global_costmap_params.yaml" command="load" />
+		<rosparam file="$(find nautonomous_configuration)/config/navigation/planner/base_local_planner_params.yaml" command="load" />
+		
+		<param name="controller_frequency" value="10.0"/>
+		<param name="planner_frequency" value="10.0"/>
+		
+		<remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+		<remap from="map" to="$(arg map_topic)"/>
+
+		<remap from="/base_scan" to="$(arg scan_topic)"/>
+	</node>
+
+</launch>

@@ -1,0 +1,12 @@
+<launch>
+	
+	<arg name="old_time" default="false"/>
+	<arg name="coordinate" default="utm"/>
+
+	<node name="coordinate_odometry_node" pkg="nautonomous_pose_odom" type="coordinate_odometry_node" output="screen">
+		<param name="old_time" value="$(arg old_time)" />
+		<remap from="coordinate" to="$(arg coordinate)" />
+		<remap from="odom_coordinate" to="utm"/>
+	</node>
+
+</launch>

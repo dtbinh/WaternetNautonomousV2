@@ -1,0 +1,11 @@
+footprint: [[-1.35, -0.75], [-1.35, -0.80], [-1.60, -0.80], [-1.60, -0.60], [-1.35, -0.60], [-1.35, 0.60], [-1.60, 0.60], [-1.60, 0.80], [-1.35, 0.80], [-1.35, 0.75], [1.35, 0.75], [1.60, 0.8], [1.60, 0.65], [1.30, 0.65], [1.30, -0.65], [1.60, -0.65], [1.60, -0.8], [1.35, -0.75]]
+robot_radius: 1.5
+inflation_radius: 0.5
+transform_tolerance: 1.0
+update_frequency: 10.0
+publish_frequency: 10.0
+resolution: 0.25
+
+observation_sources: base_scan
+base_scan: {data_type: LaserScan, sensor_frame: /lidar_link, clearing: true, marking: true, topic: /base_scan, inf_is_valid: true, raytrace_range: 200.0, obstacle_range: 150.0}
+

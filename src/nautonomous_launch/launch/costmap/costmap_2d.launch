@@ -1,0 +1,11 @@
+<launch>
+
+<arg name="map_topic" default="map"/>
+  <!-- Run the costmap node -->
+  <node name="costmap_node_test" pkg="costmap_2d" type="costmap_2d_node" >
+    <rosparam file="$(find nautonomous_configuration)/config/costmap/example_params.yaml" command="load" ns="costmap" />
+	<remap from="map" to="$(arg map_topic)"/>
+	<param name="always_send_full_costmap" value="false"/>
+  </node>
+
+</launch>

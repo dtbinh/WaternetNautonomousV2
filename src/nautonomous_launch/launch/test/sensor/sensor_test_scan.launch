@@ -1,0 +1,9 @@
+<launch>
+
+    <include file="$(find nautonomous_launch)/launch/test/sensors/sensor_test_template.launch">
+
+        <arg name="scan_group" value="true"/>
+
+	</include>
+
+</launch>

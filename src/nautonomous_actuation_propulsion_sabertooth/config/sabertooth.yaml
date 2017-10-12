@@ -1,0 +1,10 @@
+minimum_forward_value: 0.01
+maximum_forward_value: 2.0
+
+minimum_turning_value: 0.01
+maximum_turning_value: 0.25
+
+minimum_motor_value: 0.01
+maximum_motor_value: 1.0
+
+serial_timeout_ms: 1000

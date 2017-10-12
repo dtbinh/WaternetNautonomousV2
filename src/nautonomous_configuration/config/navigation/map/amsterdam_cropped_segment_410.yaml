@@ -1,0 +1,6 @@
+free_thresh: 0.196
+image: amsterdam_cropped_segment_410.png
+negate: 0
+occupied_thresh: 0.65
+origin: [629812.52, 5804068.15, -0.7071429227621867]
+resolution: 0.5

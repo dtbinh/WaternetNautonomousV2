@@ -1,0 +1,10 @@
+<launch>
+
+    <include file="$(find nautonomous_launch)/launch/templates/test/actuation/actuation_test_propulsion_differential_template.launch"/>
+
+    <include file="$(find nautonomous_propulsion_differential)/launch/twist_to_motors.launch">
+        <arg name="left_motor_topic" value="/actuation/propulsion/left"/>
+        <arg name="right_motor_topic" value="/actuation/propulsion/right"/>
+        <arg name="cmd_vel_topic" value="/navigation/propulsion/twist"/>
+    </include>
+</launch>

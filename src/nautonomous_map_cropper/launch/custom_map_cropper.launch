@@ -1,0 +1,19 @@
+<launch>
+
+	<arg name="negate_image_param" default="false"/>
+	<arg name="test_map_param" default="false"/>
+	<arg name="map_image_name_param" default="amsterdam"/>
+
+	<arg name="debug" default="false"/>
+
+	<arg name="crop_service" default="crop"/>
+	
+	<node name="nautonomous_cropper_node" pkg="nautonomous_map_cropper" type="image_cropper_node.py"  output="screen" >
+		<param name="negate_image_param" value="$(arg negate_image_param)"/>
+		<param name="map_image_name_param" value="$(arg map_image_name_param)"/>
+		<param name="debug" value="$(arg debug)"/>
+
+		<remap from="crop_service" to="$(arg crop_service)"/>
+	</node>
+
+</launch>

@@ -1,0 +1,18 @@
+<launch>
+
+	<arg name="rosbag_enabled" default="false"/>
+	<arg name="rosbag_prefix_url" default="/tmp"/>
+
+	<arg name="cmd_vel_topic" default="/navigation/propulsion/twist"/>
+
+	<node name="virtual_joystick" pkg="nautonomous_propulsion_differential" type="virtual_joystick.py" output="screen">
+
+		<param name="publish_rate" value="10" />
+
+		<remap from="cmd_vel_topic" to="$(arg cmd_vel_topic)"/>
+
+	</node>
+
+    
+</launch>
+

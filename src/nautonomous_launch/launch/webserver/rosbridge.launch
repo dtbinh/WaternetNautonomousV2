@@ -1,0 +1,9 @@
+<launch>
+	<include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" >
+			<arg name="port" value="9090" />
+			<arg name="ssl" value="true" />
+			<arg name="certfile" value="/var/ssl/ROS.crt" />
+			<arg name="keyfile" value="/var/ssl/ROS.key" />
+			<arg name="authenticate" value="true" />
+	</include>
+</launch>

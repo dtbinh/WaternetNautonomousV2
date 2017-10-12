@@ -1,0 +1,18 @@
+<launch>
+
+    <arg name="actuation_serial_available_param" default="true"/>
+	<arg name="propulsion_differential_mode_param" default="false"/>
+
+    <include file="$(find nautonomous_launch)/launch/templates/test/nautonomous_test_template.launch">
+        
+        <arg name="actuation_group" value="true"/>
+
+        <arg name="actuation_serial_available_param" value="$(arg actuation_serial_available_param)"/>
+	    <arg name="propulsion_differential_mode_param" value="$(arg propulsion_differential_mode_param)"/>
+
+	</include>
+
+    <node name="rviz_visualizer" pkg="rviz" type="rviz" args="-d $(find nautonomous_configuration)/config/rviz/rosbag_handhaving.rviz"/>
+
+
+</launch>

@@ -1,0 +1,17 @@
+<launch>
+
+    <arg name="gps_group" default="false"/>
+    <arg name="imu_group" default="false"/>
+    <arg name="scan_group" default="false"/>
+
+    <include file="$(find nautonomous_launch)/launch/test/nautonomous_test_template.launch">
+        
+        <arg name="sensors_group" value="true"/>
+        
+        <arg name="gps_group" value="$(arg gps_group)"/>
+        <arg name="imu_group" value="$(arg imu_group)"/>
+        <arg name="scan_group" value="$(arg scan_group)"/>
+
+	</include>
+
+</launch>

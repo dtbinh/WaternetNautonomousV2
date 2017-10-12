@@ -1,0 +1,26 @@
+<launch>
+
+	<arg name="rosbag_enabled" default="false"/>
+	<arg name="rosbag_prefix_url" default="/tmp"/>
+
+    <arg name="gps_fix_topic" default="gps_fix_topic"/>
+    <arg name="imu_topic" default="imu_topic"/>
+    <arg name="odom_combined_topic" default="odom_combined_topic"/>
+    <arg name="actuation_watchdog_topic" default="actuation_watchdog_topic"/>
+    <arg name="msg_auth_service" default="msg_authentication"/>
+    <arg name="msg_mac_generation_service" default="msg_mac_generation"/>
+
+    <node name="webserver_logger_node" pkg="nautonomous_webserver_logging" type="logger_server" output="screen">
+        <remap from="gps_fix_topic" to="$(arg gps_fix_topic)"/>
+        <remap from="imu_topic" to="$(arg imu_topic)"/>
+        <remap from="odom_combined_topic" to="$(arg odom_combined_topic)"/>
+        <remap from="actuation_watchdog_topic" to="$(arg actuation_watchdog_topic)"/>
+        <remap from="msg_auth" to="$(arg msg_auth_service)"/>
+        <remap from="mac_gen" to="$(arg msg_mac_generation_service)"/>
+    </node>
+    
+    <node name="ConnectionHandler" pkg="nautonomous_webserver_logging" type="ConnectionHandler.py" output="screen"/>
+
+    <node pkg="rosbag" type="record" name="rosbag_webserver" args="record -o $(arg rosbag_prefix_url)/webserver/log $(arg actuation_watchdog_topic) $(arg odom_combined_topic) $(arg imu_topic) $(arg utm_fix_topic)" output="screen" if="$(arg rosbag_enabled)"/>
+           
+</launch>

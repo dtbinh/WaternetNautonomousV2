@@ -1,0 +1,19 @@
+<launch>
+ 
+    <arg name="state_group" default="false"/>
+    <arg name="odom_group" default="false"/>
+    <arg name="tf_group" default="false"/>
+
+    <include file="$(find nautonomous_launch)/launch/templates/test/nautonomous_test_template.launch">
+        
+        <arg name="sensors_group" value="true"/>
+
+        <arg name="gps_group" value="true"/>
+        <arg name="imu_group" value="true"/>
+	
+	<arg name="state_group" value="$(arg state_group)"/>
+	<arg name="odom_group" value="$(arg odom_group)"/>
+	<arg name="tf_group" value="$(arg tf_group)"/>
+    </include>
+
+</launch>

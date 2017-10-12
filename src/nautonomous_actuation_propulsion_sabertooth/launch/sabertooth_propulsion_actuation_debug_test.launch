@@ -1,0 +1,13 @@
+<launch>
+	
+	<arg name="propulsion_differential_mode_param" default="false"/>
+	<arg name="actuation_serial_available_param" default="false"/>
+    <arg name="debug" default="true"/>
+
+	<include file="$(find nautonomous_actuation_propulsion_sabertooth)/launch/sabertooth_propulsion_actuation.launch">
+        <arg name="propulsion_differential_mode_param" value="$(arg propulsion_differential_mode_param)"/>
+        <arg name="actuation_serial_available_param" value="$(arg actuation_serial_available_param)"/>
+        <arg name="debug" value="$(arg debug)"/>
+    </include>
+
+</launch>

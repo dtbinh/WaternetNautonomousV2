@@ -1,0 +1,16 @@
+<launch>
+
+	<arg name="operation_name_param" default="operation_name_param"/>
+
+	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<arg name="operation_name_param" value="$(arg operation_name_param)"/>
+		<arg name="coordinate_simulate_group" value="true"/>
+		<arg name="simulation_group" value="true"/>
+
+		<arg name="sensor_group" value="false"/>
+		<arg name="actuation_group" value="false"/>
+		<arg name="webserver_group" value="false"/>
+		
+	</include>
+
+</launch>

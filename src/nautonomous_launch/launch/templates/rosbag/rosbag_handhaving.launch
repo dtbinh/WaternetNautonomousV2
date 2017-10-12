@@ -1,0 +1,29 @@
+<launch>
+
+    <param name="use_sim_time" value="true" />
+
+    <node pkg="rosbag" type="play" name="rosbag_tf" args="--clock -s 2745 -r 1 /home/waternet/waternet/nautonomous/rosbag/test_handhaving/gps_2017-06-22-14-13-33.bag /home/waternet/waternet/nautonomous/rosbag/test_handhaving/imu_2017-06-22-14-13-33.bag" output="screen"/>
+
+	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<arg name="operation_name_param" 		value="handhaving"/>
+		<arg name="simulation_group" 				value="false"/>
+		<arg name="actuation_group" 			value="false"/>
+		<arg name="webserver_group" 			value="false"/>
+		<arg name="gps_group" value="false"/>
+		<arg name="imu_group" value="false"/>
+		<arg name="camera_group" value="false"/>
+		<arg name="lidar_group" value="false"/>
+		<arg name="planner_group" value="false"/>
+		<arg name="odom_group" value="true"/>
+		<arg name="gps_fix_topic" 				value="/gps/fix"/>
+		<arg name="imu_topic" 					value="/imu/razor"/>
+		<arg name="coordinate_simulate_group" value="true"/>
+	</include>
+
+	<node pkg="tf" type="static_transform_publisher" name="base_imu_link_broadcaster" args="	-1.5 	0 		0.75 	0 	0 	0 	1 base_link 	base_imu_link 		50"/>
+	
+
+	<node name="rviz_visualizer" pkg="rviz" type="rviz" args="-d $(find nautonomous_configuration)/config/rviz/rosbag_handhaving.rviz"/>
+	
+</launch>
+

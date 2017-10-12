@@ -1,0 +1,29 @@
+<launch>
+
+	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<arg name="routing_group"  				value="false"/>
+		<arg name="webserver_group" 			value="false"/>
+		<arg name="actuation_group"				value="false"/>
+		<arg name="map_group" default="true"/>
+		<arg name="map_cropper_group" default="true"/>
+		<arg name="map_server_group" default="true"/>
+		<arg name="costmap_group" default="true"/>
+		<arg name="planner_group" default="true"/> 
+		<arg name="coordinator_group" default="true"/>
+		<arg name="coordinate_simulate_group" default="true"/> 
+		<arg name="operation_name_param" value="amsterdam_test"/>	
+		<arg name="state_group" default="true"/>
+		<arg name="tf_group" default="true"/>
+		<arg name="sensor_group" default="true"/>
+		<arg name="gps_group" default="false"/>
+		<arg name="imu_group" default="false"/>
+		<arg name="lidar_group" default="true"/>
+		<arg name="map_image_name_param" default="amsterdam_test"/>
+	</include>
+
+	<node pkg="tf" type="static_transform_publisher" name="odom_broadcaster" args="	0  	0 	0 	0 	0 	0 	1 odom 	base_link 	50"/>
+    
+	<node name="rviz_visualizer" pkg="rviz" type="rviz" args="-d $(find nautonomous_configuration)/config/rviz/rosbag_lidar.rviz"/>
+	
+</launch>
+

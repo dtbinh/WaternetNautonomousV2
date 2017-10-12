@@ -1,0 +1,10 @@
+<launch>
+
+    <include file="$(find nautonomous_launch)/launch/templates/test/state/state_test_template.launch">
+
+        <arg name="state_group" value="true"/>
+        <arg name="odom_group" value="true"/>
+        <arg name="tf_group" value="true"/>
+    </include>
+
+</launch>

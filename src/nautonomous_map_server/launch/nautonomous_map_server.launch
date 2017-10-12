@@ -1,0 +1,19 @@
+<launch>
+
+	<arg name="map_data_topic" default="map_data"/>
+	<arg name="map_metadata_topic" default="map_metadata"/>
+	<arg name="map_topic" default="map"/>
+	<arg name="map_center_topic" default="map_center"/>
+
+	<arg name="load_service" default="load"/>
+
+	<node name="nautonomous_map_server" pkg="nautonomous_map_server" type="nautonomous_map_server" output="screen">
+		<remap from="map_data_topic" to="$(arg map_data_topic)"/>
+		<remap from="map_metadata_topic" to="$(arg map_metadata_topic)"/>
+		<remap from="map_topic" to="$(arg map_topic)"/>
+		<remap from="map_center_topic" to="$(arg map_center_topic)"/>
+		
+		<remap from="load_service" to="$(arg load_service)"/>
+	</node>
+
+</launch>

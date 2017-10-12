@@ -1,0 +1,15 @@
+<launch>
+
+	<arg name="cmd_vel_topic" default="cmd_vel"/>
+
+	<node name="virtual_joystick" pkg="nautonomous_propulsion_differential" type="virtual_joystick.py" output="screen">
+
+		<param name="publish_rate" value="10" />
+
+		<remap from="cmd_vel_topic" to="$(arg cmd_vel_topic)"/>
+
+	</node>
+
+    
+</launch>
+

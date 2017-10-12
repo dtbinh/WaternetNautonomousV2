@@ -1,0 +1,291 @@
+<launch>
+<!-- TOPICS -->
+
+	<!-- simulate -->
+	<arg name="disturbance_topic" default="/state/disturbances/wind"/>
+	<arg name="initial_position_topic" default="/state/location/debug/initial_position"/>
+	<arg name="debug_point_topic" default="/state/location/debug/points"/>
+
+	<!-- sensors -->
+
+	<!-- sensors/imu -->
+	<arg name="imu_topic" default="/sensor/imu/imu"/>
+	<!-- sensors/gps -->
+	<arg name="gps_fix_topic" default="/sensor/gps/fix"/>
+    <arg name="gps_fix_velocity_topic" default="/sensor/gps/fix_velocity"/>
+	<!-- sensor/lidar -->
+	<arg name="scan_topic" default="/sensor/lidar/scan"/>
+	<!-- sensor/pointcloud -->
+	<arg name="pointcloud_topic" default="/sensor/lidar/point_cloud"/>
+
+	<!-- state -->
+
+	<!-- state/odom -->
+	<arg name="odom_combined_topic" default="/state/odom/combined"/>
+	<arg name="utm_odom_topic" default="/state/odom/utm" />
+
+	<!-- state/location -->
+	<arg name="utm_fix_topic" default="/state/location/utm"/>
+
+	<!-- navigation -->
+	<arg name="cmd_vel_topic" default="/navigation/planner/twist"/>
+
+	<!-- navigation/map -->
+	<arg name="map_data_topic" default="/navigation/map/server/map_data"/>
+	<arg name="map_metadata_topic" default="/navigation/map/server/map_metadata"/>
+	<arg name="map_topic" default="/navigation/map/server/map"/>
+	<arg name="map_center_topic" default="/navigation/map/server/map_center"/>
+
+	<!-- actuation -->
+	<arg name="left_motor_topic" default="/actuation/propulsion/left"/>
+	<arg name="right_motor_topic" default="/actuation/propulsion/right"/>
+	<arg name="actuation_watchdog_topic" default="/actuation/propulsion/watchdog"/>	
+
+	<!-- SERVICES-->
+	<arg name="route_service" default="/navigation/routing/vaarkaart/route"/>
+	<arg name="crop_service" default="/navigation/map/cropper/crop"/>
+	<arg name="load_service" default="/navigation/map/server/load"/>
+
+	<!-- ACTION SERVERS -->
+	<arg name="coordinator_mission_action_server" default="/mission/coordinator/server"/>
+	<arg name="move_base_server" default="/navigation/planner/move_base"/>
+
+	<!-- sensors -->
+	<arg name="sensor_group" default="true"/>
+	<arg name="gps_group" default="true"/>
+	<arg name="imu_group" default="true"/>
+	<arg name="camera_group" default="false"/>
+	<arg name="lidar_group" default="true"/>
+	
+	<group ns="sensor" if="$(arg sensor_group)">
+
+		<!-- GPS -->
+		<group ns="gps" if="$(arg gps_group)">
+			<include file="$(find nautonomous_launch)/launch/sensor/gps/ublox_gps.launch"/>
+		</group>
+
+		<!-- IMU -->
+		<group ns="imu" if="$(arg imu_group)">
+			<include file="$(find nautonomous_launch)/launch/sensor/imu/razor_pub.launch"/>
+		</group>
+		
+		<!-- Camera -->
+		<group ns="camera" if="$(arg camera_group)">
+
+		</group>
+
+		<!-- LiDAR -->
+		<group ns="lidar" if="$(arg lidar_group)">
+			<include file="$(find nautonomous_launch)/launch/sensor/lidar/velodyne.launch">
+				<arg name="pointcloud_topic" value="$(arg pointcloud_topic)"/>
+			</include>
+			<include file="$(find nautonomous_launch)/launch/sensor/lidar/pointcloud_to_laserscan.launch">
+				<arg name="scan_topic" value="$(arg scan_topic)"/>
+				<arg name="pointcloud_topic" value="$(arg pointcloud_topic)"/>
+			</include>
+		</group>
+
+	</group>
+
+
+	<!-- state -->
+	<arg name="state_group" default="true"/>
+	<arg name="location_group" default="true"/>
+	<arg name="odom_group" default="true"/>
+	<arg name="pose_group" default="true"/>
+	<arg name="tf_group" default="true"/>
+
+	<group ns="state" if="$(arg state_group)">
+
+		<!-- Location -->
+		<group ns="location" if="$(arg location_group)">
+			<include file="$(find nautonomous_pose_utm)/launch/utm_adapter.launch">
+				<arg name="gps_fix_topic" value="$(arg gps_fix_topic)"/>
+				<arg name="utm_fix_topic" default="$(arg utm_fix_topic)"/>
+				<arg name="map_center_topic" value="$(arg map_center_topic)"/>
+			</include>
+		</group> 
+
+		<!--Odom-->
+		<group ns="odom" if="$(arg odom_group)">
+			<include file="$(find nautonomous_pose_odom)/launch/coordinate_pose_odom.launch">
+				<arg name="coordinate" 		value="$(arg utm_fix_topic)"/>
+			</include> 
+		</group>
+
+		<!--Pose-->
+		<group ns="pose" if="$(arg pose_group)">
+			<include file="$(find nautonomous_launch)/launch/state/pose/robot_pose_ekf.launch">
+				<arg name="imu_topic" 			value="$(arg imu_topic)"/>
+				<arg name="utm_odom_topic" 		value="$(arg utm_odom_topic)"/>
+			</include>
+		</group>
+
+		<!-- Transforms -->
+		<group ns="tf" if="$(arg tf_group)">
+			<include file="$(find nautonomous_launch)/launch/state/tf/nautonomous_tf_static.launch"/>
+		</group>
+			
+	</group>
+
+	<!-- Navigation -->
+	<arg name="navigation_group" default="true"/>
+
+	<arg name="routing_group" default="true"/>
+
+	<arg name="map_group" default="true"/>
+	<arg name="map_cropper_group" default="true"/>
+	<arg name="map_server_group" default="true"/>
+	<arg name="negate_image_param" default="false"/>
+	<arg name="costmap_group" default="true"/>
+	<arg name="planner_group" default="true"/> 
+	<arg name="coordinator_group" default="true"/>
+	<arg name="coordinate_simulate_group" default="false"/> 
+	<arg name="operation_name_param"/>	
+	<arg name="map_image_name_param" default="amsterdam"/>
+	
+	<group ns="navigation" if="$(arg navigation_group)">
+		
+		<!-- Routing -->
+		<group ns="routing" if="$(arg routing_group)">
+
+			<include file="$(find nautonomous_routing_vaarkaart)/launch/vaarkaart_routing.launch"/>
+
+		</group>
+
+		<!-- Map -->
+		<group ns="map" if="$(arg map_group)">
+			<!-- Map Cropper -->
+			<group ns="cropper" if="$(arg map_cropper_group)">
+				<include file="$(find nautonomous_map_cropper)/launch/custom_map_cropper.launch">
+					<arg name="map_image_name_param" value="$(arg map_image_name_param)"/>
+					<arg name="negate_image_param" value="$(arg negate_image_param)"/>
+				</include>
+			</group>
+
+			<!-- Map Server -->
+			<group ns="server" if="$(arg map_server_group)">
+				<include file="$(find nautonomous_map_server)/launch/nautonomous_map_server.launch" >
+					<arg name="map_data_topic" value="$(arg map_data_topic)"/>
+					<arg name="map_metadata_topic" value="$(arg map_metadata_topic)"/>
+					<arg name="map_topic" value="$(arg map_topic)"/>
+					<arg name="map_center_topic" value="$(arg map_center_topic)"/>
+
+					<arg name="load_service" value="$(arg load_service)"/>
+				</include>
+			</group>
+
+		</group>
+
+		<!--group ns="costmap" if="$(arg costmap_group)">
+			<include file="$(find nautonomous_launch)/launch/navigation/costmap/costmap_2d.launch">
+				<arg name="scan_topic" value="$(arg scan_topic)"/>
+				<arg name="map_topic" value="$(arg map_topic)"/>
+			</include>
+		</group-->
+
+		<!-- Navigation move base -->
+		<group ns="planner" if="$(arg planner_group)">
+
+			<include file="$(find nautonomous_launch)/launch/navigation/planner/move_base.launch">
+				<arg name="scan_topic" 	value="$(arg scan_topic)"/>
+				<arg name="map_topic" 	value="$(arg map_topic)"/>
+				<arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)"/>
+			</include>
+
+		</group>
+
+		<!-- Coordinator -->
+		<group ns="coordinator" if="$(arg coordinator_group)">
+
+			<include file="$(find nautonomous_mission_coordinator)/launch/mission_coordinator_server.launch">
+				<arg name="routing_enabled" value="$(arg routing_group)"/>
+				<arg name="map_enabled" 	value="$(arg map_group)"/>
+				<arg name="planner_enabled" value="$(arg planner_group)"/> 
+
+				<arg name="map_center_topic" value="$(arg map_center_topic)"/>
+
+				<arg name="route" 	value="$(arg route_service)"/>
+				<arg name="crop" 	value="$(arg crop_service)"/>
+				<arg name="load" 	value="$(arg load_service)"/>
+
+				<arg name="move_base" value="$(arg move_base_server)"/>
+			</include> 
+			
+			<!-- Coordinator simulating client -->
+			<group if="$(arg coordinate_simulate_group)">
+				<include file="$(find nautonomous_mission_coordinator)/launch/mission_coordinator_client.launch">
+					<arg name="operation_name_param"				value="$(arg operation_name_param)"/>
+				</include>	
+			</group>
+		</group>
+	</group>
+
+
+	<!-- actuation -->
+	<arg name="actuation_group" default="true"/>
+	<arg name="propulsion_group" default="true"/>
+	<arg name="lighting_group" default="true"/>
+	<arg name="conveyor_group" default="true"/>
+
+	<!-- PARAMS -->
+	<arg name="actuation_serial_available_param" default="true"/>
+	<arg name="propulsion_differential_mode_param" default="false"/>
+
+	<!-- Actuation -->
+	<group ns="actuation" if="$(arg actuation_group)">
+		<!-- Propulsion -->
+		<group ns="propulsion" if="$(arg propulsion_group)">
+			<!-- Sabertooth -->
+			<include file="$(find nautonomous_actuation_propulsion_sabertooth)/launch/sabertooth_propulsion_actuation.launch">
+				<arg name="actuation_serial_available_param" 	value="$(arg actuation_serial_available_param)"/>
+				<arg name="propulsion_differential_mode_param" 	value="$(arg propulsion_differential_mode_param)"/>
+
+				<arg name="left_motor_topic" 					value="$(arg left_motor_topic)"/>
+				<arg name="right_motor_topic" 					value="$(arg right_motor_topic)"/>
+				<arg name="cmd_vel_topic" 						value="$(arg cmd_vel_topic)"/>
+			</include>
+		</group>
+		<!-- Lighting -->
+		<group ns="lighting" if="$(arg lighting_group)">
+
+		</group>
+		<!-- Conveyor -->
+		<group ns="conveyor" if="$(arg conveyor_group)">
+
+		</group>
+	</group>
+
+	<arg name="simulation_group" default="false"/>
+	<!-- Propulsion simulator -->
+	<group ns="simulation" if="$(arg simulation_group)">
+		<include file="$(find nautonomous_pose_simulator)/launch/nautonomous_propulsion_simulator.launch"/>	
+		<node name="rviz_visualizer" pkg="rviz" type="rviz" args="-d $(find nautonomous_configuration)/config/rviz/nautonomous_simulation.rviz"/>
+	</group>
+
+
+	<!-- webserver -->
+	<arg name="webserver_group" default="true"/>
+	<group ns="webserver" if="$(arg webserver_group)">
+
+		<!-- Authentication and bridge -->
+		<include file="$(find nautonomous_launch)/launch/webserver/rosauth.launch"/>
+		<include file="$(find nautonomous_launch)/launch/webserver/rosbridge.launch"/>
+
+		<!-- Logger server -->
+		<include file="$(find nautonomous_webserver_logging)/launch/logger_server.launch">
+			<arg name="gps_fix_topic" 				value="$(arg gps_fix_topic)"/>
+			<arg name="imu_topic" 					value="$(arg imu_topic)"/>
+			<arg name="odom_combined_topic" 		value="$(arg odom_combined_topic)"/>
+			<arg name="actuation_watchdog_topic" 	value="$(arg actuation_watchdog_topic)"/>
+		</include>
+
+	</group>
+	
+
+	<!-- ROSBAG stuff -->
+	<arg name="rosbag_enabled" default="false"/>
+	<arg name="rosbag_prefix_url" default="/tmp"/>
+
+	
+</launch>

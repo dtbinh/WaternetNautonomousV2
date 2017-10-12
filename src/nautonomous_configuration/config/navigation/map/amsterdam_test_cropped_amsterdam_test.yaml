@@ -1,0 +1,10 @@
+free_thresh: 0.196
+image: /home/nvidia/ROS/WaternetNautonomous/src/nautonomous_configuration/config/navigation/map/amsterdam_test_cropped_amsterdam_test.png
+map_bottom: 310.0
+map_left: 190.0
+map_right: 310.0
+map_top: 190.0
+negate: 0
+occupied_thresh: 0.65
+origin: [-60.0, -60.0, 0.0]
+resolution: 0.25

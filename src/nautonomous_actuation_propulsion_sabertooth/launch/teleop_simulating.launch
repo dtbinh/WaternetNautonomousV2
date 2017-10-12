@@ -1,0 +1,9 @@
+<launch>
+
+	<arg name="cmd_vel_topic" default="cmd_vel_topic"/>
+
+	<node name="teleop_keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen">
+		<remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
+	</node>
+
+</launch>

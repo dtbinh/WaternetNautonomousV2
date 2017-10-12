@@ -1,0 +1,14 @@
+<launch>
+
+	<arg name="rosbag_enabled" default="false"/>
+	<arg name="rosbag_prefix_url" default="/tmp"/>
+    	
+	<arg name="map_topic" default="map"/>
+	
+    <node name="costmap_node" pkg="costmap_2d" type="costmap_2d_node" output="screen" >
+        <rosparam file="$(find nautonomous_configuration)/config/costmap/test_config_costmap.yaml" command="load" ns="costmap" />
+        <remap from="base_scan" to="/sensor/lidar/scan"/>
+    	<remap from="map" to="$(arg map_topic)"/>
+    </node>
+    
+</launch>

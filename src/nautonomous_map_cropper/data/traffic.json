@@ -1,0 +1,6107 @@
+{
+   "total": 381,
+   "per_page": 381,
+   "current_page": 1,
+   "last_page": 1,
+   "from": 1,
+   "to": 381,
+   "data": [
+      {
+         "id": 3957047939,
+         "trafficlink_id": 93,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957047999,
+         "trafficlink_id": 94,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048059,
+         "trafficlink_id": 95,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048119,
+         "trafficlink_id": 96,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048179,
+         "trafficlink_id": 97,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048239,
+         "trafficlink_id": 98,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048299,
+         "trafficlink_id": 99,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048359,
+         "trafficlink_id": 100,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048419,
+         "trafficlink_id": 101,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 4,
+         "avg_speed": 6.8,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 9
+         }
+      },
+      {
+         "id": 3957048479,
+         "trafficlink_id": 102,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 6,
+         "avg_speed": 4.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 2,
+            "avg_speed_2": 8.5
+         }
+      },
+      {
+         "id": 3957048539,
+         "trafficlink_id": 103,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048599,
+         "trafficlink_id": 104,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048659,
+         "trafficlink_id": 106,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048719,
+         "trafficlink_id": 107,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048779,
+         "trafficlink_id": 108,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048839,
+         "trafficlink_id": 109,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048899,
+         "trafficlink_id": 110,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957048959,
+         "trafficlink_id": 111,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049019,
+         "trafficlink_id": 112,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 6,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957049079,
+         "trafficlink_id": 113,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049139,
+         "trafficlink_id": 114,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049199,
+         "trafficlink_id": 115,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049259,
+         "trafficlink_id": 116,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049319,
+         "trafficlink_id": 117,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 0,
+         "avg_speed": 4.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 9
+         }
+      },
+      {
+         "id": 3957049379,
+         "trafficlink_id": 118,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049439,
+         "trafficlink_id": 121,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 10,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049499,
+         "trafficlink_id": 123,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049559,
+         "trafficlink_id": 124,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049619,
+         "trafficlink_id": 125,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049679,
+         "trafficlink_id": 126,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049739,
+         "trafficlink_id": 127,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049799,
+         "trafficlink_id": 128,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049859,
+         "trafficlink_id": 129,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049919,
+         "trafficlink_id": 131,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957049979,
+         "trafficlink_id": 132,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050039,
+         "trafficlink_id": 158,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050099,
+         "trafficlink_id": 159,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957050159,
+         "trafficlink_id": 160,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050219,
+         "trafficlink_id": 162,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 1.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 6,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050279,
+         "trafficlink_id": 253,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050339,
+         "trafficlink_id": 262,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050399,
+         "trafficlink_id": 264,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050459,
+         "trafficlink_id": 265,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050519,
+         "trafficlink_id": 339,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050579,
+         "trafficlink_id": 352,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050639,
+         "trafficlink_id": 361,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050699,
+         "trafficlink_id": 362,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050759,
+         "trafficlink_id": 364,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050819,
+         "trafficlink_id": 365,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050879,
+         "trafficlink_id": 366,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050939,
+         "trafficlink_id": 367,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957050999,
+         "trafficlink_id": 368,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051059,
+         "trafficlink_id": 369,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051119,
+         "trafficlink_id": 370,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051179,
+         "trafficlink_id": 371,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051239,
+         "trafficlink_id": 372,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051299,
+         "trafficlink_id": 373,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051359,
+         "trafficlink_id": 374,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051419,
+         "trafficlink_id": 375,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051479,
+         "trafficlink_id": 376,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051539,
+         "trafficlink_id": 377,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051599,
+         "trafficlink_id": 378,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051659,
+         "trafficlink_id": 379,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051719,
+         "trafficlink_id": 380,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051779,
+         "trafficlink_id": 381,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051839,
+         "trafficlink_id": 382,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051899,
+         "trafficlink_id": 383,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957051959,
+         "trafficlink_id": 385,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052019,
+         "trafficlink_id": 388,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052079,
+         "trafficlink_id": 389,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052139,
+         "trafficlink_id": 390,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052199,
+         "trafficlink_id": 391,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052259,
+         "trafficlink_id": 392,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052319,
+         "trafficlink_id": 393,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052379,
+         "trafficlink_id": 394,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052439,
+         "trafficlink_id": 396,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052499,
+         "trafficlink_id": 397,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052559,
+         "trafficlink_id": 398,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052619,
+         "trafficlink_id": 399,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052679,
+         "trafficlink_id": 400,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052739,
+         "trafficlink_id": 401,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052799,
+         "trafficlink_id": 402,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052859,
+         "trafficlink_id": 403,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052919,
+         "trafficlink_id": 404,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957052979,
+         "trafficlink_id": 405,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053039,
+         "trafficlink_id": 406,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053099,
+         "trafficlink_id": 407,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053159,
+         "trafficlink_id": 408,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053219,
+         "trafficlink_id": 409,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053279,
+         "trafficlink_id": 410,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053339,
+         "trafficlink_id": 411,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 10,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053399,
+         "trafficlink_id": 433,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 4,
+         "avg_speed": 6.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 4,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 7.3,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 10
+         }
+      },
+      {
+         "id": 3957053459,
+         "trafficlink_id": 434,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053519,
+         "trafficlink_id": 435,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053579,
+         "trafficlink_id": 475,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053639,
+         "trafficlink_id": 518,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053699,
+         "trafficlink_id": 519,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 4,
+         "avg_speed": 4.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 9,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 9
+         }
+      },
+      {
+         "id": 3957053759,
+         "trafficlink_id": 520,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053819,
+         "trafficlink_id": 521,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053879,
+         "trafficlink_id": 522,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053939,
+         "trafficlink_id": 523,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957053999,
+         "trafficlink_id": 524,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054059,
+         "trafficlink_id": 604,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054119,
+         "trafficlink_id": 605,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054179,
+         "trafficlink_id": 626,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054239,
+         "trafficlink_id": 627,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 4,
+         "avg_speed": 6.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 8.7,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054299,
+         "trafficlink_id": 628,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 8,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 2,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957054359,
+         "trafficlink_id": 629,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054419,
+         "trafficlink_id": 630,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054479,
+         "trafficlink_id": 631,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054539,
+         "trafficlink_id": 632,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054599,
+         "trafficlink_id": 633,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054659,
+         "trafficlink_id": 634,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054719,
+         "trafficlink_id": 635,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054779,
+         "trafficlink_id": 636,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054839,
+         "trafficlink_id": 637,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054899,
+         "trafficlink_id": 638,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957054959,
+         "trafficlink_id": 641,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055019,
+         "trafficlink_id": 642,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055079,
+         "trafficlink_id": 643,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055139,
+         "trafficlink_id": 644,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055199,
+         "trafficlink_id": 645,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055259,
+         "trafficlink_id": 646,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055319,
+         "trafficlink_id": 647,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055379,
+         "trafficlink_id": 648,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055439,
+         "trafficlink_id": 649,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055499,
+         "trafficlink_id": 650,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055559,
+         "trafficlink_id": 651,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055619,
+         "trafficlink_id": 652,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055679,
+         "trafficlink_id": 653,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055739,
+         "trafficlink_id": 655,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055799,
+         "trafficlink_id": 656,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055859,
+         "trafficlink_id": 657,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055919,
+         "trafficlink_id": 658,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957055979,
+         "trafficlink_id": 659,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056039,
+         "trafficlink_id": 661,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056099,
+         "trafficlink_id": 662,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056159,
+         "trafficlink_id": 693,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056219,
+         "trafficlink_id": 694,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056279,
+         "trafficlink_id": 696,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056339,
+         "trafficlink_id": 697,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056399,
+         "trafficlink_id": 786,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056459,
+         "trafficlink_id": 876,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 4,
+         "avg_speed": 6.8,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 8.7,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056519,
+         "trafficlink_id": 877,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056579,
+         "trafficlink_id": 878,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056639,
+         "trafficlink_id": 879,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056699,
+         "trafficlink_id": 889,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056759,
+         "trafficlink_id": 903,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056819,
+         "trafficlink_id": 904,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056879,
+         "trafficlink_id": 906,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056939,
+         "trafficlink_id": 907,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957056999,
+         "trafficlink_id": 908,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 4,
+         "avg_speed": 6.8,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 9,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057059,
+         "trafficlink_id": 909,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057119,
+         "trafficlink_id": 910,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057179,
+         "trafficlink_id": 911,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057239,
+         "trafficlink_id": 913,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057299,
+         "trafficlink_id": 914,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957057359,
+         "trafficlink_id": 915,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057419,
+         "trafficlink_id": 916,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057479,
+         "trafficlink_id": 917,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057539,
+         "trafficlink_id": 918,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057599,
+         "trafficlink_id": 919,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057659,
+         "trafficlink_id": 920,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057719,
+         "trafficlink_id": 922,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057779,
+         "trafficlink_id": 923,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057839,
+         "trafficlink_id": 924,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057899,
+         "trafficlink_id": 926,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957057959,
+         "trafficlink_id": 928,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058019,
+         "trafficlink_id": 929,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058079,
+         "trafficlink_id": 930,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058139,
+         "trafficlink_id": 931,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058199,
+         "trafficlink_id": 933,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058259,
+         "trafficlink_id": 934,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058319,
+         "trafficlink_id": 935,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058379,
+         "trafficlink_id": 936,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058439,
+         "trafficlink_id": 964,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058499,
+         "trafficlink_id": 965,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058559,
+         "trafficlink_id": 966,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 8,
+         "avg_speed": 3.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 6.5,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058619,
+         "trafficlink_id": 967,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 10,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058679,
+         "trafficlink_id": 968,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 4.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 2,
+            "avg_speed_2": 9.5
+         }
+      },
+      {
+         "id": 3957058739,
+         "trafficlink_id": 969,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 10
+         }
+      },
+      {
+         "id": 3957058799,
+         "trafficlink_id": 972,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058859,
+         "trafficlink_id": 1056,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058919,
+         "trafficlink_id": 1136,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957058979,
+         "trafficlink_id": 1137,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059039,
+         "trafficlink_id": 1142,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059099,
+         "trafficlink_id": 1144,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059159,
+         "trafficlink_id": 1159,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059219,
+         "trafficlink_id": 1163,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059279,
+         "trafficlink_id": 1164,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059339,
+         "trafficlink_id": 1165,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059399,
+         "trafficlink_id": 1166,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059459,
+         "trafficlink_id": 1167,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059519,
+         "trafficlink_id": 1168,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059579,
+         "trafficlink_id": 1170,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059639,
+         "trafficlink_id": 1171,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059699,
+         "trafficlink_id": 1172,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059759,
+         "trafficlink_id": 1173,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957059819,
+         "trafficlink_id": 1175,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059879,
+         "trafficlink_id": 1176,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059939,
+         "trafficlink_id": 1177,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957059999,
+         "trafficlink_id": 1178,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060059,
+         "trafficlink_id": 1179,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060119,
+         "trafficlink_id": 1180,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060179,
+         "trafficlink_id": 1182,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060239,
+         "trafficlink_id": 1183,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060299,
+         "trafficlink_id": 1184,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 6,
+         "avg_speed": 6.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 2,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8.5
+         }
+      },
+      {
+         "id": 3957060359,
+         "trafficlink_id": 1185,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060419,
+         "trafficlink_id": 1186,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060479,
+         "trafficlink_id": 1187,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060539,
+         "trafficlink_id": 1188,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 9,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060599,
+         "trafficlink_id": 1189,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060659,
+         "trafficlink_id": 1190,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060719,
+         "trafficlink_id": 1191,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060779,
+         "trafficlink_id": 1192,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 4,
+         "avg_speed": 6,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 4,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 9
+         }
+      },
+      {
+         "id": 3957060839,
+         "trafficlink_id": 1193,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060899,
+         "trafficlink_id": 1194,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957060959,
+         "trafficlink_id": 1195,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061019,
+         "trafficlink_id": 1196,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061079,
+         "trafficlink_id": 1197,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061139,
+         "trafficlink_id": 1198,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061199,
+         "trafficlink_id": 1199,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 0,
+         "avg_speed": 4.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 8.5
+         }
+      },
+      {
+         "id": 3957061259,
+         "trafficlink_id": 1200,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061319,
+         "trafficlink_id": 1201,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061379,
+         "trafficlink_id": 1202,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061439,
+         "trafficlink_id": 1203,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061499,
+         "trafficlink_id": 1204,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061559,
+         "trafficlink_id": 1205,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061619,
+         "trafficlink_id": 1206,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061679,
+         "trafficlink_id": 1207,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061739,
+         "trafficlink_id": 1208,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061799,
+         "trafficlink_id": 1209,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061859,
+         "trafficlink_id": 1212,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061919,
+         "trafficlink_id": 1235,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957061979,
+         "trafficlink_id": 1236,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062039,
+         "trafficlink_id": 1237,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062099,
+         "trafficlink_id": 1238,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 9,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062159,
+         "trafficlink_id": 1239,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062219,
+         "trafficlink_id": 1240,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062279,
+         "trafficlink_id": 1241,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062339,
+         "trafficlink_id": 1335,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062399,
+         "trafficlink_id": 1336,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062459,
+         "trafficlink_id": 1396,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062519,
+         "trafficlink_id": 1411,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062579,
+         "trafficlink_id": 1412,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062639,
+         "trafficlink_id": 1413,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062699,
+         "trafficlink_id": 1415,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062759,
+         "trafficlink_id": 1416,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 0,
+         "avg_speed": 4.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 8.5
+         }
+      },
+      {
+         "id": 3957062819,
+         "trafficlink_id": 1417,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062879,
+         "trafficlink_id": 1418,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 2,
+         "avg_speed": 6.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 8.3,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062939,
+         "trafficlink_id": 1419,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957062999,
+         "trafficlink_id": 1420,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063059,
+         "trafficlink_id": 1421,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063119,
+         "trafficlink_id": 1422,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063179,
+         "trafficlink_id": 1423,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063239,
+         "trafficlink_id": 1424,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063299,
+         "trafficlink_id": 1425,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063359,
+         "trafficlink_id": 1426,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063419,
+         "trafficlink_id": 1427,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063479,
+         "trafficlink_id": 1429,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063539,
+         "trafficlink_id": 1430,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063599,
+         "trafficlink_id": 1431,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063659,
+         "trafficlink_id": 1432,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063719,
+         "trafficlink_id": 1434,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 0,
+         "avg_speed": 4.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 8.5,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063779,
+         "trafficlink_id": 1435,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063839,
+         "trafficlink_id": 1436,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063899,
+         "trafficlink_id": 1437,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957063959,
+         "trafficlink_id": 1438,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064019,
+         "trafficlink_id": 1439,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064079,
+         "trafficlink_id": 1440,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064139,
+         "trafficlink_id": 1441,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064199,
+         "trafficlink_id": 1442,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064259,
+         "trafficlink_id": 1443,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064319,
+         "trafficlink_id": 1444,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064379,
+         "trafficlink_id": 1445,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064439,
+         "trafficlink_id": 1446,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064499,
+         "trafficlink_id": 1447,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064559,
+         "trafficlink_id": 1449,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064619,
+         "trafficlink_id": 1476,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957064679,
+         "trafficlink_id": 1477,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064739,
+         "trafficlink_id": 1478,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064799,
+         "trafficlink_id": 1479,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064859,
+         "trafficlink_id": 1480,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957064919,
+         "trafficlink_id": 1481,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 10
+         }
+      },
+      {
+         "id": 3957064979,
+         "trafficlink_id": 1482,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065039,
+         "trafficlink_id": 1571,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957065099,
+         "trafficlink_id": 1651,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065159,
+         "trafficlink_id": 1666,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065219,
+         "trafficlink_id": 1667,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065279,
+         "trafficlink_id": 1668,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065339,
+         "trafficlink_id": 1670,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 8,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 2,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957065399,
+         "trafficlink_id": 1671,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065459,
+         "trafficlink_id": 1672,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065519,
+         "trafficlink_id": 1673,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065579,
+         "trafficlink_id": 1674,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065639,
+         "trafficlink_id": 1675,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065699,
+         "trafficlink_id": 1676,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065759,
+         "trafficlink_id": 1677,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065819,
+         "trafficlink_id": 1678,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065879,
+         "trafficlink_id": 1679,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065939,
+         "trafficlink_id": 1680,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957065999,
+         "trafficlink_id": 1681,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066059,
+         "trafficlink_id": 1682,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066119,
+         "trafficlink_id": 1684,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 9,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066179,
+         "trafficlink_id": 1686,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066239,
+         "trafficlink_id": 1687,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066299,
+         "trafficlink_id": 1688,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066359,
+         "trafficlink_id": 1689,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066419,
+         "trafficlink_id": 1690,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066479,
+         "trafficlink_id": 1692,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066539,
+         "trafficlink_id": 1693,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066599,
+         "trafficlink_id": 1694,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066659,
+         "trafficlink_id": 1695,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066719,
+         "trafficlink_id": 1697,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066779,
+         "trafficlink_id": 1698,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066839,
+         "trafficlink_id": 1699,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066899,
+         "trafficlink_id": 1700,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957066959,
+         "trafficlink_id": 1701,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067019,
+         "trafficlink_id": 1702,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067079,
+         "trafficlink_id": 1703,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067139,
+         "trafficlink_id": 1704,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067199,
+         "trafficlink_id": 1705,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067259,
+         "trafficlink_id": 1706,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067319,
+         "trafficlink_id": 1707,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067379,
+         "trafficlink_id": 1724,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067439,
+         "trafficlink_id": 1728,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067499,
+         "trafficlink_id": 1729,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067559,
+         "trafficlink_id": 1806,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067619,
+         "trafficlink_id": 1815,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067679,
+         "trafficlink_id": 1906,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067739,
+         "trafficlink_id": 1907,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067799,
+         "trafficlink_id": 1908,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 4.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 9
+         }
+      },
+      {
+         "id": 3957067859,
+         "trafficlink_id": 1909,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 4,
+         "avg_speed": 6.8,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 9
+         }
+      },
+      {
+         "id": 3957067919,
+         "trafficlink_id": 1910,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957067979,
+         "trafficlink_id": 1911,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068039,
+         "trafficlink_id": 1912,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068099,
+         "trafficlink_id": 1913,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068159,
+         "trafficlink_id": 1914,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068219,
+         "trafficlink_id": 1915,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068279,
+         "trafficlink_id": 1916,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068339,
+         "trafficlink_id": 1917,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068399,
+         "trafficlink_id": 1918,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068459,
+         "trafficlink_id": 1919,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068519,
+         "trafficlink_id": 1920,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068579,
+         "trafficlink_id": 1921,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068639,
+         "trafficlink_id": 1922,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068699,
+         "trafficlink_id": 1923,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068759,
+         "trafficlink_id": 1924,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068819,
+         "trafficlink_id": 1925,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068879,
+         "trafficlink_id": 1926,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068939,
+         "trafficlink_id": 1927,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957068999,
+         "trafficlink_id": 1928,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069059,
+         "trafficlink_id": 1930,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 1,
+         "num_boats": 6,
+         "avg_speed": 5.8,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 7.7
+         }
+      },
+      {
+         "id": 3957069119,
+         "trafficlink_id": 1931,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069179,
+         "trafficlink_id": 1932,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069239,
+         "trafficlink_id": 1933,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 8,
+         "avg_speed": 4,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069299,
+         "trafficlink_id": 1934,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 1,
+            "avg_speed_2": 8
+         }
+      },
+      {
+         "id": 3957069359,
+         "trafficlink_id": 1935,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069419,
+         "trafficlink_id": 1949,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069479,
+         "trafficlink_id": 1951,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069539,
+         "trafficlink_id": 1952,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069599,
+         "trafficlink_id": 2033,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069659,
+         "trafficlink_id": 2034,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 4.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 2,
+            "avg_speed_1": 9,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069719,
+         "trafficlink_id": 2035,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069779,
+         "trafficlink_id": 2036,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069839,
+         "trafficlink_id": 2037,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 9,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 2,
+            "avg_speed_1": 12,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069899,
+         "trafficlink_id": 2038,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 4.8,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 3,
+            "outflow_absolute_1": 3,
+            "avg_speed_1": 9.5,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957069959,
+         "trafficlink_id": 2039,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 2,
+            "outflow_absolute_1": 2,
+            "avg_speed_1": 7,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070019,
+         "trafficlink_id": 2040,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070079,
+         "trafficlink_id": 2041,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070139,
+         "trafficlink_id": 2042,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070199,
+         "trafficlink_id": 2043,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070259,
+         "trafficlink_id": 2044,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070319,
+         "trafficlink_id": 2045,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070379,
+         "trafficlink_id": 2046,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070439,
+         "trafficlink_id": 2047,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070499,
+         "trafficlink_id": 2048,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 4.5,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 4,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 8,
+            "outflow_absolute_2": 3,
+            "avg_speed_2": 9
+         }
+      },
+      {
+         "id": 3957070559,
+         "trafficlink_id": 2049,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 2.3,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 1,
+            "outflow_absolute_1": 1,
+            "avg_speed_1": 9,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070619,
+         "trafficlink_id": 2050,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070679,
+         "trafficlink_id": 2051,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      },
+      {
+         "id": 3957070739,
+         "trafficlink_id": 2052,
+         "created_at": "2017-07-06 10:45:00",
+         "traffic": 0,
+         "num_boats": 0,
+         "avg_speed": 0,
+         "num_boats_range": "0-10",
+         "averaged": {
+            "boats_in_out_average": 0,
+            "outflow_absolute_1": 0,
+            "avg_speed_1": 0,
+            "outflow_absolute_2": 0,
+            "avg_speed_2": 0
+         }
+      }
+   ],
+   "url": "api/v2/trafficdata"
+}

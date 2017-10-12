@@ -1,0 +1,27 @@
+<launch>   
+
+    <arg name="navigation_group" default="false"/>
+    <arg name="coordinator_group" default="false"/> 
+    <arg name="map_group" default="false"/>
+	<arg name="actuation_serial_available_param" default="false"/>
+    <arg name="routing_group" default="false"/>
+    <arg name="navigate_group" default="false"/>
+
+    <arg name="webserver_group" default="true"/>
+    <arg name="message_authentication_group" default="true"/>
+
+
+    <include file="$(find nautonomous_launch)/launch/test/nautonomous_test_template.launch">
+        
+        <arg name="navigation_group" value="$(arg navigation_group)"/>
+        <arg name="coordinator_group" value="$(arg coordinator_group)"/> 
+        <arg name="map_group" value="$(arg map_group)"/>
+        <arg name="routing_group" value="$(arg routing_group)"/>
+        <arg name="navigate_group" value="$(arg navigate_group)"/>
+
+        <arg name="webserver_group" value="$(arg webserver_group)"/>
+    	<arg name="message_authentication_group" value="$(arg message_authentication_group)"/>
+
+	</include>
+
+</launch>

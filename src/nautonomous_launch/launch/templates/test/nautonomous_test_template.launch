@@ -1,0 +1,67 @@
+<launch>
+    <arg name="sensors_group" default="false"/>
+    <arg name="gps_group" default="false"/>
+    <arg name="imu_group" default="false"/>
+    <arg name="scan_group" default="false"/>
+
+    <arg name="actuation_group" default="false"/>
+    <arg name="actuation_serial_available_param" default="true"/>
+    <arg name="propulsion_differential_mode_param" default="false"/>
+
+    <arg name="state_group" default="false"/>
+    <arg name="odom_group" default="false"/>
+    <arg name="tf_group" default="false"/>
+
+    <arg name="navigation_group" default="false"/>
+    <arg name="routing_group" default="false"/>
+    <arg name="map_group" default="false"/>
+    <arg name="map_cropper_group" default="false"/>
+    <arg name="map_server_group" default="false"/>
+    <arg name="costmap_group" default="false"/>
+    <arg name="planner_group" default="false"/> 
+    <arg name="coordinator_group" default="false"/>
+    <arg name="coordinate_simulate_group" default="false"/>
+
+    <arg name="webserver_group" default="false"/>
+    <arg name="message_authentication_group" default="false"/>
+
+    <arg name="operation_name_param" default="coenhaven_dry_dock"/>
+
+    <arg name="coordinate_simulate_group" default="false"/>
+
+    <arg name="test_map_param" default="false"/>
+
+
+    <include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+
+        <arg name="sensors_group" value="$(arg sensors_group)"/>
+        <arg name="gps_group" value="$(arg gps_group)"/>
+        <arg name="imu_group" value="$(arg imu_group)"/>
+        <arg name="scan_group" value="$(arg scan_group)"/>
+
+        <arg name="actuation_group" value="$(arg actuation_group)"/>
+        <arg name="actuation_serial_available_param" value="$(arg actuation_serial_available_param)"/>
+	    <arg name="propulsion_differential_mode_param" value="$(arg propulsion_differential_mode_param)"/>
+
+        <arg name="state_group" value="$(arg state_group)"/>
+        <arg name="odom_group" value="$(arg odom_group)"/>
+        <arg name="tf_group" value="$(arg tf_group)"/> 
+
+        <arg name="navigation_group" value="$(arg navigation_group)"/>
+	<arg name="routing_group" value="$(arg routing_group)"/>
+	<arg name="map_group" value="$(arg map_group)"/>
+	<arg name="map_cropper_group" value="$(arg map_cropper_group)"/>
+	<arg name="map_server_group" value="$(arg map_server_group)"/>
+	<arg name="costmap_group" value="$(arg costmap_group)"/>
+	<arg name="planner_group" value="$(arg planner_group)"/> 
+	<arg name="coordinator_group" value="$(arg coordinator_group)"/>
+	<arg name="coordinate_simulate_group" value="$(arg coordinate_simulate_group)"/> 
+        
+        <arg name="webserver_group" value="$(arg webserver_group)"/>
+        <arg name="message_authentication_group" default="true"/>
+	
+	<arg name="operation_name_param" value="$(arg operation_name_param)"/>
+        <arg name="test_map_param" default="$(arg test_map_param)"/>
+
+     </include>
+</launch>

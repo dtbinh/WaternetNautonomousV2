@@ -1,0 +1,6 @@
+free_thresh: 0.196
+image: amsterdam_test_cropped_debug_rotated.png
+negate: 0
+occupied_thresh: 0.65
+origin: [628241.1, 5803390.34, -0.42743206746531204]
+resolution: 0.25

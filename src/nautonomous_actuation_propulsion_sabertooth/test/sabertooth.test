@@ -1,0 +1,3 @@
+<launch>
+    <test pkg="nautonomous_propulsion_sabertooth" type="sabertooth_test" test-name="sabertooth_test"/>
+</launch>

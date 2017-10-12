@@ -1,0 +1,70 @@
+<launch>
+	
+	<arg name="propulsion_address" default="128"/>
+	<arg name="propulsion_differential_mode_param" default="false"/>
+
+	<arg name="serial_port" default="/dev/nautonomous/actuation"/>
+	<arg name="actuation_serial_available_param" default="true"/>
+
+	<arg name="serial_timeout_ms" default="1000"/>
+	<arg name="ramp_time_ms" default="2500"/>
+
+	<arg name="debug" default="false"/>
+
+	<arg name="left_feedback_topic" default="feedback/left"/>
+	<arg name="right_feedback_topic" default="feedback/right"/>
+
+	<arg name="left_motor_topic" default="motor/left"/>
+	<arg name="right_motor_topic" default="motor/right"/>
+
+	<arg name="minimum_forward_value" default="0.01"/>
+    <arg name="maximum_forward_value" default="2.0"/>
+
+    <arg name="minimum_turning_value" default="0.01"/>
+    <arg name="maximum_turning_value" default="0.5"/>
+
+    <arg name="minimum_motor_value" default="0.01"/>
+    <arg name="maximum_motor_value" default="1.0"/>
+
+	<arg name="sabertooth_config" default="$(find nautonomous_actuation_propulsion_sabertooth)/config/sabertooth.yaml"/>
+
+	<arg name="cmd_vel_topic" default="cmd_vel"/>
+
+	<node name="nautonomous_actuation_propulsion_sabertooth" pkg="nautonomous_actuation_propulsion_sabertooth" type="sabertooth_propulsion_node" output="screen">
+		
+		<!-- Configs -->
+		<rosparam file="$(arg sabertooth_config)" command="load"/>
+		
+		<!-- Parameters -->
+		<param name="minimum_forward_value" value="0.01"/>
+		<param name="maximum_forward_value" value="2.0"/>
+
+		<param name="minimum_turning_value" value="0.01"/>
+		<param name="maximum_turning_value" value="0.5"/>
+
+		<param name="minimum_motor_value" value="0.01"/>
+		<param name="maximum_motor_value" value="1.0"/>
+
+		<param name="actuation_serial_available_param" type="bool" value="$(arg actuation_serial_available_param)"/>
+		<param name="serial_port" value="$(arg serial_port)"/>
+
+		<param name="serial_timeout_ms" value="$(arg serial_timeout_ms)"/>
+		<param name="ramp_time_ms" value="$(arg ramp_time_ms)"/>
+
+		<param name="propulsion_address" type="int" value="$(arg propulsion_address)"/>
+		<param name="propulsion_differential_mode_param" type="bool" value="$(arg propulsion_differential_mode_param)"/>
+
+		<param name="debug" type="bool" value="$(arg debug)"/>
+
+		<remap from="left_feedback_topic" to="$(arg left_feedback_topic)"/>
+		<remap from="right_feedback_topic" to="$(arg right_feedback_topic)"/>
+
+		<!--Subscribers-->
+		<remap from="left_motor_topic" to="$(arg left_motor_topic)"/>
+		<remap from="right_motor_topic" to="$(arg right_motor_topic)"/>
+
+		<remap from="cmd_vel_topic" to="$(arg cmd_vel_topic)"/>
+
+	</node>
+
+</launch>

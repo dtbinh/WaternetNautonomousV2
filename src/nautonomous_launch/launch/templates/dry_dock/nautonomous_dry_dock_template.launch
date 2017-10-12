@@ -1,0 +1,14 @@
+<launch>
+
+	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<arg name="routing_group"  				value="false"/>
+		<arg name="webserver_group" 				value="false"/>
+		<arg name="coordinate_simulate_group" 			value="true"/>
+		<arg name="operation_name_param"  			value="coenhaven_dry_dock"/>
+		<arg name="negate_image_param" 				value="true"/>
+		<arg name="actuation_group"				value="true"/>
+		<arg name="imu_group"  					value="true"/>
+		<arg name="lidar_group" 				value="true"/>
+	</include>
+
+</launch>

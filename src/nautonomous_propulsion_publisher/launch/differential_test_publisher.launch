@@ -1,0 +1,25 @@
+<launch>
+
+	<arg name="propulsion_mode_index" default="0"/>
+	<arg name="motor_propulsion_scalar" default="1.0"/>
+
+	<arg name="set_topic" default="mode/set"/>
+	<arg name="next_topic" default="mode/next"/>
+
+	<arg name="left_motor_topic" default="motor/left"/>
+	<arg name="right_motor_topic" default="motor/right"/>
+
+	<node name="nautonomous_propulsion_publisher" pkg="nautonomous_propulsion_publisher" type="differential_test_publisher_node" output="screen">
+
+		<param name="propulsion_mode_index" type="int" value="$(arg propulsion_mode_index)"/>
+		<param name="motor_propulsion_scalar" type="double" value="$(arg motor_propulsion_scalar)"/>
+		
+		<remap from="set_topic" to="$(arg set_topic)"/>
+		<remap from="next_topic" to="$(arg next_topic)"/>
+
+		<remap from="left_motor_topic" to="$(arg left_motor_topic)"/>
+		<remap from="right_motor_topic" to="$(arg right_motor_topic)"/>
+
+	</node>
+
+</launch>

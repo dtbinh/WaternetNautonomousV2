@@ -1,0 +1,9 @@
+<launch>
+
+	<arg name="operation_name_param" default="coenhaven_dry_dock"/>
+
+	<node name="mission_coordinator_client" pkg="nautonomous_mission_coordinator" type="mission_coordinator_client.py" output="screen">
+		<param name="operation_name_param" value="$(arg operation_name_param)"/>
+	</node>
+
+</launch>

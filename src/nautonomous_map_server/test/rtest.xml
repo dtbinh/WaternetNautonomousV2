@@ -1,0 +1,7 @@
+<launch>
+
+  <node name="nautonomous_map_server" pkg="nautonomous_map_server" type="nautonomous_map_server" args="$(find nautonomous_map_server)/test/testmap.yaml"/>
+
+  <test test-name="map_server_test" pkg="nautonomous_map_server" type="rtest"/>
+
+</launch>

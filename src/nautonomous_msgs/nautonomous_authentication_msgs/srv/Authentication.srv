@@ -1,0 +1,4 @@
+string mac
+string token
+---
+bool authenticated

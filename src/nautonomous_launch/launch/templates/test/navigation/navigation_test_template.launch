@@ -1,0 +1,34 @@
+<launch>
+ 
+    <arg name="navigation_group" default="false"/> 
+    <arg name="coordinator_group" default="false"/> 
+    <arg name="map_group" default="false"/>
+    <arg name="routing_group" default="false"/>
+    <arg name="navigate_group" default="false"/> 
+
+    <arg name="coordinate_simulate_group" default="false"/>
+	
+    <include file="$(find nautonomous_launch)/launch/templates/test/nautonomous_test_template.launch">
+        
+        <!--arg name="sensors_group" value="true"/>
+
+        <arg name="gps_group" value="true"/>
+        <arg name="imu_group" value="true"/-->
+
+        <!--arg name="state_group" value="true"/>
+            <arg name="odom_group" value="true"/>
+            <arg name="tf_group" value="true"/-->
+        
+        <arg name="navigation_group" value="$(arg navigation_group)"/> 
+        <arg name="coordinator_group" value="$(arg coordinator_group)"/> 
+        <arg name="coordinate_simulate_group" value="$(arg coordinate_simulate_group)"/>
+        <arg name="map_group" value="$(arg map_group)"/>
+        <arg name="routing_group" value="$(arg routing_group)"/>
+        <arg name="navigate_group" value="$(arg navigate_group)"/> 
+
+        <arg name="operation_name_param" value="coenhaven_dry_dock"/>
+
+	
+    </include>
+
+</launch>

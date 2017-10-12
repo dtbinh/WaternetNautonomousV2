@@ -1,0 +1,10 @@
+image: amsterdam.png
+resolution: 0.5
+origin: [ 622457, 5798303, 0.0]
+occupied_thresh: 0.65
+free_thresh: 0.196
+negate: 0
+map_left: 622457
+map_right: 632457
+map_bottom: 5798303
+map_top: 5808303

@@ -1,0 +1,14 @@
+<launch>
+
+    <include file="$(find nautonomous_launch)/launch/templates/test/navigation/navigation_test_template.launch">
+
+        <arg name="navigation_group" value="true"/> 
+    	<arg name="coordinator_group" value="true"/> 
+    	<arg name="map_group" value="true"/>
+	<arg name="coordinate_simulate_group" value="true"/>
+    	<arg name="routing_group" value="false"/>
+   	<arg name="navigate_group" value="false"/> 
+
+    </include>
+
+</launch>
