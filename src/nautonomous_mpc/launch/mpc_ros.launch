@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load default parameters -->
+  <rosparam command="load" file="$(find nautonomous_mpc)/param/default.yaml"/>
+
+  <!-- Launch mpc_ros -->
+  <node name="nautonomous_mpc" pkg="nautonomous_mpc" type="mpc_ros" output="screen"/>
+
+</launch>

@@ -1,0 +1,47 @@
+boat:
+  length: 2.6 #[m]
+  width: 2.0 #[m]
+  safety_radius: 2.5 #[m]
+  m: 200.0 #[kg] mass
+  I_z: 14.0 #[kg*m^2] moment of inertia
+  l: 0.8 #[m] lever arm
+  T_full: 135.0 #[N] full thrust, not parametrized in solver!
+  T_half: 50.0 #[N] half thrust
+  beta: 0.37 # reverse direction inefficiency factor
+  D_x: 38.0 #[kg/s] damping coefficient in x_b
+  D_y: 5280.0 #[kg/s] damping coefficient in y_b
+  D_theta: 104.0 #[kg*m^2/s] damping coefficient in theta_b
+  start_x: 626737 #[m]
+  start_y: 5807621 #[m]
+  start_theta: 0.0 #[rad]
+  waypoints_x: [ 626730] #[m]
+  waypoints_y: [ 5807625] #[m]
+
+mpc_ros:
+  controller_dt: 0.1 #[s]
+  method: 1 # WAYPOINTS_NAVIGATION=0, CONTOURING_CONTROL=1
+  costsWN:
+    q_goal: 0.0
+    qN_goal: 50.0
+    q_u: 0.01
+    qN_u: 0.01
+  costsCC:
+    q_progress: -150.0
+    q_lag: 250.0
+    q_contouring: 1.0
+    q_u: 0.01
+  goal_position_threshold: 10.0 #[m]
+  goal_velocity_threshold: 10.0 #[m/s]
+  waypoint_position_threshold: 10.0 #[m], only used for waypoints navigation
+  obstacle_uncertainty_growth: 0.1 #[m/step]
+  ghost_obstacle:
+    x: -49.5 #[m]
+    y: 49.5 #[m]
+  simulation: true
+  statistics: true
+  visualization: true
+  verbose: true
+
+visualization:
+  frame_id: '/world'
+  verbose: true

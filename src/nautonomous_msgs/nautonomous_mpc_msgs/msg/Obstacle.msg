@@ -1,0 +1,3 @@
+nautonomous_state_msgs/State state
+float64 major_semiaxis
+float64 minor_semiaxis

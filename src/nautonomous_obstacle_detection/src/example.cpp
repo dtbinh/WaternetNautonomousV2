@@ -16,7 +16,7 @@
 
 #include <nautonomous_obstacle_detection/PVector.h>
 #include <nautonomous_obstacle_detection/Blob.h>
-#include <mpc_ros_msgs/Obstacles.h>
+#include <nautonomous_mpc_msgs/Obstacles.h>
 
 #include <opencv2/highgui.hpp>
 #include "opencv2/imgproc.hpp"
@@ -166,8 +166,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
 
 
-	mpc_ros_msgs::Obstacle obstacle;
-	mpc_ros_msgs::Obstacles obstacles;
+	nautonomous_mpc_msgs::Obstacle obstacle;
+	nautonomous_mpc_msgs::Obstacles obstacles;
 
 
 		
@@ -529,7 +529,7 @@ int main (int argc, char** argv)
 	ros::Subscriber pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("point_cloud",1,cloud_cb);
 	ros::Subscriber pos_sub = nh.subscribe<nautonomous_pose_msgs::PointWithCovarianceStamped>("state/location/utm",1,gps_cb);
 
-	message_pub = nh_private.advertise<mpc_ros_msgs::Obstacles>("obstacles",1);
+	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",10);
 
 	ros::spin();	

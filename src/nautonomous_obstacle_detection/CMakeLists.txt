@@ -7,7 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   roscpp
   sensor_msgs
-  mpc_ros_msgs
+  nautonomous_mpc_msgs
+  nautonomous_state_msgs
   nautonomous_pose_msgs
 )
 

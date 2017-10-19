@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <name>nautonomous_mpc</name>
+  <version>0.0.0</version>
+  <description>The mpc_ros package contains the ROS implementation of the two MPC-based approaches to collision avoidance developed in the framework of my Master's thesis (Collision Avoidance for Autonomous Boats in Crowded Canals using Model Predictive Control)</description>
+
+  <maintainer email="seewera@student.ethz.ch">Antoine Seewer</maintainer>
+  <author email="seewera@student.ethz.ch">Antoine Seewer</author>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+</package>

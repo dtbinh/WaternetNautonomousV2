@@ -1,0 +1,12 @@
+float64 length
+float64 width
+float64 safety_radius
+float64 m
+float64 I_z
+float64 l
+float64 T_full
+float64 T_half
+float64 beta
+float64 D_x
+float64 D_y
+float64 D_theta

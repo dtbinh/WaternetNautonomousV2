@@ -9,10 +9,10 @@
 	<!-- sensors -->
 
 	<!-- sensors/imu -->
-	<arg name="imu_topic" default="/sensor/imu/imu"/>
+	<arg name="imu_topic" default="/imu"/>
 	<!-- sensors/gps -->
 	<arg name="gps_fix_topic" default="/sensor/gps/fix"/>
-    <arg name="gps_fix_velocity_topic" default="/sensor/gps/fix_velocity"/>
+   	<arg name="gps_fix_velocity_topic" default="/sensor/gps/fix_velocity"/>
 	<!-- sensor/lidar -->
 	<arg name="scan_topic" default="/sensor/lidar/scan"/>
 	<!-- sensor/pointcloud -->
@@ -131,27 +131,14 @@
 	<!-- Navigation -->
 	<arg name="navigation_group" default="true"/>
 
-	<arg name="routing_group" default="true"/>
-
 	<arg name="map_group" default="true"/>
 	<arg name="map_cropper_group" default="true"/>
 	<arg name="map_server_group" default="true"/>
-	<arg name="negate_image_param" default="false"/>
-	<arg name="costmap_group" default="true"/>
-	<arg name="planner_group" default="true"/> 
-	<arg name="coordinator_group" default="true"/>
-	<arg name="coordinate_simulate_group" default="false"/> 
+	<arg name="negate_image_param" default="false"/> 
 	<arg name="operation_name_param"/>	
 	<arg name="map_image_name_param" default="amsterdam"/>
 	
 	<group ns="navigation" if="$(arg navigation_group)">
-		
-		<!-- Routing -->
-		<group ns="routing" if="$(arg routing_group)">
-
-			<include file="$(find nautonomous_routing_vaarkaart)/launch/vaarkaart_routing.launch"/>
-
-		</group>
 
 		<!-- Map -->
 		<group ns="map" if="$(arg map_group)">
@@ -174,51 +161,7 @@
 					<arg name="load_service" value="$(arg load_service)"/>
 				</include>
 			</group>
-
-		</group>
-
-		<!--group ns="costmap" if="$(arg costmap_group)">
-			<include file="$(find nautonomous_launch)/launch/navigation/costmap/costmap_2d.launch">
-				<arg name="scan_topic" value="$(arg scan_topic)"/>
-				<arg name="map_topic" value="$(arg map_topic)"/>
-			</include>
-		</group-->
-
-		<!-- Navigation move base -->
-		<group ns="planner" if="$(arg planner_group)">
-
-			<include file="$(find nautonomous_launch)/launch/navigation/planner/move_base.launch">
-				<arg name="scan_topic" 	value="$(arg scan_topic)"/>
-				<arg name="map_topic" 	value="$(arg map_topic)"/>
-				<arg name="cmd_vel_topic" value="$(arg cmd_vel_topic)"/>
-			</include>
-
-		</group>
-
-		<!-- Coordinator -->
-		<group ns="coordinator" if="$(arg coordinator_group)">
-
-			<include file="$(find nautonomous_mission_coordinator)/launch/mission_coordinator_server.launch">
-				<arg name="routing_enabled" value="$(arg routing_group)"/>
-				<arg name="map_enabled" 	value="$(arg map_group)"/>
-				<arg name="planner_enabled" value="$(arg planner_group)"/> 
-
-				<arg name="map_center_topic" value="$(arg map_center_topic)"/>
-
-				<arg name="route" 	value="$(arg route_service)"/>
-				<arg name="crop" 	value="$(arg crop_service)"/>
-				<arg name="load" 	value="$(arg load_service)"/>
-
-				<arg name="move_base" value="$(arg move_base_server)"/>
-			</include> 
-			
-			<!-- Coordinator simulating client -->
-			<group if="$(arg coordinate_simulate_group)">
-				<include file="$(find nautonomous_mission_coordinator)/launch/mission_coordinator_client.launch">
-					<arg name="operation_name_param"				value="$(arg operation_name_param)"/>
-				</include>	
-			</group>
-		</group>
+		</group>		
 	</group>
 
 

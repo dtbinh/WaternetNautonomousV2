@@ -1,0 +1,5 @@
+int32 id
+nautonomous_state_msgs/BoatParam param
+nautonomous_state_msgs/BoatState state
+geometry_msgs/Point[] waypoints
+nautonomous_state_msgs/BoatCommand command

@@ -47,6 +47,13 @@ add_dependencies(
 	mission_coordinator_server
 	${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}
 )
+
+
+add_executable(alternative_mission_coordinator_node
+  scripts/alternative_mission_coordinator.cpp
+)
+
+target_link_libraries(alternative_mission_coordinator_node ${catkin_LIBRARIES} )
 target_link_libraries(move_base_client ${catkin_LIBRARIES} )
 target_link_libraries(mission_coordinator_server ${catkin_LIBRARIES} move_base_client)
 target_link_libraries(mission_coordinator_node ${catkin_LIBRARIES} move_base_client mission_coordinator_server)

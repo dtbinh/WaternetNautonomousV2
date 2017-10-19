@@ -1,0 +1,11 @@
+<launch>
+
+	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<arg name="webserver_group" 				value="false"/>
+		<arg name="operation_name_param"  			value="coenhaven_dry_dock"/>
+		<arg name="negate_image_param" 				value="false"/>
+		<arg name="actuation_group"				value="false"/>
+		<arg name="sensor_group"				value="false"/>
+	</include>
+
+</launch>
