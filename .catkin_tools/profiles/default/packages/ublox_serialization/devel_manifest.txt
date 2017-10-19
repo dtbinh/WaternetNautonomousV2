@@ -1,0 +1,4 @@
+nautonomous_sensor_gps_ublox/ublox_serialization
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/ublox_serialization/share/ublox_serialization/cmake/ublox_serializationConfig.cmake /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/share/ublox_serialization/cmake/ublox_serializationConfig.cmake
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/ublox_serialization/share/ublox_serialization/cmake/ublox_serializationConfig-version.cmake /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/share/ublox_serialization/cmake/ublox_serializationConfig-version.cmake
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/ublox_serialization/lib/pkgconfig/ublox_serialization.pc /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/lib/pkgconfig/ublox_serialization.pc

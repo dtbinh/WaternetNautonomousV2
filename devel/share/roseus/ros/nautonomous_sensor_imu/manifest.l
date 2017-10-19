@@ -1,1 +1,0 @@
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/share/roseus/ros/nautonomous_sensor_imu/manifest.l

@@ -1,0 +1,6 @@
+<launch>
+	 <include file="$(find nautonomous_launch)/launch/sensor/lidar/velodyne.launch"></include>
+	 <include file="$(find nautonomous_launch)/launch/sensor/imu/razor_pub.launch"></include>
+	 <include file="$(find nautonomous_launch)/launch/sensor/gps/ublox_gps.launch"></include>
+</launch>
+ 

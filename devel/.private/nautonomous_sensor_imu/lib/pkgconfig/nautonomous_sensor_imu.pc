@@ -1,8 +1,0 @@
-prefix=/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu
-
-Name: nautonomous_sensor_imu
-Description: Description of nautonomous_sensor_imu
-Version: 0.0.5
-Cflags: -I/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/include
-Libs: -L/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/lib 
-Requires: message_runtime geometry_msgs sensor_msgs

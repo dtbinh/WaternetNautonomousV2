@@ -1,1 +1,0 @@
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_sensor_imu/include/nautonomous_sensor_imu/FilterOutput.h

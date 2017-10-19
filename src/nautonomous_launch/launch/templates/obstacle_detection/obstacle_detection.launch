@@ -1,0 +1,20 @@
+<launch>
+
+	
+
+	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<arg name="navigation_group"  			value="true"/>
+		<arg name="sensor_group"  			value="false"/>
+		<arg name="routing_group"  			value="true"/>
+		<arg name="webserver_group" 			value="false"/>
+		<arg name="coordinate_simulate_group" 		value="true"/>
+		<arg name="operation_name_param"  		value="lijnbaansgracht"/>
+		<arg name="negate_image_param" 			value="true"/>
+		<arg name="actuation_group"			value="false"/>
+	</include>
+
+	<node name="rviz_visualizer" pkg="rviz" type="rviz" />
+	
+	<param name="use_sim_time" value="true"/>
+
+</launch>

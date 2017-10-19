@@ -1,1 +1,0 @@
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/imu_3dm_gx4/share/roseus/ros/imu_3dm_gx4/manifest.l

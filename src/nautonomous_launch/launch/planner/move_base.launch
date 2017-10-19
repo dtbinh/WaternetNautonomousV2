@@ -25,7 +25,7 @@
 		<param name="recovery_behaviour_enabled" value="false"/> 
 		<param name="clearing_rotation_allowed" value="false"/>
 
-		<!--param name="planner_frequency" value="1.0"/-->
+		<param name="planner_frequency" value="1.0"/>
 		<param name="controller_frequency" value="10.0"/>
 		<remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
 		

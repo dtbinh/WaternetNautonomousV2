@@ -1,1 +1,0 @@
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/imu_3dm_gx4/share/common-lisp/ros/imu_3dm_gx4/msg/_package.lisp

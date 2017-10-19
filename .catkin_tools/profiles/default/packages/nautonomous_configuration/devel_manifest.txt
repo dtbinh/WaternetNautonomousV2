@@ -1,0 +1,4 @@
+nautonomous_configuration
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_configuration/share/nautonomous_configuration/cmake/nautonomous_configurationConfig.cmake /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/share/nautonomous_configuration/cmake/nautonomous_configurationConfig.cmake
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_configuration/share/nautonomous_configuration/cmake/nautonomous_configurationConfig-version.cmake /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/share/nautonomous_configuration/cmake/nautonomous_configurationConfig-version.cmake
+/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_configuration/lib/pkgconfig/nautonomous_configuration.pc /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/lib/pkgconfig/nautonomous_configuration.pc

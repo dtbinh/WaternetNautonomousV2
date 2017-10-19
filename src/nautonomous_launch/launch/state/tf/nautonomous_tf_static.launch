@@ -14,5 +14,8 @@
 	<node pkg="tf" type="static_transform_publisher" name="lidar_link_broadcaster" 		args="	-1.5 	0	0.75	0 	0 	0 	1 base_link 	lidar_link 	50"/>
 	<node pkg="tf" type="static_transform_publisher" name="base_footprint_broadcaster" 	args="	0 	0 	0 	0 	0 	0 	1 base_link 	base_footprint 	50"/>
 	<node pkg="tf" type="static_transform_publisher" name="map_broadcaster"			args="	0  	0 	0 	0 	0 	0 	1 map 		odom 		50"/>
-           
+
+
+
+
 </launch>
