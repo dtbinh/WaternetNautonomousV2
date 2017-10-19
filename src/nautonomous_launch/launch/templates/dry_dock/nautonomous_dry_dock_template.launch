@@ -1,6 +1,7 @@
 <launch>
 
 	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<arg name="navigation_group"				value="false"/>
 		<arg name="routing_group"  				value="false"/>
 		<arg name="webserver_group" 				value="false"/>
 		<arg name="coordinate_simulate_group" 			value="true"/>
