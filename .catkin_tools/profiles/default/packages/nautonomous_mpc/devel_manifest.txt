@@ -1,6 +1,0 @@
-nautonomous_mpc
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_mpc/share/nautonomous_mpc/cmake/nautonomous_mpcConfig.cmake /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/share/nautonomous_mpc/cmake/nautonomous_mpcConfig.cmake
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_mpc/share/nautonomous_mpc/cmake/nautonomous_mpcConfig-version.cmake /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/share/nautonomous_mpc/cmake/nautonomous_mpcConfig-version.cmake
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_mpc/lib/libcasadi_LIBRARIES.so /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/lib/libcasadi_LIBRARIES.so
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_mpc/lib/nautonomous_mpc/mpc_ros /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/lib/nautonomous_mpc/mpc_ros
-/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/nautonomous_mpc/lib/pkgconfig/nautonomous_mpc.pc /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/lib/pkgconfig/nautonomous_mpc.pc

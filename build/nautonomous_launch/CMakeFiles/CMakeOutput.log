@@ -1,4 +1,4 @@
-The system is: Linux - 4.10.0-37-generic - x86_64
+The system is: Linux - 4.4.15 - aarch64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /usr/bin/cc 
 Build flags: 
@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/3.5.1/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/3.5.1/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /usr/bin/c++ 
@@ -23,75 +23,75 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is GNU, found in "/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/3.5.1/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_39638/fast"
-/usr/bin/make -f CMakeFiles/cmTC_39638.dir/build.make CMakeFiles/cmTC_39638.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_39638.dir/testCCompiler.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_39638.dir/testCCompiler.c.o   -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_39638
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_39638.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_39638.dir/testCCompiler.c.o  -o cmTC_39638 -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_b2570/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b2570.dir/build.make CMakeFiles/cmTC_b2570.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b2570.dir/testCCompiler.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_b2570.dir/testCCompiler.c.o   -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_b2570
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b2570.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_b2570.dir/testCCompiler.c.o  -o cmTC_b2570 -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6085d/fast"
-/usr/bin/make -f CMakeFiles/cmTC_6085d.dir/build.make CMakeFiles/cmTC_6085d.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_6085d
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6085d.dir/link.txt --verbose=1
-/usr/bin/cc      -v CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o  -o cmTC_6085d -rdynamic  
+Run Build Command:"/usr/bin/make" "cmTC_9c4ca/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9c4ca.dir/build.make CMakeFiles/cmTC_9c4ca.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_9c4ca
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9c4ca.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o  -o cmTC_9c4ca -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
-Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper
+Target: aarch64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-arm64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-arm64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-arm64 --with-arch-directory=aarch64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) 
-COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6085d' '-rdynamic' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cceN0T5m.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_6085d /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+gcc version 5.4.0 20160609 (Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4) 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_9c4ca' '-rdynamic' '-mlittle-endian' '-mabi=lp64'
+ /usr/lib/gcc/aarch64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccYnNKvj.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -z relro -o cmTC_9c4ca /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/aarch64-linux-gnu/5 -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/5/../../.. CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/aarch64-linux-gnu/5/crtend.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
 Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_6085d/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_6085d.dir/build.make CMakeFiles/cmTC_6085d.dir/build]
-  ignore line: [make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_6085d]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6085d.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o  -o cmTC_6085d -rdynamic  ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_9c4ca/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_9c4ca.dir/build.make CMakeFiles/cmTC_9c4ca.dir/build]
+  ignore line: [make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc     -o CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.5/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_9c4ca]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9c4ca.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o  -o cmTC_9c4ca -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
-  ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper]
+  ignore line: [Target: aarch64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-arm64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-arm64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-arm64 --with-arch-directory=aarch64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_6085d' '-rdynamic' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/cceN0T5m.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_6085d /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_9c4ca' '-rdynamic' '-mlittle-endian' '-mabi=lp64']
+  link line: [ /usr/lib/gcc/aarch64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccYnNKvj.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -z relro -o cmTC_9c4ca /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/aarch64-linux-gnu/5 -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/5/../../.. CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/aarch64-linux-gnu/5/crtend.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/cceN0T5m.res] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccYnNKvj.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -100,28 +100,30 @@ Parsed C implicit link information from above output:
     arg [--sysroot=/] ==> ignore
     arg [--build-id] ==> ignore
     arg [--eh-frame-hdr] ==> ignore
-    arg [-m] ==> ignore
-    arg [elf_x86_64] ==> ignore
     arg [--hash-style=gnu] ==> ignore
     arg [--as-needed] ==> ignore
     arg [-export-dynamic] ==> ignore
     arg [-dynamic-linker] ==> ignore
-    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [/lib/ld-linux-aarch64.so.1] ==> ignore
+    arg [-X] ==> ignore
+    arg [-EL] ==> ignore
+    arg [-maarch64linux] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_6085d] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib]
-    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [cmTC_9c4ca] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib]
+    arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
     arg [-L/lib/../lib] ==> dir [/lib/../lib]
-    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_6085d.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../..]
+    arg [CMakeFiles/cmTC_9c4ca.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -131,39 +133,39 @@ Parsed C implicit link information from above output:
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
     arg [--no-as-needed] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtend.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/crtend.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o] ==> ignore
   remove lib [gcc]
   remove lib [gcc_s]
   remove lib [gcc]
   remove lib [gcc_s]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5] ==> [/usr/lib/gcc/x86_64-linux-gnu/5]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
-  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5] ==> [/usr/lib/gcc/aarch64-linux-gnu/5]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
   collapse library dir [/lib/../lib] ==> [/lib]
-  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
   collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../..] ==> [/usr/lib]
   implicit libs: [c]
-  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/5;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/5;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
   implicit fwks: []
 
 
 
 
 Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_cb339/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cb339.dir/build.make CMakeFiles/cmTC_cb339.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_cb339.dir/feature_tests.c.o
-/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_cb339.dir/feature_tests.c.o   -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.c
-Linking C executable cmTC_cb339
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cb339.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_cb339.dir/feature_tests.c.o  -o cmTC_cb339 -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_57b6b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_57b6b.dir/build.make CMakeFiles/cmTC_57b6b.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_57b6b.dir/feature_tests.c.o
+/usr/bin/cc    -std=c11 -o CMakeFiles/cmTC_57b6b.dir/feature_tests.c.o   -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.c
+Linking C executable cmTC_57b6b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_57b6b.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_57b6b.dir/feature_tests.c.o  -o cmTC_57b6b -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -173,17 +175,17 @@ make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNaut
 
 
 Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_dfed8/fast"
-/usr/bin/make -f CMakeFiles/cmTC_dfed8.dir/build.make CMakeFiles/cmTC_dfed8.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_dfed8.dir/feature_tests.c.o
-/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_dfed8.dir/feature_tests.c.o   -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.c
-Linking C executable cmTC_dfed8
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_dfed8.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_dfed8.dir/feature_tests.c.o  -o cmTC_dfed8 -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_2c8b6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2c8b6.dir/build.make CMakeFiles/cmTC_2c8b6.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2c8b6.dir/feature_tests.c.o
+/usr/bin/cc    -std=c99 -o CMakeFiles/cmTC_2c8b6.dir/feature_tests.c.o   -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.c
+Linking C executable cmTC_2c8b6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c8b6.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_2c8b6.dir/feature_tests.c.o  -o cmTC_2c8b6 -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -193,17 +195,17 @@ make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNaut
 
 
 Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_52fdb/fast"
-/usr/bin/make -f CMakeFiles/cmTC_52fdb.dir/build.make CMakeFiles/cmTC_52fdb.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_52fdb.dir/feature_tests.c.o
-/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_52fdb.dir/feature_tests.c.o   -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.c
-Linking C executable cmTC_52fdb
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_52fdb.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_52fdb.dir/feature_tests.c.o  -o cmTC_52fdb -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_d5dd2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d5dd2.dir/build.make CMakeFiles/cmTC_d5dd2.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d5dd2.dir/feature_tests.c.o
+/usr/bin/cc    -std=c90 -o CMakeFiles/cmTC_d5dd2.dir/feature_tests.c.o   -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.c
+Linking C executable cmTC_d5dd2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d5dd2.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_d5dd2.dir/feature_tests.c.o  -o cmTC_d5dd2 -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
     Feature record: C_FEATURE:1c_function_prototypes
@@ -211,72 +213,72 @@ make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNaut
     Feature record: C_FEATURE:0c_static_assert
     Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_cd9bc/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cd9bc.dir/build.make CMakeFiles/cmTC_cd9bc.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_cd9bc.dir/testCXXCompiler.cxx.o
-/usr/bin/c++      -o CMakeFiles/cmTC_cd9bc.dir/testCXXCompiler.cxx.o -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_cd9bc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cd9bc.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_cd9bc.dir/testCXXCompiler.cxx.o  -o cmTC_cd9bc -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_85499/fast"
+/usr/bin/make -f CMakeFiles/cmTC_85499.dir/build.make CMakeFiles/cmTC_85499.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_85499.dir/testCXXCompiler.cxx.o
+/usr/bin/c++      -o CMakeFiles/cmTC_85499.dir/testCXXCompiler.cxx.o -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_85499
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_85499.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_85499.dir/testCXXCompiler.cxx.o  -o cmTC_85499 -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_fbe68/fast"
-/usr/bin/make -f CMakeFiles/cmTC_fbe68.dir/build.make CMakeFiles/cmTC_fbe68.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++      -o CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_fbe68
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fbe68.dir/link.txt --verbose=1
-/usr/bin/c++       -v CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_fbe68 -rdynamic  
+Run Build Command:"/usr/bin/make" "cmTC_cfead/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cfead.dir/build.make CMakeFiles/cmTC_cfead.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++      -o CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_cfead
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cfead.dir/link.txt --verbose=1
+/usr/bin/c++       -v CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_cfead -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
-Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper
+Target: aarch64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-arm64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-arm64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-arm64 --with-arch-directory=aarch64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu
 Thread model: posix
-gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) 
-COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_fbe68' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccCFq6tP.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_fbe68 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+gcc version 5.4.0 20160609 (Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4) 
+COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/
+LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../:/lib/:/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_cfead' '-rdynamic' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64'
+ /usr/lib/gcc/aarch64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccRlphpf.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -z relro -o cmTC_cfead /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/aarch64-linux-gnu/5 -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/5/../../.. CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/5/crtend.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
 Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp]
+  ignore line: [Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_fbe68/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_fbe68.dir/build.make CMakeFiles/cmTC_fbe68.dir/build]
-  ignore line: [make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++      -o CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_fbe68]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fbe68.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_fbe68 -rdynamic  ]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_cfead/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_cfead.dir/build.make CMakeFiles/cmTC_cfead.dir/build]
+  ignore line: [make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++      -o CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.5/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_cfead]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cfead.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_cfead -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper]
-  ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64 --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-objc-gc --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper]
+  ignore line: [Target: aarch64-linux-gnu]
+  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4' --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++ --prefix=/usr --program-suffix=-5 --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-libquadmath --enable-plugin --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-arm64/jre --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-arm64 --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-arm64 --with-arch-directory=aarch64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar --enable-multiarch --enable-fix-cortex-a53-843419 --disable-werror --enable-checking=release --build=aarch64-linux-gnu --host=aarch64-linux-gnu --target=aarch64-linux-gnu]
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/5/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/5/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_fbe68' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccCFq6tP.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_fbe68 /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/5 -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/5/../../.. CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/5/crtend.o /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/collect2] ==> ignore
+  ignore line: [gcc version 5.4.0 20160609 (Ubuntu/Linaro 5.4.0-6ubuntu1~16.04.4) ]
+  ignore line: [COMPILER_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/]
+  ignore line: [LIBRARY_PATH=/usr/lib/gcc/aarch64-linux-gnu/5/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib/:/lib/aarch64-linux-gnu/:/lib/../lib/:/usr/lib/aarch64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/aarch64-linux-gnu/5/../../../:/lib/:/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_cfead' '-rdynamic' '-shared-libgcc' '-mlittle-endian' '-mabi=lp64']
+  link line: [ /usr/lib/gcc/aarch64-linux-gnu/5/collect2 -plugin /usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so -plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper -plugin-opt=-fresolution=/tmp/ccRlphpf.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib/ld-linux-aarch64.so.1 -X -EL -maarch64linux --fix-cortex-a53-843419 -z relro -o cmTC_cfead /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o /usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o -L/usr/lib/gcc/aarch64-linux-gnu/5 -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu -L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib -L/lib/aarch64-linux-gnu -L/lib/../lib -L/usr/lib/aarch64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/aarch64-linux-gnu/5/../../.. CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/aarch64-linux-gnu/5/crtend.o /usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o]
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/collect2] ==> ignore
     arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccCFq6tP.res] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/usr/lib/gcc/aarch64-linux-gnu/5/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccRlphpf.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -285,28 +287,30 @@ Parsed CXX implicit link information from above output:
     arg [--sysroot=/] ==> ignore
     arg [--build-id] ==> ignore
     arg [--eh-frame-hdr] ==> ignore
-    arg [-m] ==> ignore
-    arg [elf_x86_64] ==> ignore
     arg [--hash-style=gnu] ==> ignore
     arg [--as-needed] ==> ignore
     arg [-export-dynamic] ==> ignore
     arg [-dynamic-linker] ==> ignore
-    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+    arg [/lib/ld-linux-aarch64.so.1] ==> ignore
+    arg [-X] ==> ignore
+    arg [-EL] ==> ignore
+    arg [-maarch64linux] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_fbe68] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crt1.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtbegin.o] ==> ignore
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib]
-    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+    arg [cmTC_cfead] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crt1.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crti.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/crtbegin.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu]
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib]
+    arg [-L/lib/aarch64-linux-gnu] ==> dir [/lib/aarch64-linux-gnu]
     arg [-L/lib/../lib] ==> dir [/lib/../lib]
-    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+    arg [-L/usr/lib/aarch64-linux-gnu] ==> dir [/usr/lib/aarch64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..]
-    arg [CMakeFiles/cmTC_fbe68.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-L/usr/lib/gcc/aarch64-linux-gnu/5/../../..] ==> dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../..]
+    arg [CMakeFiles/cmTC_cfead.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -314,39 +318,39 @@ Parsed CXX implicit link information from above output:
     arg [-lc] ==> lib [c]
     arg [-lgcc_s] ==> lib [gcc_s]
     arg [-lgcc] ==> lib [gcc]
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/crtend.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu/crtn.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/crtend.o] ==> ignore
+    arg [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu/crtn.o] ==> ignore
   remove lib [gcc_s]
   remove lib [gcc]
   remove lib [gcc_s]
   remove lib [gcc]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5] ==> [/usr/lib/gcc/x86_64-linux-gnu/5]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
-  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5] ==> [/usr/lib/gcc/aarch64-linux-gnu/5]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../../../lib] ==> [/usr/lib]
+  collapse library dir [/lib/aarch64-linux-gnu] ==> [/lib/aarch64-linux-gnu]
   collapse library dir [/lib/../lib] ==> [/lib]
-  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+  collapse library dir [/usr/lib/aarch64-linux-gnu] ==> [/usr/lib/aarch64-linux-gnu]
   collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/5/../../..] ==> [/usr/lib]
+  collapse library dir [/usr/lib/gcc/aarch64-linux-gnu/5/../../..] ==> [/usr/lib]
   implicit libs: [stdc++;m;c]
-  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/5;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  implicit dirs: [/usr/lib/gcc/aarch64-linux-gnu/5;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib]
   implicit fwks: []
 
 
 
 
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_82c68/fast"
-/usr/bin/make -f CMakeFiles/cmTC_82c68.dir/build.make CMakeFiles/cmTC_82c68.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_82c68.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++14 -o CMakeFiles/cmTC_82c68.dir/feature_tests.cxx.o -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_82c68
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_82c68.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_82c68.dir/feature_tests.cxx.o  -o cmTC_82c68 -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_8dddf/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8dddf.dir/build.make CMakeFiles/cmTC_8dddf.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_8dddf.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++14 -o CMakeFiles/cmTC_8dddf.dir/feature_tests.cxx.o -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_8dddf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8dddf.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_8dddf.dir/feature_tests.cxx.o  -o cmTC_8dddf -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
@@ -409,17 +413,17 @@ make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNaut
 
 
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_f50bc/fast"
-/usr/bin/make -f CMakeFiles/cmTC_f50bc.dir/build.make CMakeFiles/cmTC_f50bc.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_f50bc.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++11 -o CMakeFiles/cmTC_f50bc.dir/feature_tests.cxx.o -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_f50bc
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f50bc.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_f50bc.dir/feature_tests.cxx.o  -o cmTC_f50bc -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_5a350/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5a350.dir/build.make CMakeFiles/cmTC_5a350.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_5a350.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++11 -o CMakeFiles/cmTC_5a350.dir/feature_tests.cxx.o -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_5a350
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5a350.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_5a350.dir/feature_tests.cxx.o  -o cmTC_5a350 -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -482,17 +486,17 @@ make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNaut
 
 
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_cdc68/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cdc68.dir/build.make CMakeFiles/cmTC_cdc68.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_cdc68.dir/feature_tests.cxx.o
-/usr/bin/c++     -std=c++98 -o CMakeFiles/cmTC_cdc68.dir/feature_tests.cxx.o -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_cdc68
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cdc68.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTC_cdc68.dir/feature_tests.cxx.o  -o cmTC_cdc68 -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_2c5d3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2c5d3.dir/build.make CMakeFiles/cmTC_2c5d3.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_2c5d3.dir/feature_tests.cxx.o
+/usr/bin/c++     -std=c++98 -o CMakeFiles/cmTC_2c5d3.dir/feature_tests.cxx.o -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_2c5d3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c5d3.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_2c5d3.dir/feature_tests.cxx.o  -o cmTC_2c5d3 -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
     Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
@@ -553,30 +557,30 @@ make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNaut
     Feature record: CXX_FEATURE:0cxx_variadic_macros
     Feature record: CXX_FEATURE:0cxx_variadic_templates
 Determining if the include file pthread.h exists passed with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_482ad/fast"
-/usr/bin/make -f CMakeFiles/cmTC_482ad.dir/build.make CMakeFiles/cmTC_482ad.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_482ad.dir/CheckIncludeFile.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_482ad.dir/CheckIncludeFile.c.o   -c /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_482ad
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_482ad.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_482ad.dir/CheckIncludeFile.c.o  -o cmTC_482ad -rdynamic 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_d4282/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d4282.dir/build.make CMakeFiles/cmTC_d4282.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d4282.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_d4282.dir/CheckIncludeFile.c.o   -c /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d4282
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d4282.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_d4282.dir/CheckIncludeFile.c.o  -o cmTC_d4282 -rdynamic 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 
 Determining if the function pthread_create exists in the pthread passed with the following output:
-Change Dir: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
+Change Dir: /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_62625/fast"
-/usr/bin/make -f CMakeFiles/cmTC_62625.dir/build.make CMakeFiles/cmTC_62625.dir/build
-make[1]: Entering directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_62625.dir/CheckFunctionExists.c.o
-/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_62625.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
-Linking C executable cmTC_62625
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_62625.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_62625.dir/CheckFunctionExists.c.o  -o cmTC_62625 -rdynamic -lpthread 
-make[1]: Leaving directory '/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Run Build Command:"/usr/bin/make" "cmTC_7fe79/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7fe79.dir/build.make CMakeFiles/cmTC_7fe79.dir/build
+make[1]: Entering directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7fe79.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_7fe79.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_7fe79
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7fe79.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_7fe79.dir/CheckFunctionExists.c.o  -o cmTC_7fe79 -rdynamic -lpthread 
+make[1]: Leaving directory '/home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/CMakeTmp'
 
 

@@ -9,7 +9,7 @@
 	<!-- sensors -->
 
 	<!-- sensors/imu -->
-	<arg name="imu_topic" default="/sensor/imu/imu"/>
+	<arg name="imu_topic" default="/sensor/imu/imu/imu"/>
 	<!-- sensors/gps -->
 	<arg name="gps_fix_topic" default="/sensor/gps/fix"/>
     <arg name="gps_fix_velocity_topic" default="/sensor/gps/fix_velocity"/>
@@ -66,7 +66,7 @@
 
 		<!-- IMU -->
 		<group ns="imu" if="$(arg imu_group)">
-			<include file="$(find nautonomous_launch)/launch/sensor/imu/razor_pub.launch"/>
+			<include file="$(find nautonomous_launch)/launch/sensor/imu/imu.launch"/>
 		</group>
 		
 		<!-- Camera -->

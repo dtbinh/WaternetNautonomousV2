@@ -1,8 +1,8 @@
-prefix=/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/install
+prefix=/home/nvidia/ROS/WaternetNautonomousV2/install
 
 Name: nautonomous_launch
 Description: Description of nautonomous_launch
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/install/lib 
+Libs: -L/home/nvidia/ROS/WaternetNautonomousV2/install/lib 
 Requires: 

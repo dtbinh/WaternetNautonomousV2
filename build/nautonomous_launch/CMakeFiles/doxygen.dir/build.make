@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_launch
+CMAKE_SOURCE_DIR = /home/nvidia/ROS/WaternetNautonomousV2/src/nautonomous_launch
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch
+CMAKE_BINARY_DIR = /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch
 
 # Utility rule file for doxygen.
 
@@ -67,6 +67,6 @@ CMakeFiles/doxygen.dir/clean:
 .PHONY : CMakeFiles/doxygen.dir/clean
 
 CMakeFiles/doxygen.dir/depend:
-	cd /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_launch /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src/nautonomous_launch /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/nvidia/ROS/WaternetNautonomousV2/src/nautonomous_launch /home/nvidia/ROS/WaternetNautonomousV2/src/nautonomous_launch /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch /home/nvidia/ROS/WaternetNautonomousV2/build/nautonomous_launch/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/doxygen.dir/depend
 

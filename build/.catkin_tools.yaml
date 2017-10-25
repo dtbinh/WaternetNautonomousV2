@@ -1,6 +1,6 @@
-devel_space: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel
+devel_space: /home/nvidia/ROS/WaternetNautonomousV2/devel
 install: false
-install_space: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/install
+install_space: /home/nvidia/ROS/WaternetNautonomousV2/install
 profile: default
-source_space: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2/src
-workspace: /home/waternet/programmeren/nautonomous/WaternetNautonomousV2
+source_space: /home/nvidia/ROS/WaternetNautonomousV2/src
+workspace: /home/nvidia/ROS/WaternetNautonomousV2

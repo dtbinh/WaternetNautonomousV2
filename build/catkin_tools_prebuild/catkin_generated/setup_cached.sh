@@ -7,10 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/catkin_tools_prebuild:$CMAKE_PREFIX_PATH"
-export LD_LIBRARY_PATH="/opt/ros/kinetic/lib"
-export PKG_CONFIG_PATH="/opt/ros/kinetic/lib/pkgconfig"
-export PWD="/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/catkin_tools_prebuild"
-export PYTHONPATH="/opt/ros/kinetic/lib/python2.7/dist-packages"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/devel/.private/catkin_tools_prebuild/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
-export ROS_PACKAGE_PATH="/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/catkin_tools_prebuild:$ROS_PACKAGE_PATH"
+export CMAKE_PREFIX_PATH="/home/nvidia/ROS/WaternetNautonomousV2/devel/.private/catkin_tools_prebuild:$CMAKE_PREFIX_PATH"
+export PWD="/home/nvidia/ROS/WaternetNautonomousV2/build/catkin_tools_prebuild"
+export ROSLISP_PACKAGE_DIRECTORIES="/home/nvidia/ROS/WaternetNautonomousV2/devel/.private/catkin_tools_prebuild/share/common-lisp"
+export ROS_PACKAGE_PATH="/home/nvidia/ROS/WaternetNautonomousV2/build/catkin_tools_prebuild:$ROS_PACKAGE_PATH"

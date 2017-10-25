@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/usr/src/gtest")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/waternet/programmeren/nautonomous/WaternetNautonomousV2/build/catkin_tools_prebuild")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/nvidia/ROS/WaternetNautonomousV2/build/catkin_tools_prebuild")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)
