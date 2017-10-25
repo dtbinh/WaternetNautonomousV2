@@ -11,18 +11,25 @@ using namespace std;
 ros::Publisher vel_pub;
 
 geometry_msgs::Twist msg;
+geometry_msgs::Twist temp_msg;
 
-// Publishers
-ros::Publisher marker_pub;
-ros::Publisher message_pub;
+// Subscriber
+ros::Subscriber message_sub;
 
 // Initialization
-int timescale = 5;
-int accscale = 10;
+//int timescale = 5;
+//int accscale = 10;
 int startuptime = 120;
 
-int main (int argc, char** argv)
+
+void TwistCallback (const geometry_msgs::Twist::ConstPtr& twist_msg)
 {
+	temp_msg = *twist_msg;
+}
+
+
+int main (int argc, char** argv)
+{ 
 	ros::init (argc, argv,"Random_signal_actuation");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
@@ -39,7 +46,8 @@ int main (int argc, char** argv)
 		Elapsed_time = Now-Begin;
 
 		vel_pub = nh_private.advertise<geometry_msgs::Twist>("cmd_vel",10);
-	
+		ros::Subscriber message_sub = nh.subscribe<geometry_msgs::Twist>("/TwistCommand",1,TwistCallback);
+
 		Now = ros::Time::now().toSec();
 		Elapsed_time = Now-Begin;
 
@@ -54,7 +62,7 @@ int main (int argc, char** argv)
 			msg.angular.y = 0;
 			msg.angular.z = 0;
 		}
-		else if (Elapsed_time < (startuptime + timescale * 1))
+/*		else if (Elapsed_time < (startuptime + timescale * 1))
 		{
 			msg.linear.x = 0.1 * accscale;
 			msg.linear.y = 0;
@@ -98,15 +106,10 @@ int main (int argc, char** argv)
 			msg.angular.x = 0;
 			msg.angular.y = 0;
 			msg.angular.z = 0.1 * accscale;
-		}
+		}*/
 		else
 		{
-			msg.linear.x = 0;
-			msg.linear.y = 0;
-			msg.linear.z = 0;
-			msg.angular.x = 0;
-			msg.angular.y = 0;
-			msg.angular.z = 0;
+			msg = temp_msg;
 		}
 
 		if (Elapsed_time > startuptime)
