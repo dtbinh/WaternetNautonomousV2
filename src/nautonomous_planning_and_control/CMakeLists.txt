@@ -25,7 +25,7 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/include/acado
 	${PROJECT_SOURCE_DIR}/include/qpoases/INCLUDE
 	${PROJECT_SOURCE_DIR}/include/qpoases/SRC
-	. ${ACADO_INCLUDE_DIRS} 
+	${ACADO_INCLUDE_DIRS} 
 	${catkin_INCLUDE_DIRS}
 )
 
