@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 
 	ros::NodeHandle n;
 
-	command_pub = n.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
+	command_pub = n.advertise<geometry_msgs::Twist>("actuation/propulsion/system_identification/cmd_vel", 10);
 	command_sub = n.subscribe<geometry_msgs::Twist>("/command_vel",10,command_cb);
 
 	ros::Rate loop_rate(3);
