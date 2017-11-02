@@ -40,7 +40,6 @@
 		<arg name="coordinator_group"  			value="false"/>
 
 		<arg name="sensor_group"  			value="true"/>
-		<arg name="sensor_group"  			value="true"/>
 		<arg name="webserver_group" 			value="false"/>
 		<arg name="coordinate_simulate_group" 		value="true"/>
 		<arg name="operation_name_param"  		value="coenhaven"/>
