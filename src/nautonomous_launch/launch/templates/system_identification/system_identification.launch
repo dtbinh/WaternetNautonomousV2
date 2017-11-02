@@ -38,11 +38,9 @@
 		<arg name="routing_group"  			value="false"/>
 		<arg name="costmap_group"  			value="false"/>
 		<arg name="coordinator_group"  			value="false"/>
-		<arg name="coorinator_simulate_group"  		value="false"/>
 
 
 		<arg name="sensor_group"  			value="true"/>
-		<arg name="routing_group"  			value="false"/>
 		<arg name="webserver_group" 			value="false"/>
 		<arg name="coordinate_simulate_group" 		value="true"/>
 		<arg name="operation_name_param"  		value="coenhaven"/>
