@@ -4,7 +4,7 @@
     <arg name="imu" default="imu"/>
 
     <!-- IMU Settings -->
-    <arg name="device" default="/dev/ttyACM1" />
+    <arg name="device" default="/dev/ttyACM2" />
 
     <!-- Verbose logging -->
     <arg name="verbose" default="false"/>
