@@ -38,6 +38,7 @@
 		<arg name="routing_group"  			value="false"/>
 		<arg name="costmap_group"  			value="true"/>
 		<arg name="coordinator_group"  			value="false"/>
+		<arg name="state_group"  			value="false"/>
 
 		<arg name="sensor_group"  			value="true"/>
 		<arg name="webserver_group" 			value="false"/>
