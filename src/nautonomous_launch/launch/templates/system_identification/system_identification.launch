@@ -34,12 +34,15 @@
 	
 
 	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
-		<arg name="navigation_group"  			value="false"/>
-		<arg name="sensor_group"  			value="true"/>
+		<arg name="navigation_group"  			value="true"/>
 		<arg name="routing_group"  			value="false"/>
+		<arg name="costmap_group"  			value="true"/>
+		<arg name="coordinator_group"  			value="false"/>
+
+		<arg name="sensor_group"  			value="true"/>
 		<arg name="webserver_group" 			value="false"/>
 		<arg name="coordinate_simulate_group" 		value="true"/>
-		<arg name="operation_name_param"  		value="System_identification"/>
+		<arg name="operation_name_param"  		value="coenhaven"/>
 		<arg name="negate_image_param" 			value="true"/>
 		<arg name="actuation_group"			value="true"/>
 		<arg name="cmd_vel_topic"			value="system_identification/cmd_vel"/>

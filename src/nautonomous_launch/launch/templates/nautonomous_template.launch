@@ -12,7 +12,7 @@
 	<arg name="imu_topic" default="/sensor/imu/imu/imu"/>
 	<!-- sensors/gps -->
 	<arg name="gps_fix_topic" default="/sensor/gps/fix"/>
-    <arg name="gps_fix_velocity_topic" default="/sensor/gps/fix_velocity"/>
+	<arg name="gps_fix_velocity_topic" default="/sensor/gps/fix_velocity"/>
 	<!-- sensor/lidar -->
 	<arg name="scan_topic" default="/sensor/lidar/scan"/>
 	<!-- sensor/pointcloud -->
