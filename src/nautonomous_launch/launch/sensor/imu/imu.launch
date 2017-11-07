@@ -4,7 +4,7 @@
     <arg name="imu" default="imu"/>
 
     <!-- IMU Settings -->
-    <arg name="device" default="/dev/ttyACM4" />
+    <arg name="device" default="/dev/nautonomous/imu" />
 
     <!-- Verbose logging -->
     <arg name="verbose" default="false"/>
@@ -16,8 +16,8 @@
     <arg name="baudrate" default="115200"/>
 
     <!-- Data rate in Hz -->
-    <arg name="imu_rate" default="100"/>
-    <arg name="filter_rate" default="100"/>
+    <arg name="imu_rate" default="10"/>
+    <arg name="filter_rate" default="10"/>
 
     <!-- Enable/Disable the magnetometer -->
     <arg name="enable_magnetometer" default="true"/>
