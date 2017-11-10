@@ -15,6 +15,7 @@ add_message_files(
   Obstacle.msg
   Obstacles.msg
   Output.msg
+  Route.msg
 )
 
 generate_messages(

@@ -48,17 +48,17 @@ ADD_DEFINITIONS( -std=c++11 )
 # add executable
 add_executable(mpc src/mpc.cpp)
 add_executable(mission_control src/mission_control.cpp)
-#add_executable(mission_control2 src/mission_controlV2.cpp)
+add_executable(mission_control2 src/mission_controlV2.cpp)
 add_executable(ODEsolver src/ODEsolver.cpp)
-#add_executable(ODEsolver2 src/ODEsolverV2.cpp)
+add_executable(ODEsolver2 src/ODEsolverV2.cpp)
 
 # target link libraries
 target_link_libraries(mpc ${catkin_LIBRARIES} acado_auxiliary_functions acado_integrator acado_solver acado_qpoases_interface)
 target_link_libraries(mission_control ${catkin_LIBRARIES})
-#target_link_libraries(mission_control2 ${catkin_LIBRARIES})
+target_link_libraries(mission_control2 ${catkin_LIBRARIES})
 target_link_libraries(ODEsolver ${ACADO_SHARED_LIBRARIES} ${catkin_LIBRARIES})
 SET_TARGET_PROPERTIES(ODEsolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
-#target_link_libraries(ODEsolver2 ${catkin_LIBRARIES} )
+target_link_libraries(ODEsolver2 ${catkin_LIBRARIES} )
 
 target_link_libraries(acado_auxiliary_functions ${catkin_LIBRARIES} )
 target_link_libraries(acado_integrator 		${catkin_LIBRARIES} )
