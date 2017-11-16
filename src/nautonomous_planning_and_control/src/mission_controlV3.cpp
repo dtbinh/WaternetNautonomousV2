@@ -344,17 +344,20 @@ void MPC_route_without_obstacle() // State 11
 void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 {
 	received_state = *action_msg;
-	float Torque = 	0.5 * (received_state.T_l - received_state.T_r);
+	/*float Torque = 	0.5 * (received_state.T_l - received_state.T_r);
 	float Force = 	received_state.T_l + received_state.T_r;
 	float uf = 1/F2 * (atanh((Force + F4)/F1) + F3);
 	float FF = FF1 * pow(uf,3) + FF2 * pow(uf,2) + FF3 * uf + FF4;
 	float ut = 1/T2 * (atanh((Torque + T4)/T1) + T3) + FF;
 
-	std::cout << "Action signal is T: " << Torque << " F: " << Force << " uf: " << uf << " FF: " << FF << " ut: " << ut << std::endl;
+	std::cout << "Action signal is T: " << Torque << " F: " << Force << " uf: " << uf << " FF: " << FF << " ut: " << ut << std::endl;*/
 	Action_received = true;
 
-	action.linear.x = uf;
-	action.angular.z = ut;
+//	action.linear.x = uf;
+//	action.angular.z = ut;
+
+	action.linear.x = received_state.T_l;
+	action.angular.z = received_state.T_r;
 
 	action_pub.publish(action);
 	
