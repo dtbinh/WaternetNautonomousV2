@@ -67,6 +67,8 @@ nautonomous_mpc_msgs::StageVariable temp_state;
 ros::Publisher position_pub;
 ros::Publisher action_pub;
 
+float KKT_var;
+
 /* A template for testing of the solver. */
 void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 {
@@ -80,7 +82,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	/* Initialize the states and controls. */
 	current_state = *twist_msg;
 
-	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 0.0;
+	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 1.0;
 	for (i = 0; i < NU * N; ++i)  acadoVariables.u[ i ] = 0.0;
 	
 
@@ -159,8 +161,18 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	temp_state.u = *(states+9);
 	temp_state.v = *(states+10);
 	temp_state.omega = *(states+11); 
-	temp_state.T_l = *(actions);
-	temp_state.T_r = *(actions+1); 
+
+	KKT_var = acado_getKKT();
+	if (KKT_var < 1e-6)
+	{
+		temp_state.T_l = *(actions);
+		temp_state.T_r = *(actions+1); 
+	}
+	else
+	{
+		temp_state.T_l = 0;
+		temp_state.T_r = 0;
+	}
 
 	position_pub.publish(temp_state);
 }
