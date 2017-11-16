@@ -124,7 +124,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	acado_preparationStep();
 
 	/* The "real-time iterations" loop. */
-	while ((acado_getKKT() > 1e-6) && iter < 100)
+	while ((acado_getKKT() > 1e-6) && iter < 20)
 	{
         /* Perform the feedback step. */
 		acado_feedbackStep( );
