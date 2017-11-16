@@ -80,8 +80,9 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	/* Initialize the states and controls. */
 	current_state = *twist_msg;
 
-	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 1.0;
+	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 0.0;
 	for (i = 0; i < NU * N; ++i)  acadoVariables.u[ i ] = 0.0;
+	
 
 	/* Initialize the measurements/reference. */
 	for (i = 0; i < NY * N; ++i)  acadoVariables.y[ i ] = 0.0;
@@ -176,10 +177,10 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
-	ros::Subscriber gps_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/GPS",10,gps_cb);
-	ros::Subscriber ref_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ref",1,ref_cb);
+	ros::Subscriber gps_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",10,gps_cb);
+	ros::Subscriber ref_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/reference_state",1,ref_cb);
 	
-	position_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("/Position",10);
+	position_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
 
 	ros::spin();	
 }
