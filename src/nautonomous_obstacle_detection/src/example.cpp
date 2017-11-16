@@ -5,8 +5,10 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+#include <pcl/common/transforms.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl_ros/point_cloud.h>
+
 #include <math.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
@@ -17,6 +19,7 @@
 #include <nautonomous_obstacle_detection/PVector.h>
 #include <nautonomous_obstacle_detection/Blob.h>
 #include <nautonomous_mpc_msgs/Obstacles.h>
+#include <sensor_msgs/Imu.h>
 
 #include <opencv2/highgui.hpp>
 #include "opencv2/imgproc.hpp"
@@ -50,6 +53,7 @@ float AvgY = -1;
 float first_principle_axis = -1;
 float second_principle_axis = -1;
 double angle = -1;
+float theta = 0;
 float const voxelSize = 0.5;
 int const gridSize = 80; // In number of squares (gridSize(m)/voxelSize)
 int const pointTreshold = 5;
@@ -58,6 +62,10 @@ int const origin_y = 5802730;
 float const resolution = 0.5;
 int Boat_pos_x = 0;
 int Boat_pos_y = 0;
+
+sensor_msgs::Imu Imu;
+
+Matrix4f transformation = Eigen::Matrix4f::Identity();
 
 // Publishers
 ros::Publisher marker_pub;
@@ -88,16 +96,17 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	pcl_conversions::toPCL(*cloud_msg, *cloud);
 	
 	pcl::PointCloud<pcl::PointXYZ>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::fromPCLPointCloud2(*cloud, *temp_cloud);
 
+	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation);
+
 	cout << "Create grid" << endl;
-	for ( int i = 0; i < temp_cloud->size(); i++)
+	for ( int i = 0; i < transformed_cloud->size(); i++)
 	{
-		x_pos = rint(temp_cloud->points[i].x/voxelSize)*voxelSize;
-		x_pos_origin = x_pos + Boat_pos_x - origin_x;
-		y_pos = rint(temp_cloud->points[i].y/voxelSize)*voxelSize;
-		y_pos_origin = y_pos + Boat_pos_y - origin_y;
-		z_pos = rint(temp_cloud->points[i].z/voxelSize)*voxelSize;
+		x_pos = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize;
+		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
+		z_pos = rint(transformed_cloud->points[i].z/voxelSize)*voxelSize;
 		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 3) && (z_pos > 0)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
 		{
 			grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
@@ -518,8 +527,26 @@ void gps_cb (const nautonomous_pose_msgs::PointWithCovarianceStamped::ConstPtr& 
 	Boat_pos_x = rint(utm_msg->point.x);
 	Boat_pos_y = rint(utm_msg->point.y);
 
-	cout << "New Position: (" << Boat_pos_x << " , " << Boat_pos_y << ")" << endl;
+	transformation(0,3) = Boat_pos_x - origin_x;
+	transformation(1,3) = Boat_pos_y - origin_y;
 }
+
+void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
+{
+	Imu = *imu_msg;
+	float q0 = Imu.orientation.w;
+	float q1 = Imu.orientation.x;
+	float q2 = Imu.orientation.y;
+	float q3 = Imu.orientation.z;
+
+	theta = atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
+
+	transformation(0,0) = cos(theta);
+	transformation(0,1) = -sin(theta);
+	transformation(1,0) = sin(theta);
+	transformation(1,1) = cos(theta);
+}
+
 int main (int argc, char** argv)
 {
 	ros::init (argc, argv,"pointcloud2_to_pcd");
@@ -528,6 +555,7 @@ int main (int argc, char** argv)
 	
 	ros::Subscriber pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/point_cloud",1,cloud_cb);
 	ros::Subscriber pos_sub = nh.subscribe<nautonomous_pose_msgs::PointWithCovarianceStamped>("state/location/utm",1,gps_cb);
+	ros::Subscriber imu_sub = nh.subscribe<sensor_msgs::Imu>("sensor/imu/imu",1,imu_cb);
 
 	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",10);
