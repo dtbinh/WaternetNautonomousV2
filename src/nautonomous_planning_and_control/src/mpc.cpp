@@ -163,13 +163,17 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	temp_state.omega = *(states+11); 
 
 	KKT_var = acado_getKKT();
+
+
 	if (KKT_var < 1e-6)
 	{
+		printf("\n\n Action variables are Tl:   %.3e and Tr: %.3e with KKT: %.3e\n\n", *(actions), *(actions+1), KKT_var);
 		temp_state.T_l = *(actions);
 		temp_state.T_r = *(actions+1); 
 	}
 	else
 	{
+		printf("\n\n Action variables are Tl:   %.3e and Tr: %.3e with KKT: %.3e\n\n", 0, 0, KKT_var);
 		temp_state.T_l = 0;
 		temp_state.T_r = 0;
 	}
