@@ -92,9 +92,9 @@ void lorenz( const state_type &x , state_type &dxdt , double t )
 
 void write_lorenz( const state_type &x , const double t )
 {
-	cout << t << '\t' << x[0] << '\t' << x[1]  << endl;
-	waypoints_x.push_back((double)x[0]);
-	waypoints_y.push_back((double)x[1]);
+	cout << t << '\t' << x[0] + obstacle_x << '\t' << x[1] + obstacle_y << endl;
+	waypoints_x.push_back((double)x[0]+ obstacle_x)  ;
+	waypoints_y.push_back((double)x[1]+ obstacle_y) ;
 	length++;
 	cout << "Write array" <<endl;
 }
@@ -107,6 +107,8 @@ void obstacle_cb( const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg )
 	obstacle_a = obstacle.major_semiaxis;
 	obstacle_b = obstacle.minor_semiaxis;
 	obstacle_th = obstacle.state.pose.position.z;
+		
+	std::cout << "Obstacle: " << obstacle << std::endl;
 }
 
 void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
@@ -116,10 +118,12 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	start_y = start_state.y;
 	start_theta = start_state.theta;
 
+	std::cout << "Start: " << start_state << std::endl;
+
 	// Define initial values:
 	// ----------------------
 	double t_start = 0.0;
-	double t_end = 10.0;
+	double t_end = 50.0;
 
     	state_type x = {{ start_x - obstacle_x , start_y - obstacle_y }}; // initial conditions
     	integrate( lorenz , x , t_start , t_end , 0.5 , write_lorenz );
@@ -144,12 +148,12 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 
 	for (int i = 0; i < length; i++)
 	{
-		std::cout << "Waypoint " << i << " : (" << waypoints_x[i] + obstacle_x << ", " << waypoints_y[i] + obstacle_y << ")" << std::endl;
-		p.x = waypoints_x[i] + obstacle_x;
-      		p.y = waypoints_y[i] + obstacle_y;
+		std::cout << "Waypoint " << i << " : (" << waypoints_x[i]  << ", " << waypoints_y[i] << ")" << std::endl;
+		p.x = waypoints_x[i];
+      		p.y = waypoints_y[i];
 
-		waypoints_x.push_back(p.x);
-		waypoints_y.push_back(p.y);
+/*		waypoints_x.push_back(p.x);
+		waypoints_y.push_back(p.y);*/
 	
       		waypoint_marker.points.push_back(p);
 
@@ -170,8 +174,8 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	obstacle_marker.color.b = 1.0;
 	obstacle_marker.color.a = 1.0;
 
-	obstacle_marker.scale.x = obstacle_a;
-	obstacle_marker.scale.y = obstacle_b;
+	obstacle_marker.scale.x = obstacle_a * 2;
+	obstacle_marker.scale.y = obstacle_b * 2;
 
 	obstacle_marker.pose.position.x = obstacle_x;
 	obstacle_marker.pose.position.y = obstacle_y;
@@ -182,6 +186,11 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
     	marker_pub_2.publish(obstacle_marker);
 	
 	waypoint_pub.publish(route);
+	
+	waypoints_x.clear();	
+	waypoints_y.clear();
+	route.waypoints.clear();
+	length = 0;
 }
 
 int main(int argc, char **argv)

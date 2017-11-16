@@ -80,8 +80,9 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	/* Initialize the states and controls. */
 	current_state = *twist_msg;
 
-	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 1.0;
+	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 0.0;
 	for (i = 0; i < NU * N; ++i)  acadoVariables.u[ i ] = 0.0;
+	
 
 	/* Initialize the measurements/reference. */
 	for (i = 0; i < NY * N; ++i)  acadoVariables.y[ i ] = 0.0;

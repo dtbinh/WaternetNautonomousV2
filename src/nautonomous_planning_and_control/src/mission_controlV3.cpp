@@ -7,7 +7,9 @@
 #include "nautonomous_mpc_msgs/Obstacles.h"
 #include "geometry_msgs/Point.h"
 #include "visualization_msgs/Marker.h"
-#include <visualization_msgs/MarkerArray.h>
+#include "visualization_msgs/MarkerArray.h"
+#include "nav_msgs/Odometry.h"
+#include "sensor_msgs/Imu.h"
 
 int Stage = 1;
 int Next_stage = 1;
@@ -16,6 +18,25 @@ int length;
 float temp_x;
 float temp_y;
 float ellipse_value;
+
+int m = 250;
+int d11 = 130;
+int d22 = 5280;
+int d33 = 150;
+double l = 0.5;
+int Iz = 150;
+int F1 = 175;
+double F2 = 0.6;
+double F3 = 0;
+double F4 = 0;
+int T1 = -30;
+double T2 = 2.9;
+double T3 = 0.1828;
+double T4 = 4.5;
+double FF1 = -0.0317;
+double FF2 = 0.0525;
+double FF3 = -0.0408;
+double FF4 = 0;
 
 bool Blocking_obstacle_found = false;
 bool Obstacle_still_blocking = false;
@@ -31,14 +52,18 @@ ros::Publisher obstacle_pub;
 ros::Publisher start_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_pub_2;
+ros::Publisher action_pub;
 
 ros::Subscriber next_state_sub;
 ros::Subscriber waypoint_sub;
+ros::Subscriber position_sub;
+ros::Subscriber imu_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable waypoint_state;
 nautonomous_mpc_msgs::StageVariable starting_state;
 nautonomous_mpc_msgs::StageVariable intermediate_state;
+nautonomous_mpc_msgs::StageVariable received_state;
 
 nautonomous_mpc_msgs::Obstacles obstacles;
 nautonomous_mpc_msgs::Obstacle obstacle;
@@ -52,7 +77,13 @@ visualization_msgs::Marker point;
 visualization_msgs::Marker obstacle_marker;
 visualization_msgs::MarkerArray obstacle_array;
 
+nav_msgs::Odometry Position;
+
+sensor_msgs::Imu Imu;
+
 geometry_msgs::Point p;
+
+geometry_msgs::Twist action;
 
 std::vector<float> waypoint_x = {40, 40,  0, 0};
 std::vector<float> waypoint_y = { 0, 40, 40, 0};
@@ -312,8 +343,36 @@ void MPC_route_without_obstacle() // State 11
 
 void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 {
-	current_state = *action_msg;
+	received_state = *action_msg;
+	float Torque = 	0.5 * (received_state.T_l - received_state.T_r);
+	float Force = 	received_state.T_l + received_state.T_r;
+	float uf = 1/F2 * (cosh((Force + F4)/F1)/sinh((Force + F4)/F1) + F3);
+	float FF = FF1 * pow(uf,3) + FF2 * pow(uf,2) + FF3 * uf + FF4;
+	float ut = 1/T2 * (atanh((Torque + T4)/T1) + T3) + FF;
+
+	std::cout << "Action signal is T: " << Torque << " F: " << Force << " uf: " << uf << " FF: " << FF << " ut: " << ut << std::endl;
 	Action_received = true;
+
+	action.linear.x = uf;
+	action.angular.z = ut;
+
+	action_pub.publish(action);
+	
+}
+
+void route_cb(const nautonomous_mpc_msgs::Route::ConstPtr& route_msg)
+{
+	Route_received = true;
+	Temp_route = *route_msg;
+	std::cout << "Received route: " << Temp_route << std::endl;
+}
+
+void position_cb(const nav_msgs::Odometry::ConstPtr& pos_msg)
+{
+	Position = *pos_msg;
+	current_state.x = Position.pose.pose.position.x;
+	current_state.y = Position.pose.pose.position.y;
+
 	p.x = current_state.x;
       	p.y = current_state.y;
 
@@ -322,12 +381,17 @@ void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
     	marker_pub.publish(line_strip);
 }
 
-void route_cb(const nautonomous_mpc_msgs::Route::ConstPtr& route_msg)
+void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 {
-	Route_received = true;
-	Temp_route = *route_msg;
-	std::cout << "Received route: " << Temp_route <<std::endl;
+	Imu = *imu_msg;
+	float q0 = Imu.orientation.w;
+	float q1 = Imu.orientation.x;
+	float q2 = Imu.orientation.y;
+	float q3 = Imu.orientation.z;
+
+	current_state.theta = atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
 }
+
 
 int main(int argc, char **argv)
 {
@@ -343,11 +407,15 @@ int main(int argc, char **argv)
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start",10);
 	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_pub_2 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
+	action_pub = 		nh_private.advertise<geometry_msgs::Twist>("cmd_vel", 10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
+	position_sub = 		nh.subscribe<nav_msgs::Odometry>("/state/odom/utm",10,position_cb);
+	imu_sub = 		nh.subscribe<sensor_msgs::Imu>("/sensor/imu/imu",10,imu_cb);
 
-	ros::Rate loop_rate(100);
+
+	ros::Rate loop_rate(40);
 
 	point.header.frame_id = line_strip.header.frame_id = "/my_frame";
 	point.header.stamp = line_strip.header.stamp = ros::Time::now();
