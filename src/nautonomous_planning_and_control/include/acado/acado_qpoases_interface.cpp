@@ -22,7 +22,7 @@ extern "C"
 #include "acado_common.h"
 }
 
-#include "QProblem.hpp"
+#include "INCLUDE/QProblem.hpp"
 
 #if ACADO_COMPUTE_COVARIANCE_MATRIX == 1
 #include "INCLUDE/EXTRAS/SolutionAnalysis.hpp"
@@ -40,7 +40,7 @@ int acado_solve( void )
 {
 	acado_nWSR = QPOASES_NWSRMAX;
 
-	QProblem qp(30, 30);
+	QProblem qp(30, 15);
 	
 	returnValue retVal = qp.init(acadoWorkspace.H, acadoWorkspace.g, acadoWorkspace.A, acadoWorkspace.lb, acadoWorkspace.ub, acadoWorkspace.lbA, acadoWorkspace.ubA, acado_nWSR, acadoWorkspace.y);
 
