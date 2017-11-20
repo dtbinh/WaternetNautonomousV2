@@ -65,13 +65,13 @@ void Initialization () // State 1
 	current_state.y = 0;
 
 	obstacle.major_semiaxis = 3;
-	obstacle.minor_semiaxis = 5;
+	obstacle.minor_semiaxis = 3;
 	obstacle.state.pose.position.x = 20;
 	obstacle.state.pose.position.y = 0;
 
 	obstacles.obstacles.push_back(obstacle);
 
-	obstacle.major_semiaxis = 3;
+	obstacle.major_semiaxis = 5;
 	obstacle.minor_semiaxis = 5;
 	obstacle.state.pose.position.x = 40;
 	obstacle.state.pose.position.y = 20;
@@ -224,9 +224,13 @@ int Determine_length_of_route() // State 6
 		i++;
 	}
 	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+1]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+2]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+3]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+4]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+5]);
 	Next_stage = 7;
 	std::cout << "Route: " << Intermediate_route << std::endl;
-	length = intermediate_stage + i; 
+	length = intermediate_stage + i + 4; 
 	intermediate_stage++;
 }
 
@@ -267,8 +271,8 @@ void Intermediate_point_reached_check() // State 10
 	Intermediate_point_reached = false;
 	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
 	float dist_to_intermediate = sqrt(pow(intermediate_state.x - current_state.x,2) + pow(intermediate_state.y - current_state.y,2));
-	if (dist_to_waypoint < 1){Waypoint_reached = true;}
-	if (dist_to_intermediate < 1){Intermediate_point_reached = true;}
+	if (dist_to_waypoint < 5){Waypoint_reached = true;}
+	if (dist_to_intermediate < 5){Intermediate_point_reached = true;}
 	if (Waypoint_reached){
 		Next_stage = 2;
 		std::cout << "Waypoint reached" << std::endl;

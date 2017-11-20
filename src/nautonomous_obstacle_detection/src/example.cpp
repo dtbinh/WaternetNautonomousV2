@@ -13,7 +13,7 @@
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <vector>
-#include <Eigen/Eigenvalues>
+//#include <Eigen/Eigenvalues>
 #include <iostream>
 
 #include <nautonomous_obstacle_detection/PVector.h>

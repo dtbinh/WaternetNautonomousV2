@@ -22,17 +22,17 @@ float ellipse_value;
 int m = 250;
 int d11 = 130;
 int d22 = 5280;
-int d33 = 150;
+int d33 = 750;
 double l = 0.5;
-int Iz = 150;
+int Iz = 750;
 int F1 = 175;
 double F2 = 0.6;
 double F3 = 0;
 double F4 = 0;
-int T1 = -30;
+int T1 = -150;
 double T2 = 2.9;
 double T3 = 0.1828;
-double T4 = 4.5;
+double T4 = 27.1;
 double FF1 = -0.0317;
 double FF2 = 0.0525;
 double FF3 = -0.0408;
@@ -95,7 +95,7 @@ void Initialization () // State 1
 	current_state.x = 0;
 	current_state.y = 0;
 
-	obstacle.major_semiaxis = 3;
+	/*obstacle.major_semiaxis = 5;
 	obstacle.minor_semiaxis = 5;
 	obstacle.state.pose.position.x = 20;
 	obstacle.state.pose.position.y = 0;
@@ -103,7 +103,7 @@ void Initialization () // State 1
 	obstacles.obstacles.push_back(obstacle);
 
 	obstacle.major_semiaxis = 3;
-	obstacle.minor_semiaxis = 5;
+	obstacle.minor_semiaxis = 3;
 	obstacle.state.pose.position.x = 40;
 	obstacle.state.pose.position.y = 20;
 
@@ -135,9 +135,9 @@ void Initialization () // State 1
 	obstacle.state.pose.position.x = 20;
 	obstacle.state.pose.position.y = 40;
 
-	obstacles.obstacles.push_back(obstacle);
+	obstacles.obstacles.push_back(obstacle);*/
 
-	obstacles.Nobstacles = 6;
+	obstacles.Nobstacles = 0;
 
 	for (int i = 0; i < obstacles.Nobstacles; i++)
 	{
@@ -255,9 +255,13 @@ int Determine_length_of_route() // State 6
 		i++;
 	}
 	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+1]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+2]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+3]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+4]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+5]);
 	Next_stage = 7;
 	std::cout << "Route: " << Intermediate_route << std::endl;
-	length = intermediate_stage + i; 
+	length = intermediate_stage + i + 4; 
 	intermediate_stage++;
 }
 
@@ -298,8 +302,8 @@ void Intermediate_point_reached_check() // State 10
 	Intermediate_point_reached = false;
 	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
 	float dist_to_intermediate = sqrt(pow(intermediate_state.x - current_state.x,2) + pow(intermediate_state.y - current_state.y,2));
-	if (dist_to_waypoint < 1){Waypoint_reached = true;}
-	if (dist_to_intermediate < 1){Intermediate_point_reached = true;}
+	if (dist_to_waypoint < 5){Waypoint_reached = true;}
+	if (dist_to_intermediate < 5){Intermediate_point_reached = true;}
 	if (Waypoint_reached){
 		Next_stage = 2;
 		std::cout << "Waypoint reached" << std::endl;
@@ -344,20 +348,17 @@ void MPC_route_without_obstacle() // State 11
 void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 {
 	received_state = *action_msg;
-	/*float Torque = 	0.5 * (received_state.T_l - received_state.T_r);
+	float Torque = 	0.5 * (received_state.T_l - received_state.T_r);
 	float Force = 	received_state.T_l + received_state.T_r;
 	float uf = 1/F2 * (atanh((Force + F4)/F1) + F3);
 	float FF = FF1 * pow(uf,3) + FF2 * pow(uf,2) + FF3 * uf + FF4;
 	float ut = 1/T2 * (atanh((Torque + T4)/T1) + T3) + FF;
 
-	std::cout << "Action signal is T: " << Torque << " F: " << Force << " uf: " << uf << " FF: " << FF << " ut: " << ut << std::endl;*/
+	std::cout << "Action signal is T: " << Torque << " F: " << Force << " uf: " << uf << " FF: " << FF << " ut: " << ut << std::endl;
 	Action_received = true;
 
-//	action.linear.x = uf;
-//	action.angular.z = ut;
-
-	action.linear.x = received_state.T_l;
-	action.angular.z = received_state.T_r;
+	action.linear.x = uf;
+	action.angular.z = ut;
 
 	action_pub.publish(action);
 	

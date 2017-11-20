@@ -46,8 +46,8 @@ double start_x = -10;
 double start_y = 0;
 double start_theta = 0;
 
-const double k1_max = 0.05;
-const double k2_max = 0.05;
+const double k1_max = 0.02;
+const double k2_max = 0.02;
 
 double l;
 double he11;
@@ -123,7 +123,7 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	// Define initial values:
 	// ----------------------
 	double t_start = 0.0;
-	double t_end = 50.0;
+	double t_end = 10.0;
 
     	state_type x = {{ start_x - obstacle_x , start_y - obstacle_y }}; // initial conditions
     	integrate( lorenz , x , t_start , t_end , 0.5 , write_lorenz );
@@ -198,6 +198,7 @@ int main(int argc, char **argv)
 	ros::init (argc, argv,"Route_generator");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
+	ros::Duration(1).sleep();
 
 	marker_pub = nh_private.advertise<visualization_msgs::Marker>("waypoint_marker", 10);
 	marker_pub_2 = nh_private.advertise<visualization_msgs::Marker>("obstacle_marker", 10);
@@ -206,9 +207,10 @@ int main(int argc, char **argv)
 	obstacle_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacle>("/mission_coordinator/obstacle",10,obstacle_cb);
 	start_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start",10,start_cb);
 
-	ros::Rate poll_rate(100);
-	while(marker_pub.getNumSubscribers() == 0){poll_rate.sleep();}
-	while(marker_pub_2.getNumSubscribers() == 0){poll_rate.sleep();}
+	ros::Duration(1).sleep();
+	//ros::Rate poll_rate(100);
+	//while(marker_pub.getNumSubscribers() == 0){poll_rate.sleep();}
+	//while(marker_pub_2.getNumSubscribers() == 0){poll_rate.sleep();}
 	
 	std::cout << "Spin" <<std::endl;
 	ros::spin();
