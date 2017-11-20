@@ -95,48 +95,6 @@ void Initialization () // State 1
 	current_state.x = 0;
 	current_state.y = 0;
 
-	/*obstacle.major_semiaxis = 5;
-	obstacle.minor_semiaxis = 5;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 0;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 3;
-	obstacle.minor_semiaxis = 3;
-	obstacle.state.pose.position.x = 40;
-	obstacle.state.pose.position.y = 20;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 40;
-	obstacle.minor_semiaxis = 3;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 60;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 40;
-	obstacle.minor_semiaxis = 3;
-	obstacle.state.pose.position.x =  20;
-	obstacle.state.pose.position.y = -20;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 10;
-	obstacle.minor_semiaxis = 10;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 20;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 4;
-	obstacle.minor_semiaxis = 4;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 40;
-
-	obstacles.obstacles.push_back(obstacle);*/
-
 	obstacles.Nobstacles = 0;
 
 	for (int i = 0; i < obstacles.Nobstacles; i++)

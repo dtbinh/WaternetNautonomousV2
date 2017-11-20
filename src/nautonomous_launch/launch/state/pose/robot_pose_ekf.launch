@@ -14,8 +14,8 @@
         <param name="vo_used" value="false"/>
         <param name="gps_used" value="true"/>
  
-        <remap from="imu_data" to="$(arg imu_topic)"/>
-        <remap from="gps" to="$(arg utm_odom_topic)" />
+        <remap from="imu_data" to="/sensor/imu/imu"/>
+        <remap from="gps" to="/state/odom/utm" />
     </node>
 
 </launch>
