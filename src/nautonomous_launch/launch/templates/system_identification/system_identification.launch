@@ -47,10 +47,10 @@
 		<arg name="operation_name_param"  		value="coenhaven"/>
 		<arg name="negate_image_param" 			value="false"/>
 		<arg name="actuation_group"			value="true"/>
-		<arg name="cmd_vel_topic"			value="system_identification/cmd_vel"/>
+		<arg name="cmd_vel_topic"			value="mission_coordinator/cmd_vel"/>
 	</include>
 
-	<node pkg="nautonomous_system_identification_actuation" name="system_identification" output="screen" type="random_actuation_signals" />
+	<!--node pkg="nautonomous_system_identification_actuation" name="system_identification" output="screen" type="random_actuation_signals" /-->
 
 	<node name="rviz_visualizer" pkg="rviz" type="rviz" />
 
