@@ -351,7 +351,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 	float q2 = Imu.orientation.y;
 	float q3 = Imu.orientation.z;
 
-	current_state.theta = atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
+	current_state.theta = 2.5 - atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
 	
 }
 
@@ -371,6 +371,7 @@ int main(int argc, char **argv)
 	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_pub_2 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
 	action_pub = 		nh_private.advertise<geometry_msgs::Twist>("cmd_vel", 10);
+	command_pub = 		n.advertise<geometry_msgs::Twist>("actuation/propulsion/mission_control/cmd_vel", 10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
