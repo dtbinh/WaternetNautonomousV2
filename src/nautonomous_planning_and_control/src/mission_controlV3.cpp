@@ -1,3 +1,4 @@
+
 #include "ros/ros.h"
 #include "vector"
 #include "cmath"
@@ -85,8 +86,8 @@ geometry_msgs::Point p;
 
 geometry_msgs::Twist action;
 
-std::vector<float> waypoint_x = {40, 40,  0, 0};
-std::vector<float> waypoint_y = { 0, 40, 40, 0};
+std::vector<float> waypoint_x = {40, 60, 72, 40};
+std::vector<float> waypoint_y = {60, 60, 80, 40};
 int waypoint_stage = 0;
 int intermediate_stage = 0;
 
@@ -315,9 +316,16 @@ void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 	std::cout << "Action signal is T: " << Torque << " F: " << Force << " uf: " << uf << " FF: " << FF << " ut: " << ut << std::endl;
 	Action_received = true;
 
-	action.linear.x = uf;
-	action.angular.z = ut;
-
+	if (uf >= 0)
+	{
+		action.linear.x = uf;
+		action.angular.z = ut;
+	}
+	else
+	{
+		action.linear.x = 0;
+		action.angular.z = 1;
+	}
 	action_pub.publish(action);
 	
 }
@@ -351,7 +359,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 	float q2 = Imu.orientation.y;
 	float q3 = Imu.orientation.z;
 
-	current_state.theta = atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
+	current_state.theta = 1.57-atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
 	
 }
 
@@ -370,7 +378,7 @@ int main(int argc, char **argv)
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start",10);
 	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_pub_2 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
-	action_pub = 		nh_private.advertise<geometry_msgs::Twist>("cmd_vel", 10);
+	action_pub = 		nh_private.advertise<geometry_msgs::Twist>("/actuation/propulsion/mission_coordinator/cmd_vel", 10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
