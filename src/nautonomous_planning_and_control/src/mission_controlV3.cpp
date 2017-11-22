@@ -360,7 +360,6 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 	float q3 = Imu.orientation.z;
 
 	current_state.theta = 1.57-atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
-	
 }
 
 
