@@ -51,6 +51,7 @@ ADD_DEFINITIONS( -std=c++11 )
 
 # add executable
 add_executable(mpc src/mpc.cpp)
+add_executable(PID src/PID.cpp)
 add_executable(mission_control src/mission_control.cpp)
 add_executable(mission_control2 src/mission_controlV2.cpp)
 add_executable(mission_control3 src/mission_controlV3.cpp)
@@ -62,6 +63,7 @@ add_executable(ExtendedKalmanFilter_sim src/ExtendedKalmanFilter_sim.cpp)
 
 # target link libraries
 target_link_libraries(mpc ${catkin_LIBRARIES} acado_auxiliary_functions acado_integrator acado_solver acado_qpoases_interface)
+target_link_libraries(PID ${catkin_LIBRARIES})
 target_link_libraries(mission_control ${catkin_LIBRARIES})
 target_link_libraries(mission_control2 ${catkin_LIBRARIES})
 target_link_libraries(mission_control3 ${catkin_LIBRARIES})

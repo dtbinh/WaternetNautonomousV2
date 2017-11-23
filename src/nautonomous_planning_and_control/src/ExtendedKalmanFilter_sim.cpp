@@ -85,10 +85,6 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	start_state = *start_msg;
 	f1 = start_state.T_l;
 	f2 = start_state.T_r;
-
-	y_meas[0] = start_state.x;
-	y_meas[1] = start_state.y;
-	y_meas[2] = start_state.theta;
 	
 	A = MatrixXd::Zero(6,6);
 	C = MatrixXd::Zero(3,6);
@@ -113,6 +109,10 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	x_est[3] = x[3];
 	x_est[4] = x[4];
 	x_est[5] = x[5];
+	
+	y_meas[0] = x[0];
+	y_meas[1] = x[1];
+	y_meas[2] = x[2];
 
 	A(0,2) = -start_state.u * sin(start_state.theta) + start_state.v * cos(start_state.theta);
 	A(1,2) =  start_state.u * cos(start_state.theta) + start_state.v * sin(start_state.theta);

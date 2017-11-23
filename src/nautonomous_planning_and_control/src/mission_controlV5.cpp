@@ -81,6 +81,7 @@ void Initialization () // State 1
 	current_state.x = 0;
 	current_state.y = 0;
 
+	/*
 	obstacle.major_semiaxis = 3;
 	obstacle.minor_semiaxis = 3;
 	obstacle.state.pose.position.x = 20;
@@ -122,8 +123,8 @@ void Initialization () // State 1
 	obstacle.state.pose.position.y = 40;
 
 	obstacles.obstacles.push_back(obstacle);
-
-	obstacles.Nobstacles = 6;
+*/
+	obstacles.Nobstacles = 0;
 
 	for (int i = 0; i < obstacles.Nobstacles; i++)
 	{
@@ -356,6 +357,11 @@ void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 	current_state.T_l = 0.5 * Force + Torque;
 	current_state.T_r = 0.5 * Force - Torque;
 	Action_received = true;
+
+	action.linear.x = uf;
+	action.angular.z = ut;
+
+	action_pub.publish(action);
 }
 
 void route_cb(const nautonomous_mpc_msgs::Route::ConstPtr& route_msg)
@@ -393,8 +399,8 @@ int main(int argc, char **argv)
 	ekf_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_ekf",10);
 	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_pub_2 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
+	action_pub = 		nh_private.advertise<geometry_msgs::Twist>("/actuation/propulsion/mission_coordinator/cmd_vel", 10);
 
-//	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state",10, action_cb);
 	EKF_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, EKF_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
