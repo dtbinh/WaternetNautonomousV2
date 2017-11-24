@@ -540,8 +540,8 @@ void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 	transformation(1,3) = Boat_pos_y;
 
 	transformation(0,0) = cos(ekf_msg->theta);
-	transformation(0,1) = -sin(ekf_msg->theta);
-	transformation(1,0) = sin(ekf_msg->theta);
+	transformation(0,1) = sin(ekf_msg->theta);
+	transformation(1,0) = -sin(ekf_msg->theta);
 	transformation(1,1) = cos(ekf_msg->theta);
 }
 
