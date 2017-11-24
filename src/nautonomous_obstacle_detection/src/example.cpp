@@ -26,6 +26,9 @@
 #include "opencv2/imgcodecs.hpp"
 #include <nautonomous_pose_msgs/PointWithCovarianceStamped.h>
 
+#include <nautonomous_mpc_msgs/StageVariable.h>
+
+
 // Namespaces
 using namespace Eigen;
 using namespace std;
@@ -70,6 +73,10 @@ Matrix4f transformation = Eigen::Matrix4f::Identity();
 // Publishers
 ros::Publisher marker_pub;
 ros::Publisher message_pub;
+ros::Publisher Transformed_pcl_pub;
+// Subscribers
+ros::Subscriber pc_sub;
+ros::Subscriber EKF_sub;
 
 // Initialization
 float x_pos, y_pos, z_pos, x_pos_origin, y_pos_origin;
@@ -100,6 +107,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	pcl::fromPCLPointCloud2(*cloud, *temp_cloud);
 
 	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation);
+
+	Transformed_pcl_pub.publish(transformed_cloud);
 
 	cout << "Create grid" << endl;
 	for ( int i = 0; i < transformed_cloud->size(); i++)
@@ -522,30 +531,20 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	}
 }
 
-void gps_cb (const nautonomous_pose_msgs::PointWithCovarianceStamped::ConstPtr& utm_msg)
+void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 {
-	Boat_pos_x = rint(utm_msg->point.x);
-	Boat_pos_y = rint(utm_msg->point.y);
+	Boat_pos_x = rint(ekf_msg->x);
+	Boat_pos_y = rint(ekf_msg->y);
 
-	transformation(0,3) = Boat_pos_x - origin_x;
-	transformation(1,3) = Boat_pos_y - origin_y;
+	transformation(0,3) = Boat_pos_x;
+	transformation(1,3) = Boat_pos_y;
+
+	transformation(0,0) = cos(ekf_msg->theta);
+	transformation(0,1) = -sin(ekf_msg->theta);
+	transformation(1,0) = sin(ekf_msg->theta);
+	transformation(1,1) = cos(ekf_msg->theta);
 }
 
-void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
-{
-	Imu = *imu_msg;
-	float q0 = Imu.orientation.w;
-	float q1 = Imu.orientation.x;
-	float q2 = Imu.orientation.y;
-	float q3 = Imu.orientation.z;
-
-	theta = atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
-
-	transformation(0,0) = cos(theta);
-	transformation(0,1) = -sin(theta);
-	transformation(1,0) = sin(theta);
-	transformation(1,1) = cos(theta);
-}
 
 int main (int argc, char** argv)
 {
@@ -553,12 +552,12 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
-	ros::Subscriber pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/point_cloud",1,cloud_cb);
-	ros::Subscriber pos_sub = nh.subscribe<nautonomous_pose_msgs::PointWithCovarianceStamped>("state/location/utm",1,gps_cb);
-	ros::Subscriber imu_sub = nh.subscribe<sensor_msgs::Imu>("sensor/imu/imu",1,imu_cb);
+	pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/point_cloud",1,cloud_cb);
+	EKF_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("sensor/imu/imu",1,EKF_cb);
 
 	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",10);
+	Transformed_pcl_pub = nh_private.advertise<sensor_msgs::PointCloud2>("transformed_pcl",10);
 
 	ros::spin();	
 }
