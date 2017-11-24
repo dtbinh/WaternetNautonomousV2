@@ -553,7 +553,7 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh_private("~");
 	
 	pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/point_cloud",1,cloud_cb);
-	EKF_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("sensor/imu/imu",1,EKF_cb);
+	EKF_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",1,EKF_cb);
 
 	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",10);
