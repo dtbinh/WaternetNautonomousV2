@@ -11,6 +11,7 @@
 
 #include "nav_msgs/Odometry.h"
 #include "sensor_msgs/Imu.h"
+#include "std_msgs/Float64.h"
 
 
 using namespace std;
@@ -22,6 +23,7 @@ typedef boost::array< double , 6 > state_type;
 ros::Subscriber gps_sub;
 ros::Subscriber imu_sub;
 ros::Subscriber start_sub;
+ros::Subscriber start_orientation_sub;
 
 ros::Publisher state_pub;
 
@@ -39,6 +41,8 @@ double w = 0;
 
 double f1 = 0;
 double f2 = 0;
+
+float angle_correction = 0;
 
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable next_state;
@@ -171,7 +175,12 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 	float q3 = Imu.orientation.z;
 
 	
-	y_meas[2] = atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
+	y_meas[2] = angle_correction - atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
+}
+
+void st_or_cb(const std_msgs::Float64::ConstPtr& st_or_msg)
+{
+	angle_correction = st_or_msg->data;
 }
 
 int main(int argc, char **argv)
@@ -183,6 +192,7 @@ int main(int argc, char **argv)
 	start_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_ekf",10,start_cb);
 	imu_sub = nh.subscribe<sensor_msgs::Imu>("/sensor/imu/imu",10,imu_cb);
 	gps_sub = nh.subscribe<nav_msgs::Odometry>("/state/odom/utm",10,gps_cb);
+	start_orientation_sub = nh.subscribe<std_msgs::Float64>("/start_orientation",10,st_or_cb);
 
 	state_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
 
