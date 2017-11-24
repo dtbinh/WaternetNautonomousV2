@@ -68,7 +68,8 @@ int Boat_pos_y = 0;
 
 sensor_msgs::Imu Imu;
 
-Matrix4f transformation = Eigen::Matrix4f::Identity();
+Matrix4f transformation1 = Eigen::Matrix4f::Identity();
+Matrix4f transformation2 = Eigen::Matrix4f::Identity();
 
 // Publishers
 ros::Publisher marker_pub;
@@ -106,7 +107,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::fromPCLPointCloud2(*cloud, *temp_cloud);
 
-	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation);
+	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation1);
+	pcl::transformPointCloud (*transformed_cloud, *transformed_cloud, transformation2);
 
 	Transformed_pcl_pub.publish(transformed_cloud);
 
@@ -536,13 +538,18 @@ void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 	Boat_pos_x = rint(ekf_msg->x);
 	Boat_pos_y = rint(ekf_msg->y);
 
-	transformation(0,3) = Boat_pos_x;
-	transformation(1,3) = Boat_pos_y;
+	transformation1(0,3) = -Boat_pos_x;
+	transformation1(1,3) = -Boat_pos_y;
 
-	transformation(0,0) = cos(ekf_msg->theta);
-	transformation(0,1) = sin(ekf_msg->theta);
-	transformation(1,0) = -sin(ekf_msg->theta);
-	transformation(1,1) = cos(ekf_msg->theta);
+	transformation1(0,0) = cos(ekf_msg->theta);
+	transformation1(0,1) = sin(ekf_msg->theta);
+	transformation1(1,0) = -sin(ekf_msg->theta);
+	transformation1(1,1) = cos(ekf_msg->theta);
+
+	transformation2(0,0) = cos(ekf_msg->theta);
+	transformation2(0,1) = sin(ekf_msg->theta);
+	transformation2(1,0) = -sin(ekf_msg->theta);
+	transformation2(1,1) = cos(ekf_msg->theta);
 }
 
 
