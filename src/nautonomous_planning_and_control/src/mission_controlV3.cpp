@@ -291,12 +291,12 @@ void MPC_route_without_obstacle() // State 11
 {
 	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
 	float theta = atan2(waypoint_state.y - current_state.y,waypoint_state.x - current_state.x);
-	for (int i = 10; i < dist_to_waypoint; i+=10)
+/*	for (int i = 10; i < dist_to_waypoint; i+=10)
 	{
 		p.x = current_state.x + i * cos(theta);
 		p.y = current_state.y + i * sin(theta);
 		Intermediate_route.waypoints.push_back(p);
-	}
+	}*/
 	p.x = waypoint_state.x;
 	p.y = waypoint_state.y;
 	Intermediate_route.waypoints.push_back(p);
@@ -359,7 +359,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 	float q2 = Imu.orientation.y;
 	float q3 = Imu.orientation.z;
 
-	current_state.theta = 1.57-atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
+	current_state.theta = 1.1-atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
 }
 
 
@@ -387,7 +387,7 @@ int main(int argc, char **argv)
 
 	ros::Rate loop_rate(40);
 
-	point.header.frame_id = line_strip.header.frame_id = "/my_frame";
+	point.header.frame_id = line_strip.header.frame_id = "/base_link";
 	point.header.stamp = line_strip.header.stamp = ros::Time::now();
 	point.ns = line_strip.ns = "points_and_lines";
 	point.action = line_strip.action = visualization_msgs::Marker::ADD;
@@ -406,7 +406,7 @@ int main(int argc, char **argv)
 	line_strip.color.r = 1.0;
 	line_strip.color.a = 1.0;
 
-	obstacle_marker.header.frame_id = "/my_frame";
+	obstacle_marker.header.frame_id = "/base_link";
 	obstacle_marker.header.stamp = ros::Time::now();
 	obstacle_marker.ns = "points_and_lines";
 	obstacle_marker.action = visualization_msgs::Marker::ADD;
