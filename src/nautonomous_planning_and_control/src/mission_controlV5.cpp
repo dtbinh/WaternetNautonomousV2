@@ -46,6 +46,7 @@ ros::Publisher start_pub;
 ros::Publisher ekf_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_pub_2;
+ros::Publisher action_pub;
 
 ros::Subscriber next_state_sub;
 ros::Subscriber EKF_sub;
@@ -70,25 +71,26 @@ visualization_msgs::Marker obstacle_marker;
 visualization_msgs::MarkerArray obstacle_array;
 
 geometry_msgs::Point p;
+geometry_msgs::Twist action;
 
-std::vector<float> waypoint_x = {40, 40,  0, 0};
-std::vector<float> waypoint_y = { 0, 40, 40, 0};
+std::vector<float> waypoint_x = {70,  50, 25, 40};
+std::vector<float> waypoint_y = {80, 100, 50, 35};
 int waypoint_stage = 0;
 int intermediate_stage = 0;
 
 void Initialization () // State 1
 {
-	current_state.x = 0;
-	current_state.y = 0;
+	current_state.x = 50;
+	current_state.y = 40;
 
-	/*
-	obstacle.major_semiaxis = 3;
-	obstacle.minor_semiaxis = 3;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 0;
+	
+	obstacle.major_semiaxis = 5;
+	obstacle.minor_semiaxis = 5;
+	obstacle.state.pose.position.x = 60;
+	obstacle.state.pose.position.y = 90;
 
 	obstacles.obstacles.push_back(obstacle);
-
+/*
 	obstacle.major_semiaxis = 5;
 	obstacle.minor_semiaxis = 5;
 	obstacle.state.pose.position.x = 40;
@@ -124,7 +126,7 @@ void Initialization () // State 1
 
 	obstacles.obstacles.push_back(obstacle);
 */
-	obstacles.Nobstacles = 0;
+	obstacles.Nobstacles = 1;
 
 	for (int i = 0; i < obstacles.Nobstacles; i++)
 	{
@@ -407,7 +409,7 @@ int main(int argc, char **argv)
 
 	ros::Rate loop_rate(100);
 
-	point.header.frame_id = line_strip.header.frame_id = "/my_frame";
+	point.header.frame_id = line_strip.header.frame_id = "/map";
 	point.header.stamp = line_strip.header.stamp = ros::Time::now();
 	point.ns = line_strip.ns = "points_and_lines";
 	point.action = line_strip.action = visualization_msgs::Marker::ADD;
@@ -426,7 +428,7 @@ int main(int argc, char **argv)
 	line_strip.color.r = 1.0;
 	line_strip.color.a = 1.0;
 
-	obstacle_marker.header.frame_id = "/my_frame";
+	obstacle_marker.header.frame_id = "/map";
 	obstacle_marker.header.stamp = ros::Time::now();
 	obstacle_marker.ns = "points_and_lines";
 	obstacle_marker.action = visualization_msgs::Marker::ADD;
