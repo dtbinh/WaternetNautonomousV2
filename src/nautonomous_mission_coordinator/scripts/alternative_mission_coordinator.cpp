@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 	crop_srv.request.rectangular = true;
 
 	// Execute map cropping service call
-	ros::ServiceClient map_cropper_client = node_handle_.serviceClient<nautonomous_map_msgs::Crop>("navigation/map/cropper/crop");
+	ros::ServiceClient map_cropper_client = node_handle_.serviceClient<nautonomous_map_msgs::Crop>("/navigation/map/cropper/crop");
 
 	if(map_cropper_client.call(crop_srv))
 	{
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 	ROS_INFO(load_srv.request.config_name.c_str());
 
 	// Execute map server request
-	ros::ServiceClient global_map_client = node_handle_.serviceClient<nautonomous_map_msgs::Load>("navigation/map/server/load");
+	ros::ServiceClient global_map_client = node_handle_.serviceClient<nautonomous_map_msgs::Load>("/navigation/map/server/load");
 	
 	if(global_map_client.call(load_srv))
 	{

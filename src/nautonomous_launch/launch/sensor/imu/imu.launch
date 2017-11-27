@@ -4,20 +4,20 @@
     <arg name="imu" default="imu"/>
 
     <!-- IMU Settings -->
-    <arg name="device" default="/dev/ttyACM4" />
+    <arg name="device" default="/dev/nautonomous/imu" />
 
     <!-- Verbose logging -->
     <arg name="verbose" default="false"/>
 
     <!-- Frame ID for messages -->
-    <arg name="frame_id" default="$(arg imu)"/>
+    <arg name="frame_id" default="base_imu_link"/>
 
     <!-- Baudrate of serial comms (see manual for allowed values) -->
     <arg name="baudrate" default="115200"/>
 
     <!-- Data rate in Hz -->
-    <arg name="imu_rate" default="100"/>
-    <arg name="filter_rate" default="100"/>
+    <arg name="imu_rate" default="10"/>
+    <arg name="filter_rate" default="10"/>
 
     <!-- Enable/Disable the magnetometer -->
     <arg name="enable_magnetometer" default="true"/>
@@ -29,7 +29,7 @@
     <arg name="enable_accel_update" default="true"/>
     <arg name="enable_mag_update" default="true"/>
 
-    <node pkg="imu_3dm_gx4" name="$(arg imu)" type="imu_3dm_gx4" output="$(arg output)">
+    <node ns="/sensor/" pkg="imu_3dm_gx4" name="$(arg imu)" type="imu_3dm_gx4" output="$(arg output)">
         <param name="device" type="string" value="$(arg device)" />
         <param name="verbose" type="bool" value="$(arg verbose)"/>
         <param name="baudrate" type="int" value="$(arg baudrate)" />

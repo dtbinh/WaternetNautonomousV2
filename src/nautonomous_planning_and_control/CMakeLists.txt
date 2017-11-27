@@ -23,6 +23,7 @@ catkin_package(
 include_directories(
 	include
 	${PROJECT_SOURCE_DIR}/include/acado
+	${PROJECT_SOURCE_DIR}/include/Eigen
 	${PROJECT_SOURCE_DIR}/include/qpoases/INCLUDE
 	${PROJECT_SOURCE_DIR}/include/qpoases/SRC
 	${ACADO_INCLUDE_DIRS} 
@@ -37,36 +38,54 @@ add_library(acado_qpoases_interface	include/acado/acado_qpoases_interface.cpp)
 
 # qpoases libraries
 add_library(QProblemB			include/qpoases/SRC/QProblemB.cpp 	include/qpoases/SRC/QProblemB.ipp)
+add_library(QProblem			include/qpoases/SRC/QProblem.cpp 	include/qpoases/SRC/QProblem.ipp)
 add_library(Bounds			include/qpoases/SRC/Bounds.cpp		include/qpoases/SRC/Bounds.ipp)
 add_library(SubjectTo			include/qpoases/SRC/SubjectTo.cpp	include/qpoases/SRC/SubjectTo.ipp)
 add_library(Indexlist			include/qpoases/SRC/Indexlist.cpp	include/qpoases/SRC/Indexlist.ipp)
 add_library(Utils			include/qpoases/SRC/Utils.cpp		include/qpoases/SRC/Utils.ipp)
 add_library(MessageHandling		include/qpoases/SRC/MessageHandling.cpp	include/qpoases/SRC/MessageHandling.ipp)
+add_library(Constraints			include/qpoases/SRC/Constraints.cpp	include/qpoases/SRC/Constraints.ipp)
+add_library(CyclingManager		include/qpoases/SRC/CyclingManager.cpp	include/qpoases/SRC/CyclingManager.ipp)
 
 ADD_DEFINITIONS( -std=c++11 )
 
 # add executable
 add_executable(mpc src/mpc.cpp)
+add_executable(PID src/PID.cpp)
 add_executable(mission_control src/mission_control.cpp)
-#add_executable(mission_control2 src/mission_controlV2.cpp)
+add_executable(mission_control2 src/mission_controlV2.cpp)
+add_executable(mission_control3 src/mission_controlV3.cpp)
+add_executable(mission_control4 src/mission_controlV4.cpp)
+add_executable(mission_control5 src/mission_controlV5.cpp)
 add_executable(ODEsolver src/ODEsolver.cpp)
-#add_executable(ODEsolver2 src/ODEsolverV2.cpp)
+add_executable(ODEsolver2 src/ODEsolverV2.cpp)
+add_executable(ExtendedKalmanFilter src/ExtendedKalmanFilter.cpp)
+add_executable(ExtendedKalmanFilter_sim src/ExtendedKalmanFilter_sim.cpp)
 
 # target link libraries
 target_link_libraries(mpc ${catkin_LIBRARIES} acado_auxiliary_functions acado_integrator acado_solver acado_qpoases_interface)
+target_link_libraries(PID ${catkin_LIBRARIES})
 target_link_libraries(mission_control ${catkin_LIBRARIES})
-#target_link_libraries(mission_control2 ${catkin_LIBRARIES})
+target_link_libraries(mission_control2 ${catkin_LIBRARIES})
+target_link_libraries(mission_control3 ${catkin_LIBRARIES})
+target_link_libraries(mission_control4 ${catkin_LIBRARIES})
+target_link_libraries(mission_control5 ${catkin_LIBRARIES})
 target_link_libraries(ODEsolver ${ACADO_SHARED_LIBRARIES} ${catkin_LIBRARIES})
 SET_TARGET_PROPERTIES(ODEsolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
-#target_link_libraries(ODEsolver2 ${catkin_LIBRARIES} )
+target_link_libraries(ODEsolver2 ${catkin_LIBRARIES} )
+target_link_libraries(ExtendedKalmanFilter ${catkin_LIBRARIES} )
+target_link_libraries(ExtendedKalmanFilter_sim ${catkin_LIBRARIES} )
 
 target_link_libraries(acado_auxiliary_functions ${catkin_LIBRARIES} )
 target_link_libraries(acado_integrator 		${catkin_LIBRARIES} )
 target_link_libraries(acado_solver 		${catkin_LIBRARIES} acado_integrator)
-target_link_libraries(acado_qpoases_interface 	${catkin_LIBRARIES} QProblemB)
+target_link_libraries(acado_qpoases_interface 	${catkin_LIBRARIES} QProblemB QProblem)
 target_link_libraries(QProblemB 		${catkin_LIBRARIES} Bounds)
+target_link_libraries(QProblem	 		${catkin_LIBRARIES} QProblemB Constraints CyclingManager)
 target_link_libraries(Bounds	 		${catkin_LIBRARIES} SubjectTo)
 target_link_libraries(SubjectTo 		${catkin_LIBRARIES} Indexlist)
 target_link_libraries(Indexlist 		${catkin_LIBRARIES} Utils)
 target_link_libraries(Utils 			${catkin_LIBRARIES} MessageHandling)
+target_link_libraries(Constraints 		${catkin_LIBRARIES} SubjectTo)
+target_link_libraries(CyclingManager 		${catkin_LIBRARIES} Utils)
 
