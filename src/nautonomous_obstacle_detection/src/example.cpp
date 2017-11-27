@@ -58,7 +58,7 @@ float second_principle_axis = -1;
 double angle = -1;
 float theta = 0;
 float const voxelSize = 0.5;
-int const gridSize = 80; // In number of squares (gridSize(m)/voxelSize)
+int const gridSize = 160; // In number of squares (gridSize(m)/voxelSize)
 int const pointTreshold = 5;
 int const origin_x = 628604;
 int const origin_y = 5802730;
@@ -118,12 +118,12 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		x_pos = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize;
 		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
 		z_pos = rint(transformed_cloud->points[i].z/voxelSize)*voxelSize;
+
 		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 3) && (z_pos > 0)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
 		{
 			grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
 			VoxelFound = true;
 		}
-
 
 		/*// ToDo fix frames
 		cout << "Point in origin frame: (" << << "," << << ") and in lidar frame "
