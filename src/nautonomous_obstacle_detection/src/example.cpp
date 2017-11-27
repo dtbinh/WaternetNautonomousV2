@@ -116,8 +116,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	cout << "Create grid" << endl;
 	for ( int i = 0; i < transformed_cloud->size(); i++)
 	{
-		x_pos = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize;
-		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
+		x_pos = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize + Boat_pos_x;
+		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize + Boat_pos_y;
 		z_pos = rint(transformed_cloud->points[i].z/voxelSize)*voxelSize;
 
 		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 3) && (z_pos > 0)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
