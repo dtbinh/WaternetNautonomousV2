@@ -9,6 +9,8 @@
 #include "visualization_msgs/Marker.h"
 #include <visualization_msgs/MarkerArray.h>
 #include <nautonomous_mpc_msgs/Obstacles.h>
+#include "nav_msgs/Odometry.h"
+#include "sensor_msgs/Imu.h"
 
 int Stage = 1;
 int Next_stage = 1;
@@ -52,6 +54,9 @@ ros::Publisher action_pub;
 ros::Subscriber next_state_sub;
 ros::Subscriber EKF_sub;
 ros::Subscriber waypoint_sub;
+ros::Subscriber imu_sub;
+ros::Subscriber gps_sub;
+ros::Subscriber obstacle_sub;
 
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable current_state;
@@ -75,6 +80,9 @@ visualization_msgs::MarkerArray obstacle_array;
 geometry_msgs::Point p;
 geometry_msgs::Quaternion q;
 geometry_msgs::Twist action;
+
+nav_msgs::Odometry Position;
+sensor_msgs::Imu Imu;
 
 std::vector<float> waypoint_x = {70,  50, 25, 40};
 std::vector<float> waypoint_y = {80, 100, 50, 35};
@@ -427,7 +435,7 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 	start_state.theta = - atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
 }
 
-void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::constPtr& obstacles_msg)
+void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg)
 {
 	obstacles = *obstacles_msg;
 }
