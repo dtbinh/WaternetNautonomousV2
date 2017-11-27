@@ -108,16 +108,16 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::fromPCLPointCloud2(*cloud, *temp_cloud);
 
-//	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation1);
-//	pcl::transformPointCloud (*transformed_cloud, *transformed_cloud, transformation2);
+	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation1);
+	pcl::transformPointCloud (*transformed_cloud, *transformed_cloud, transformation2);
 
 	Transformed_pcl_pub.publish(transformed_cloud);
 
 	cout << "Create grid" << endl;
 	for ( int i = 0; i < transformed_cloud->size(); i++)
 	{
-		x_pos = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize + Boat_pos_x;
-		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize + Boat_pos_y;
+		x_pos = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize;
+		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
 		z_pos = rint(transformed_cloud->points[i].z/voxelSize)*voxelSize;
 
 		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 3) && (z_pos > 0)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
@@ -495,16 +495,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 					second_principle_axis = minWidth;
 				}
 
-				TempVec2(0) = AvgX * voxelSize;
-				TempVec2(1) = AvgY * voxelSize;
-				TempVec2(2) = 0;
-				TempVec2(3) = 1;
-				
-				TempVec2 = transformation1 * TempVec2;
-				TempVec2 = transformation2 * TempVec2; 
-
-				oval.pose.position.x = TempVec2[0];
-				oval.pose.position.y = TempVec2[1];
+				oval.pose.position.x = AvgX * voxelSize;
+				oval.pose.position.y = AvgY * voxelSize;
 				oval.pose.position.z = 0;
 				oval.pose.orientation.z = angle;
 				oval.scale.x = first_principle_axis * voxelSize;
@@ -513,8 +505,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 				oval.ns = i + 65;
 
 				
-				obstacle.state.pose.position.x = TempVec2[0];
-				obstacle.state.pose.position.y = TempVec2[1];
+				obstacle.state.pose.position.x = AvgX * voxelSize;
+				obstacle.state.pose.position.y = AvgY * voxelSize;
 				obstacle.state.pose.position.z = 0;
 				obstacle.state.pose.orientation.x = 0;
 				obstacle.state.pose.orientation.y = 0;
