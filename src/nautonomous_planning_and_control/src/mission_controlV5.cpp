@@ -111,7 +111,7 @@ void Initialization () // State 1
 /*
 	current_state.x = 50;
 	current_state.y = 40;
-
+*/
 	
 	obstacle.major_semiaxis = 5;
 	obstacle.minor_semiaxis = 5;
@@ -119,7 +119,8 @@ void Initialization () // State 1
 	obstacle.state.pose.position.y = 90;
 
 	obstacles.obstacles.push_back(obstacle);
-	obstacle.major_semiaxis = 5;
+
+/*	obstacle.major_semiaxis = 5;
 	obstacle.minor_semiaxis = 5;
 	obstacle.state.pose.position.x = 40;
 	obstacle.state.pose.position.y = 20;
@@ -152,9 +153,9 @@ void Initialization () // State 1
 	obstacle.state.pose.position.x = 20;
 	obstacle.state.pose.position.y = 40;
 
-	obstacles.obstacles.push_back(obstacle);
+	obstacles.obstacles.push_back(obstacle);*/
 
-	obstacles.Nobstacles = 1;  */
+	obstacles.Nobstacles = 1;  
 
 	for (int i = 0; i < obstacles.Nobstacles; i++)
 	{
@@ -435,10 +436,10 @@ void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
 	start_state.theta = - atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
 }
 
-void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg)
+/*void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg)
 {
 	obstacles = *obstacles_msg;
-}
+}*/
 
 int main(int argc, char **argv)
 {
@@ -462,7 +463,7 @@ int main(int argc, char **argv)
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
 	imu_sub = 		nh.subscribe<sensor_msgs::Imu>("/sensor/imu/imu",10,imu_cb);
 	gps_sub = 		nh.subscribe<nav_msgs::Odometry>("/state/odom/utm",10,gps_cb);
-	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obsacles",10,obstacle_cb);
+//	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obsacles",10,obstacle_cb);
 
 	ros::Rate loop_rate(100);
 
