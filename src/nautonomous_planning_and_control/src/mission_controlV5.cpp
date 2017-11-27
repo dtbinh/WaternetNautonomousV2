@@ -8,6 +8,7 @@
 #include "geometry_msgs/Point.h"
 #include "visualization_msgs/Marker.h"
 #include <visualization_msgs/MarkerArray.h>
+#include <nautonomous_mpc_msgs/Obstacles.h>
 
 int Stage = 1;
 int Next_stage = 1;
@@ -51,6 +52,7 @@ ros::Subscriber next_state_sub;
 ros::Subscriber EKF_sub;
 ros::Subscriber waypoint_sub;
 
+nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable mpc_state;
 nautonomous_mpc_msgs::StageVariable waypoint_state;
@@ -70,61 +72,32 @@ visualization_msgs::Marker obstacle_marker;
 visualization_msgs::MarkerArray obstacle_array;
 
 geometry_msgs::Point p;
+geometry_msgs::Quaternion q;
 
 std::vector<float> waypoint_x = {40, 40,  0, 0};
 std::vector<float> waypoint_y = { 0, 40, 40, 0};
 int waypoint_stage = 0;
 int intermediate_stage = 0;
 
+void toQuaternion(double pitch, double roll, double yaw)
+{
+        // Abbreviations for the various angular functions
+	double cy = cos(yaw * 0.5);
+	double sy = sin(yaw * 0.5);
+	double cr = cos(roll * 0.5);
+	double sr = sin(roll * 0.5);
+	double cp = cos(pitch * 0.5);
+	double sp = sin(pitch * 0.5);
+
+	q.w = cy * cr * cp + sy * sr * sp;
+	q.x = cy * sr * cp - sy * cr * sp;
+	q.y = cy * cr * sp + sy * sr * cp;
+	q.z = sy * cr * cp - cy * sr * sp;
+}
+
 void Initialization () // State 1
 {
-	current_state.x = 0;
-	current_state.y = 0;
-
-	/*
-	obstacle.major_semiaxis = 3;
-	obstacle.minor_semiaxis = 3;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 0;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 5;
-	obstacle.minor_semiaxis = 5;
-	obstacle.state.pose.position.x = 40;
-	obstacle.state.pose.position.y = 20;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 40;
-	obstacle.minor_semiaxis = 3;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 60;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 40;
-	obstacle.minor_semiaxis = 3;
-	obstacle.state.pose.position.x =  20;
-	obstacle.state.pose.position.y = -20;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 10;
-	obstacle.minor_semiaxis = 10;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 20;
-
-	obstacles.obstacles.push_back(obstacle);
-
-	obstacle.major_semiaxis = 4;
-	obstacle.minor_semiaxis = 4;
-	obstacle.state.pose.position.x = 20;
-	obstacle.state.pose.position.y = 40;
-
-	obstacles.obstacles.push_back(obstacle);
-*/
-	obstacles.Nobstacles = 0;
+	current_state = start_state;
 
 	for (int i = 0; i < obstacles.Nobstacles; i++)
 	{
@@ -136,6 +109,8 @@ void Initialization () // State 1
 		obstacle_marker.pose.position.x = obstacle.state.pose.position.x;
       		obstacle_marker.pose.position.y = obstacle.state.pose.position.y;
       		obstacle_marker.pose.position.z = -0.5;
+		toQuaternion(obstacle.state.pose.orientation.x, obstacle.state.pose.orientation.y, obstacle.state.pose.orientation.z);
+		obstacle_marker.pose.orientation = q;
 		obstacle_marker.ns = i + 65;
 
 		obstacle_array.markers.push_back(obstacle_marker);
@@ -384,6 +359,30 @@ void EKF_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 	std::cout << "Current state: " << current_state <<std::endl;
 }
 
+void gps_cb(const nav_msgs::Odometry::ConstPtr& pos_msg)
+{
+	Position = *pos_msg;
+	start_state.x = Position.pose.pose.position.x;
+	start_state.y = Position.pose.pose.position.y;
+}
+
+void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
+{
+	Imu = *imu_msg;
+	float q0 = Imu.orientation.w;
+	float q1 = Imu.orientation.x;
+	float q2 = Imu.orientation.y;
+	float q3 = Imu.orientation.z;
+
+	
+	start_state.theta = - atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
+}
+
+void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::constPtr& obstacles_msg)
+{
+	obstacles = *obstacles_msg;
+}
+
 int main(int argc, char **argv)
 {
  	/* Initialize ROS */
@@ -404,6 +403,9 @@ int main(int argc, char **argv)
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state",10, action_cb);
 	EKF_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, EKF_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
+	imu_sub = 		nh.subscribe<sensor_msgs::Imu>("/sensor/imu/imu",10,imu_cb);
+	gps_sub = 		nh.subscribe<nav_msgs::Odometry>("/state/odom/utm",10,gps_cb);
+	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obsacles",10,obstacle_cb);
 
 	ros::Rate loop_rate(100);
 
@@ -440,7 +442,6 @@ int main(int argc, char **argv)
 	obstacle_marker.color.a = 1.0;
 
 	ros::Duration(5).sleep();
-
 
 	while (ros::ok())
 	{	

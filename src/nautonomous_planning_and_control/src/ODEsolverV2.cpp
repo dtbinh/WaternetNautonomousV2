@@ -19,6 +19,7 @@ using namespace boost::numeric::odeint;
 visualization_msgs::Marker waypoint_marker;
 visualization_msgs::Marker obstacle_marker;
 geometry_msgs::Point p;
+geometry_msgs::Quaternion q;
 
 std::vector<double> waypoints_x;
 std::vector<double> waypoints_y;
@@ -61,6 +62,26 @@ double k1;
 double k2; 
 
 typedef boost::array< double , 2 > state_type;
+
+
+
+void toQuaternion(double pitch, double roll, double yaw)
+{
+        // Abbreviations for the various angular functions
+	double cy = cos(yaw * 0.5);
+	double sy = sin(yaw * 0.5);
+	double cr = cos(roll * 0.5);
+	double sr = sin(roll * 0.5);
+	double cp = cos(pitch * 0.5);
+	double sp = sin(pitch * 0.5);
+
+	q.w = cy * cr * cp + sy * sr * sp;
+	q.x = cy * sr * cp - sy * cr * sp;
+	q.y = cy * cr * sp + sy * sr * cp;
+	q.z = sy * cr * cp - cy * sr * sp;
+}
+
+
 
 void lorenz( const state_type &x , state_type &dxdt , double t )
 {
@@ -106,7 +127,7 @@ void obstacle_cb( const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg )
 	obstacle_y = obstacle.state.pose.position.y;
 	obstacle_a = obstacle.major_semiaxis;
 	obstacle_b = obstacle.minor_semiaxis;
-	obstacle_th = obstacle.state.pose.position.z;
+	obstacle_th = obstacle.state.pose.orientation.z;
 		
 	std::cout << "Obstacle: " << obstacle << std::endl;
 }
@@ -179,6 +200,10 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 
 	obstacle_marker.pose.position.x = obstacle_x;
 	obstacle_marker.pose.position.y = obstacle_y;
+
+	toQuaternion(0,0,obstacle_th);
+
+	obstacle_marker.pose.orientation = q;
 
 	
 	obstacle_marker.points.push_back(p);

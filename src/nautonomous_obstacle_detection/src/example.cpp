@@ -521,6 +521,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		Markers.markers.push_back(points);
 
 		marker_pub.publish(Markers);
+	
+		obstacles.Nobstacles = Blobs->size();
 		message_pub.publish(obstacles);
 
 		cout << "The number of blobs is: " << Blobs->size() << endl;
@@ -555,7 +557,7 @@ void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 
 int main (int argc, char** argv)
 {
-	ros::init (argc, argv,"pointcloud2_to_pcd");
+	ros::init (argc, argv,"Obstacle_detection");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	

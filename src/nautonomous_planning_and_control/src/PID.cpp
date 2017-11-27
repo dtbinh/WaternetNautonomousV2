@@ -65,7 +65,7 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 	}
 	else
 	{
-		uf = fmax(fmin(0.15*a1,2),0);
+		uf = fmax(fmin(0.25*a1,2),0);
 		ut = fmax(fmin(1.25*theta_error,1),-1);
 		std::cout << "Calculating actions" << std::endl;
 	}

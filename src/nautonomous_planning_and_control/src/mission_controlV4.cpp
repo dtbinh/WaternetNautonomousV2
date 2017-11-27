@@ -70,11 +70,29 @@ visualization_msgs::Marker obstacle_marker;
 visualization_msgs::MarkerArray obstacle_array;
 
 geometry_msgs::Point p;
+geometry_msgs::Quaternion q;
 
 std::vector<float> waypoint_x = {40, 40,  0, 0};
 std::vector<float> waypoint_y = { 0, 40, 40, 0};
 int waypoint_stage = 0;
 int intermediate_stage = 0;
+
+void toQuaternion(double pitch, double roll, double yaw)
+{
+        // Abbreviations for the various angular functions
+	double cy = cos(yaw * 0.5);
+	double sy = sin(yaw * 0.5);
+	double cr = cos(roll * 0.5);
+	double sr = sin(roll * 0.5);
+	double cp = cos(pitch * 0.5);
+	double sp = sin(pitch * 0.5);
+
+	q.w = cy * cr * cp + sy * sr * sp;
+	q.x = cy * sr * cp - sy * cr * sp;
+	q.y = cy * cr * sp + sy * sr * cp;
+	q.z = sy * cr * cp - cy * sr * sp;
+}
+
 
 void Initialization () // State 1
 {
@@ -82,16 +100,18 @@ void Initialization () // State 1
 	current_state.y = 0;
 
 	obstacle.major_semiaxis = 3;
-	obstacle.minor_semiaxis = 3;
+	obstacle.minor_semiaxis = 5;
 	obstacle.state.pose.position.x = 20;
 	obstacle.state.pose.position.y = 0;
+	obstacle.state.pose.orientation.z = 0.25*3.14;
 
 	obstacles.obstacles.push_back(obstacle);
 
 	obstacle.major_semiaxis = 5;
-	obstacle.minor_semiaxis = 5;
+	obstacle.minor_semiaxis = 4;
 	obstacle.state.pose.position.x = 40;
 	obstacle.state.pose.position.y = 20;
+	obstacle.state.pose.orientation.z = 1.52 * 3.14;
 
 	obstacles.obstacles.push_back(obstacle);
 
@@ -99,6 +119,7 @@ void Initialization () // State 1
 	obstacle.minor_semiaxis = 3;
 	obstacle.state.pose.position.x = 20;
 	obstacle.state.pose.position.y = 60;
+	obstacle.state.pose.orientation.z = 0;
 
 	obstacles.obstacles.push_back(obstacle);
 
@@ -106,20 +127,23 @@ void Initialization () // State 1
 	obstacle.minor_semiaxis = 3;
 	obstacle.state.pose.position.x =  20;
 	obstacle.state.pose.position.y = -20;
+	obstacle.state.pose.orientation.z = 0;
 
 	obstacles.obstacles.push_back(obstacle);
 
-	obstacle.major_semiaxis = 10;
-	obstacle.minor_semiaxis = 10;
-	obstacle.state.pose.position.x = 20;
+	obstacle.major_semiaxis = 6;
+	obstacle.minor_semiaxis = 2;
+	obstacle.state.pose.position.x = 0;
 	obstacle.state.pose.position.y = 20;
+	obstacle.state.pose.orientation.z = 0.33*3.14;
 
 	obstacles.obstacles.push_back(obstacle);
 
-	obstacle.major_semiaxis = 4;
+	obstacle.major_semiaxis = 2;
 	obstacle.minor_semiaxis = 4;
 	obstacle.state.pose.position.x = 20;
 	obstacle.state.pose.position.y = 40;
+	obstacle.state.pose.orientation.z = 1.1 * 3.14;
 
 	obstacles.obstacles.push_back(obstacle);
 
@@ -135,6 +159,8 @@ void Initialization () // State 1
 		obstacle_marker.pose.position.x = obstacle.state.pose.position.x;
       		obstacle_marker.pose.position.y = obstacle.state.pose.position.y;
       		obstacle_marker.pose.position.z = -0.5;
+		toQuaternion(obstacle.state.pose.orientation.x, obstacle.state.pose.orientation.y, obstacle.state.pose.orientation.z);
+		obstacle_marker.pose.orientation = q;
 		obstacle_marker.ns = i + 65;
 
 		obstacle_array.markers.push_back(obstacle_marker);
@@ -288,8 +314,8 @@ void Intermediate_point_reached_check() // State 10
 	Intermediate_point_reached = false;
 	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
 	float dist_to_intermediate = sqrt(pow(intermediate_state.x - current_state.x,2) + pow(intermediate_state.y - current_state.y,2));
-	if (dist_to_waypoint < 5){Waypoint_reached = true;}
-	if (dist_to_intermediate < 5){Intermediate_point_reached = true;}
+	if (dist_to_waypoint < 2){Waypoint_reached = true;}
+	if (dist_to_intermediate < 2){Intermediate_point_reached = true;}
 	if (Waypoint_reached){
 		Next_stage = 2;
 		std::cout << "Waypoint reached" << std::endl;
