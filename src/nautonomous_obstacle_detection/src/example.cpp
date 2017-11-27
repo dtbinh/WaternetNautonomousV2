@@ -70,6 +70,7 @@ sensor_msgs::Imu Imu;
 
 Matrix4f transformation1 = Eigen::Matrix4f::Identity();
 Matrix4f transformation2 = Eigen::Matrix4f::Identity();
+Vector4f TempVec2;
 
 // Publishers
 ros::Publisher marker_pub;
@@ -107,8 +108,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::fromPCLPointCloud2(*cloud, *temp_cloud);
 
-	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation1);
-	pcl::transformPointCloud (*transformed_cloud, *transformed_cloud, transformation2);
+//	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation1);
+//	pcl::transformPointCloud (*transformed_cloud, *transformed_cloud, transformation2);
 
 	Transformed_pcl_pub.publish(transformed_cloud);
 
@@ -493,8 +494,17 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 					first_principle_axis = minHeight;
 					second_principle_axis = minWidth;
 				}
-				oval.pose.position.x = AvgX * voxelSize;
-				oval.pose.position.y = AvgY * voxelSize;
+
+				TempVec2(0) = AvgX * voxelSize;
+				TempVec2(1) = AvgY * voxelSize;
+				TempVec2(2) = 0;
+				TempVec2(3) = 1;
+				
+				TempVec2 = transformation1 * TempVec2;
+				TempVec2 = transformation2 * TempVec2; 
+
+				oval.pose.position.x = TempVec2[0];
+				oval.pose.position.y = TempVec2[1];
 				oval.pose.position.z = 0;
 				oval.pose.orientation.z = angle;
 				oval.scale.x = first_principle_axis * voxelSize;
@@ -503,8 +513,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 				oval.ns = i + 65;
 
 				
-				obstacle.state.pose.position.x = AvgX * voxelSize;
-				obstacle.state.pose.position.y = AvgY * voxelSize;
+				obstacle.state.pose.position.x = TempVec2[0];
+				obstacle.state.pose.position.y = TempVec2[1];
 				obstacle.state.pose.position.z = 0;
 				obstacle.state.pose.orientation.x = 0;
 				obstacle.state.pose.orientation.y = 0;
@@ -540,8 +550,8 @@ void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 	Boat_pos_x = rint(ekf_msg->x);
 	Boat_pos_y = rint(ekf_msg->y);
 
-	transformation1(0,3) = -Boat_pos_x;
-	transformation1(1,3) = -Boat_pos_y;
+	transformation1(0,3) = Boat_pos_x;
+	transformation1(1,3) = Boat_pos_y;
 
 	transformation1(0,0) = cos(ekf_msg->theta);
 	transformation1(0,1) = sin(ekf_msg->theta);
@@ -564,7 +574,7 @@ int main (int argc, char** argv)
 	pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/point_cloud",1,cloud_cb);
 	EKF_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",1,EKF_cb);
 
-	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
+//	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",10);
 	Transformed_pcl_pub = nh_private.advertise<sensor_msgs::PointCloud2>("transformed_pcl",10);
 
