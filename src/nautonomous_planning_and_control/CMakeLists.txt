@@ -11,7 +11,7 @@ nautonomous_mpc_msgs
 nautonomous_state_msgs
 )
 
-find_package( ACADO REQUIRED )
+#find_package( ACADO REQUIRED )
 
 catkin_package(
   INCLUDE_DIRS include
@@ -26,7 +26,7 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/include/Eigen
 	${PROJECT_SOURCE_DIR}/include/qpoases/INCLUDE
 	${PROJECT_SOURCE_DIR}/include/qpoases/SRC
-	${ACADO_INCLUDE_DIRS} 
+#	${ACADO_INCLUDE_DIRS} 
 	${catkin_INCLUDE_DIRS}
 )
 
@@ -57,7 +57,7 @@ add_executable(mission_control2 src/mission_controlV2.cpp)
 add_executable(mission_control3 src/mission_controlV3.cpp)
 add_executable(mission_control4 src/mission_controlV4.cpp)
 add_executable(mission_control5 src/mission_controlV5.cpp)
-add_executable(ODEsolver src/ODEsolver.cpp)
+#add_executable(ODEsolver src/ODEsolver.cpp)
 add_executable(ODEsolver2 src/ODEsolverV2.cpp)
 add_executable(ExtendedKalmanFilter src/ExtendedKalmanFilter.cpp)
 add_executable(ExtendedKalmanFilter_sim src/ExtendedKalmanFilter_sim.cpp)
@@ -70,8 +70,8 @@ target_link_libraries(mission_control2 ${catkin_LIBRARIES})
 target_link_libraries(mission_control3 ${catkin_LIBRARIES})
 target_link_libraries(mission_control4 ${catkin_LIBRARIES})
 target_link_libraries(mission_control5 ${catkin_LIBRARIES})
-target_link_libraries(ODEsolver ${ACADO_SHARED_LIBRARIES} ${catkin_LIBRARIES})
-SET_TARGET_PROPERTIES(ODEsolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
+#target_link_libraries(ODEsolver ${ACADO_SHARED_LIBRARIES} ${catkin_LIBRARIES})
+#SET_TARGET_PROPERTIES(ODEsolver PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
 target_link_libraries(ODEsolver2 ${catkin_LIBRARIES} )
 target_link_libraries(ExtendedKalmanFilter ${catkin_LIBRARIES} )
 target_link_libraries(ExtendedKalmanFilter_sim ${catkin_LIBRARIES} )
