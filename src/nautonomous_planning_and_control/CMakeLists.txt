@@ -11,7 +11,7 @@ nautonomous_mpc_msgs
 nautonomous_state_msgs
 )
 
-find_package( ACADO REQUIRED )
+#find_package( ACADO REQUIRED )
 
 catkin_package(
   INCLUDE_DIRS include
@@ -26,7 +26,7 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/include/Eigen
 	${PROJECT_SOURCE_DIR}/include/qpoases/INCLUDE
 	${PROJECT_SOURCE_DIR}/include/qpoases/SRC
-	${ACADO_INCLUDE_DIRS} 
+#	${ACADO_INCLUDE_DIRS} 
 	${catkin_INCLUDE_DIRS}
 )
 
@@ -64,7 +64,6 @@ target_link_libraries(mpc ${catkin_LIBRARIES} acado_auxiliary_functions acado_in
 target_link_libraries(PID ${catkin_LIBRARIES})
 target_link_libraries(mission_control ${catkin_LIBRARIES})
 target_link_libraries(mission_control_sim ${catkin_LIBRARIES})
-target_link_libraries(ODEsolver ${ACADO_SHARED_LIBRARIES} ${catkin_LIBRARIES})
 target_link_libraries(ODEsolver ${catkin_LIBRARIES} )
 target_link_libraries(ExtendedKalmanFilter ${catkin_LIBRARIES} )
 target_link_libraries(ExtendedKalmanFilter_sim ${catkin_LIBRARIES} )
