@@ -57,7 +57,7 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 		ut = copysign(1,a2);
 		std::cout << "Facing the wrong way" << std::endl;
 	}
-	else if (fabs(theta_error) > 0.8)
+	else if (fabs(theta_error) > 1)
 	{
 		uf = 0;
 		ut = copysign(1,a2);
@@ -66,7 +66,7 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 	else
 	{
 		uf = fmax(fmin(0.25*a1,2),0);
-		ut = fmax(fmin(1.25*theta_error,1),-1);
+		ut = fmax(fmin(1*theta_error,1),-1);
 		std::cout << "Calculating actions" << std::endl;
 	}
 

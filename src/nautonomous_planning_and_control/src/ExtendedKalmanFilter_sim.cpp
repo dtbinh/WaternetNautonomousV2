@@ -9,9 +9,10 @@
 
 #include <Eigenvalues>
 
-#include "nav_msgs/Odometry.h"
 #include "sensor_msgs/Imu.h"
+#include <geometry_msgs/PoseStamped.h>
 
+#include <nautonomous_planning_and_control/Quaternion_conversion.h>
 
 using namespace std;
 using namespace Eigen;
@@ -24,6 +25,7 @@ ros::Subscriber imu_sub;
 ros::Subscriber start_sub;
 
 ros::Publisher state_pub;
+ros::Publisher odom_pub;
 
 double D_x = 130;
 double D_y = 5280;
@@ -57,8 +59,7 @@ VectorXd x_upd(6);
 VectorXd y_est(3);
 VectorXd y_meas(3);
 
-nav_msgs::Odometry Position;
-
+geometry_msgs::PoseStamped position;
 sensor_msgs::Imu Imu;
 
 void lorenz( const state_type &x , state_type &dxdt , double t )
@@ -157,6 +158,14 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	next_state.T_r = f2;
 
 	state_pub.publish(next_state);
+
+	position.pose.position.x = next_state.x;
+	position.pose.position.y = next_state.y;
+	position.pose.orientation = toQuaternion(0, 0, next_state.theta);
+	
+	position.header.stamp = ros::Time::now();
+	position.header.frame_id = "/my_frame";
+	odom_pub.publish(position);
 }
 
 int main(int argc, char **argv)
@@ -168,6 +177,7 @@ int main(int argc, char **argv)
 	start_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_ekf",10,start_cb);
 
 	state_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
+	odom_pub = nh_private.advertise<geometry_msgs::PoseStamped>("Odom" ,10);
 
 	ros::spin();
 

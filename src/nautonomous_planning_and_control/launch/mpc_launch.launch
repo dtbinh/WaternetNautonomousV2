@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load default parameters -->
+  <rosparam command="load" file="$(find nautonomous_planning_and_control)/param/default.yaml"/>
+
+  <!-- Launch mission_control_sim -->
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control" type="mission_control_sim" output="screen"/>
+
+  <!-- Launch ExtendedKalmanFilter_sim -->
+  <node name="Ekf" pkg="nautonomous_planning_and_control" type="ExtendedKalmanFilter_sim" output="log"/>
+
+  <!-- Launch ODEsolver -->
+  <node name="Route_generator" pkg="nautonomous_planning_and_control" type="ODEsolver" output="log"/>
+
+  <!-- Launch PID -->
+  <node name="PID" pkg="nautonomous_planning_and_control" type="PID" output="log"/>
+
+  <!-- Launch Visualization -->
+  <node name="visualization" pkg="nautonomous_planning_and_control" type="Visualization" output="log"/>
+
+  <!-- Launch RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find nautonomous_planning_and_control)/rviz/default.rviz"/>
+</launch>
