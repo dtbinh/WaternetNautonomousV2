@@ -26,13 +26,18 @@ Route_generator:
 
 PID:
   max_theta_error:           0.5
-  parallel_error_gain:       0.25
+  parallel_error_gain:       0
   perpendicular_error_gain:  2
-  velocity_error_gain:       2
+  velocity_error_gain:       5
+
+  max_ut: 1
+  max_uf: 3
+  min_ut: -1
+  min_uf: 0
   
 Ekf:
   disturbance: 
-    fx1: -25
-    fx2: -25
+    fx1: 0
+    fx2: 0
     fy1: 0
     fy2: 0

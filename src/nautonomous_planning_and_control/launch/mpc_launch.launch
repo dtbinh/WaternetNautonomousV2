@@ -19,7 +19,7 @@
   <node name="visualization" pkg="nautonomous_planning_and_control" type="Visualization" output="log"/>
 
   <!-- Launch RViz -->
-  <!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find nautonomous_planning_and_control)/rviz/default.rviz"/-->
+  <!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find nautonomous_planning_and_control)/rviz/default.rviz"/-->
 
   <!-- Launch QRT plots -->
   <node name="qrt_action" pkg="rqt_plot" type="rqt_plot" args="/PID/next_state/T_l /PID/next_state/T_r"/>
