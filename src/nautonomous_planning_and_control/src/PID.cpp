@@ -21,6 +21,11 @@ float ut = 0.0;
 
 float KKT_var;
 
+double uf_gain;
+double ut_gain;
+double u_gain;
+double max_theta_error;
+
 MatrixXd Transformation(4,4);
 
 VectorXd temp(4);
@@ -57,7 +62,7 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 		ut = copysign(1,a2);
 		std::cout << "Facing the wrong way" << std::endl;
 	}
-	else if (fabs(theta_error) > 1)
+	else if (fabs(theta_error) > max_theta_error)
 	{
 		uf = 0;
 		ut = copysign(1,a2);
@@ -65,8 +70,8 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 	}
 	else
 	{
-		uf = fmax(fmin(0.25*a1,2),0);
-		ut = fmax(fmin(1*theta_error,1),-1);
+		uf = fmax(fmin(uf_gain*a1 + u_gain*(reference_state.u - current_state.u),2),0);
+		ut = fmax(fmin(ut_gain*theta_error,1),-1);
 		std::cout << "Calculating actions" << std::endl;
 	}
 
@@ -90,6 +95,11 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
+	nh_private.getParam("parallel_error_gain", uf_gain);
+	nh_private.getParam("perpendicular_error_gain", ut_gain);
+	nh_private.getParam("velocity_error_gain", u_gain);
+	nh_private.getParam("max_theta_error", max_theta_error);
+
 	ros::Subscriber state_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",10,state_cb);
 	ros::Subscriber ref_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/reference_state",1,ref_cb);
 	

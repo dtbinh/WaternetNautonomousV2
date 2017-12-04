@@ -54,8 +54,8 @@ double start_theta = 0;
 double x0;
 double x1;
 
-const double k1_max = 0.1;
-const double k2_max = 0.1;
+double k_max = 0.1;
+double gamma_max = 0.1;
 
 double l;
 double he11;

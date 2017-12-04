@@ -32,6 +32,7 @@ double D_y = 5280;
 double D_t = 750;
 double m = 250;
 double l = 0.5;
+double b = 1.5;
 double I_z = 750;
 
 double th = 0;
@@ -41,6 +42,11 @@ double w = 0;
 
 double f1 = 0;
 double f2 = 0;
+
+double dist_x1;
+double dist_x2;
+double dist_y1;
+double dist_y2;
 
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable next_state;
@@ -71,9 +77,9 @@ void lorenz( const state_type &x , state_type &dxdt , double t )
 	dxdt[0] = vx * cos(th) + vy * sin(th);
 	dxdt[1] =  vx * sin(th) - vy * cos(th);
 	dxdt[2] =  - w;
-	dxdt[3] =  (f1 + f2 - D_x * vx) / m + w * vy;
-	dxdt[4] =  - D_y * vy / m - w * vx;	
-	dxdt[5] =  (l * (f1 - f2) - D_t * w) / I_z; 
+	dxdt[3] =  (f1 + f2 + dist_x1 + dist_x2 - D_x * vx) / m + w * vy;
+	dxdt[4] =  (dist_y1 + dist_y2 - D_y * vy ) / m - w * vx;	
+	dxdt[5] =  (l * (f1 + dist_x1 - f2 - dist_x2) + b * (dist_y1 - dist_y2) - D_t * w) / I_z; 
 }
 
 void write_lorenz( const state_type &x , const double t )
@@ -173,6 +179,11 @@ int main(int argc, char **argv)
 	ros::init (argc, argv,"Ekf");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
+
+	nh_private.getParam("disturbance/fx1", dist_x1);
+	nh_private.getParam("disturbance/fx2", dist_x2);
+	nh_private.getParam("disturbance/fy1", dist_y1);
+	nh_private.getParam("disturbance/fy2", dist_y2);
 
 	start_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_ekf",10,start_cb);
 

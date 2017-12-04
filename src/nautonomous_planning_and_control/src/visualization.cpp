@@ -25,9 +25,7 @@ visualization_msgs::Marker waypoint_marker;
 visualization_msgs::MarkerArray waypoint_array;
 
 geometry_msgs::Point p;
-
-double elapsed_time;
-double start_time;
+double ns = 0;
 
 void EKF_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 {
@@ -43,6 +41,20 @@ void EKF_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 void obstacle_cb(const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 {
 	obstacle = *obstacle_msg;
+	obstacle_marker.scale.x = obstacle.major_semiaxis * 2;
+	obstacle_marker.scale.y = obstacle.minor_semiaxis * 2;
+
+	obstacle_marker.pose.position.x = obstacle.state.pose.position.x;
+	obstacle_marker.pose.position.y = obstacle.state.pose.position.y;
+	obstacle_marker.pose.position.z = -0.5;
+
+	obstacle_marker.pose.orientation = toQuaternion(obstacle.state.pose.orientation.x, obstacle.state.pose.orientation.y, obstacle.state.pose.orientation.z);
+	obstacle_marker.ns = ns;
+	ns++;
+
+	obstacle_array.markers.push_back(obstacle_marker);
+
+    	marker_pub_2.publish(obstacle_array);
 
 }
 
@@ -66,8 +78,6 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "visualization");	
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
-
-	start_time = ros::Time::now().toSec();
 
 	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_pub_2 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
@@ -118,30 +128,6 @@ int main(int argc, char **argv)
 	waypoint_marker.color.a = 1.0;
 	waypoint_marker.pose.position.z = 0.0;
 
-	ros::Rate loop_rate(10);
-
-	while (ros::ok())
-	{
-		elapsed_time = ros::Time::now().toSec() - start_time;
-		obstacle_marker.scale.x = obstacle.major_semiaxis * 2;
-		obstacle_marker.scale.y = obstacle.minor_semiaxis * 2;
-
-		obstacle_marker.pose.position.x = obstacle.state.pose.position.x + obstacle.state.twist.linear.x * (elapsed_time);
-		obstacle_marker.pose.position.y = obstacle.state.pose.position.y + obstacle.state.twist.linear.y * (elapsed_time);
-		obstacle_marker.pose.position.z = -0.5;
-	
-		obstacle_marker.pose.orientation = toQuaternion(obstacle.state.pose.orientation.x, obstacle.state.pose.orientation.y, obstacle.state.pose.orientation.z);
-		obstacle_marker.ns = 65;
-
-		obstacle_array.markers.push_back(obstacle_marker);
-
-	    	marker_pub_2.publish(obstacle_array);
-		
-
-		ros::spinOnce();
-		loop_rate.sleep();
-
-
-	}
+	ros::spin();
 }
 

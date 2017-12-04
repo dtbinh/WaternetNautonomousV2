@@ -19,5 +19,11 @@
   <node name="visualization" pkg="nautonomous_planning_and_control" type="Visualization" output="log"/>
 
   <!-- Launch RViz -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find nautonomous_planning_and_control)/rviz/default.rviz"/>
+  <!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find nautonomous_planning_and_control)/rviz/default.rviz"/-->
+
+  <!-- Launch QRT plots -->
+  <node name="qrt_action" pkg="rqt_plot" type="rqt_plot" args="/PID/next_state/T_l /PID/next_state/T_r"/>
+  <node name="qrt_vel" pkg="rqt_plot" type="rqt_plot" args="/Ekf/next_state/u /Ekf/next_state/omega"/>
+  <node name="qrt_state" pkg="rqt_plot" type="rqt_plot" args="/mission_coordinator/current_state/x /mission_coordinator/current_state/y /mission_coordinator/reference_state/x /mission_coordinator/reference_state/y"/>
+   
 </launch>
