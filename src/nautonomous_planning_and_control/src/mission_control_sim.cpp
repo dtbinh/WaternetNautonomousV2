@@ -192,7 +192,7 @@ void Determine_closest_blocking_obstacle() // State 3
 	if (Blocking_obstacle_found){
 		Next_stage = 4; 
 		obstacle_pub.publish(closest_obstacle);
-		ros::Duration(1).sleep();
+		//ros::Duration(1).sleep();
 	}
 	else {
 		Next_stage = 11;
@@ -439,7 +439,7 @@ int main(int argc, char **argv)
 	EKF_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, EKF_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
 
-	ros::Rate loop_rate(200);
+	ros::Rate loop_rate(100);
 
 	
 	ros::Duration(1).sleep();

@@ -66,59 +66,14 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	// Get the results:
 	// ---------------	
 
-	waypoint_marker.header.frame_id = "/my_frame";
-	waypoint_marker.header.stamp = ros::Time::now();
-	waypoint_marker.ns = "points_and_lines";
-	waypoint_marker.action = visualization_msgs::Marker::ADD;
-	waypoint_marker.pose.orientation.w = 1.0;
-    	waypoint_marker.id = 0;
-	waypoint_marker.type = visualization_msgs::Marker::POINTS;
-
-	waypoint_marker.scale.x = 0.2;
-	waypoint_marker.scale.y = 0.2;
-	waypoint_marker.color.b = 1.0;
-	waypoint_marker.color.g = 1.0;
-	waypoint_marker.color.a = 1.0;
-
 	for (int i = 0; i < length; i++)
 	{
 		cout << "Waypoint " << i << " : (" << waypoints_x[i]  << ", " << waypoints_y[i] << ")" << endl;
 		p.x = waypoints_x[i];
       		p.y = waypoints_y[i];
-	
-      		waypoint_marker.points.push_back(p);
 
 		route.waypoints.push_back(p);
-
-    		marker_pub.publish(waypoint_marker);
 	}
-	
-	obstacle_marker.header.frame_id = "/my_frame";
-	obstacle_marker.header.stamp = ros::Time::now();
-	obstacle_marker.ns = "points_and_lines";
-	obstacle_marker.action = visualization_msgs::Marker::ADD;
-	obstacle_marker.pose.orientation.w = 1.0;
-    	obstacle_marker.id = 0;
-	obstacle_marker.type = visualization_msgs::Marker::CYLINDER;
-
-	obstacle_marker.scale.z = 0.5;
-	obstacle_marker.color.b = 1.0;
-	obstacle_marker.color.g = 0.5;
-	obstacle_marker.color.a = 1.0;
-
-	obstacle_marker.scale.x = obstacle_a * 2;
-	obstacle_marker.scale.y = obstacle_b * 2;
-
-	obstacle_marker.pose.position.x = obstacle_x;
-	obstacle_marker.pose.position.y = obstacle_y;
-
-	q = toQuaternion(0,0,obstacle_th);
-
-	obstacle_marker.pose.orientation = q;
-
-	obstacle_marker.points.push_back(p);
-
-    	marker_pub_2.publish(obstacle_marker);
 	
 	waypoint_pub.publish(route);
 	
@@ -145,9 +100,6 @@ int main(int argc, char **argv)
 	nh_private.getParam("final_time", t_end);
 	nh_private.getParam("safety_margin", safety_margin);
 
-
-	marker_pub = nh_private.advertise<visualization_msgs::Marker>("waypoint_marker", 10);
-	marker_pub_2 = nh_private.advertise<visualization_msgs::Marker>("obstacle_marker", 10);
 	waypoint_pub = nh_private.advertise<nautonomous_mpc_msgs::Route>("waypoint_route", 10);
 
 	obstacle_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacle>("/mission_coordinator/obstacle",10,obstacle_cb);

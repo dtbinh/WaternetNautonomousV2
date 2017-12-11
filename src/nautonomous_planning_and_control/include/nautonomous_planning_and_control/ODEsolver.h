@@ -15,8 +15,6 @@
 using namespace std;
 using namespace boost::numeric::odeint;
 
-visualization_msgs::Marker waypoint_marker;
-visualization_msgs::Marker obstacle_marker;
 geometry_msgs::Point p;
 geometry_msgs::Quaternion q;
 
@@ -24,8 +22,6 @@ std::vector<double> waypoints_x;
 std::vector<double> waypoints_y;
 int length = 0;
 
-ros::Publisher marker_pub;
-ros::Publisher marker_pub_2;
 ros::Publisher waypoint_pub;
 
 ros::Subscriber obstacle_sub;

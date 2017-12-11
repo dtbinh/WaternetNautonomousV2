@@ -7,24 +7,29 @@
 #include <nautonomous_mpc_msgs/StageVariable.h>
 #include <nautonomous_mpc_msgs/WaypointList.h>
 #include <nautonomous_mpc_msgs/Waypoint.h>
+#include <nautonomous_mpc_msgs/Route.h>
 #include <nautonomous_planning_and_control/Quaternion_conversion.h>
 
 ros::Publisher marker_pub;
 ros::Publisher marker_pub_2;
 ros::Publisher marker_pub_3;
 ros::Publisher marker_pub_4;
+ros::Publisher marker_pub_5;
 
 ros::Subscriber EKF_sub;
 ros::Subscriber obstacle_sub;
 ros::Subscriber obstacles_sub;
 ros::Subscriber waypoint_sub;
 ros::Subscriber waypoints_sub;
+ros::Subscriber route_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::Obstacle obstacle;
 nautonomous_mpc_msgs::Obstacles obstacles;
+nautonomous_mpc_msgs::Route route;
 
 visualization_msgs::Marker line_strip;
+visualization_msgs::Marker route_marker;
 visualization_msgs::Marker point;
 visualization_msgs::Marker obstacle_marker;
 visualization_msgs::MarkerArray obstacle_array;
@@ -127,6 +132,21 @@ void waypoints_cb(const nautonomous_mpc_msgs::WaypointList::ConstPtr& waypoints_
 	}
 }
 
+void route_cb(const nautonomous_mpc_msgs::Route::ConstPtr& route_msg)
+{
+	route = *route_msg;
+
+	for (int i = 0; i < route.waypoints.size(); i++)
+	{
+		p.x = route.waypoints[i].x;
+      		p.y = route.waypoints[i].y;
+	
+      		route_marker.points.push_back(p);
+
+    		marker_pub_5.publish(route_marker);
+	}
+}
+
 int main(int argc, char **argv)
 {
  	/* Initialize ROS */
@@ -138,14 +158,16 @@ int main(int argc, char **argv)
 	marker_pub_2 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
 	marker_pub_3 = 		nh_private.advertise<visualization_msgs::MarkerArray>("waypoints",10);
 	marker_pub_4 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacles",10);
+	marker_pub_5 = 		nh_private.advertise<visualization_msgs::Marker>("route",10);
 
 	EKF_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, EKF_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Waypoint>("/mission_coordinator/reference_state",10,waypoint_cb);
 	waypoints_sub = 	nh.subscribe<nautonomous_mpc_msgs::WaypointList>("/mission_coordinator/reference_states",10,waypoints_cb);
 	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacle>("/mission_coordinator/obstacle",10,obstacle_cb);
 	obstacles_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",10,obstacles_cb);
+	route_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route",10,route_cb);
 
-	point.header.frame_id = line_strip.header.frame_id = "/my_frame";
+	point.header.frame_id = line_strip.header.frame_id = "/map";
 	point.header.stamp = line_strip.header.stamp = ros::Time::now();
 	point.ns = line_strip.ns = "points_and_lines";
 	point.action = line_strip.action = visualization_msgs::Marker::ADD;
@@ -164,15 +186,17 @@ int main(int argc, char **argv)
 	line_strip.color.r = 1.0;
 	line_strip.color.a = 1.0;
 
-	obstacles_marker.header.frame_id = waypoint_marker.header.frame_id = obstacle_marker.header.frame_id = "/my_frame";
-	waypoint_marker.header.stamp = obstacle_marker.header.stamp = ros::Time::now();
+	route_marker.header.frame_id = obstacles_marker.header.frame_id = waypoint_marker.header.frame_id = obstacle_marker.header.frame_id = "/map";
+	route_marker.header.stamp = waypoint_marker.header.stamp = obstacle_marker.header.stamp = ros::Time::now();
 	obstacles_marker.ns = obstacle_marker.ns = "obstacle";
 	waypoint_marker.ns = "waypoints";
-	obstacles_marker.action = waypoint_marker.action = obstacle_marker.action = visualization_msgs::Marker::ADD;
-	obstacles_marker.pose.orientation.w = waypoint_marker.pose.orientation.w = obstacle_marker.pose.orientation.w = 1.0;
-    	obstacles_marker.id = waypoint_marker.id = obstacle_marker.id = 0;
+	route_marker.ns = "route";
+	route_marker.action = obstacles_marker.action = waypoint_marker.action = obstacle_marker.action = visualization_msgs::Marker::ADD;
+	route_marker.pose.orientation.w = obstacles_marker.pose.orientation.w = waypoint_marker.pose.orientation.w = obstacle_marker.pose.orientation.w = 1.0;
+    	route_marker.id = obstacles_marker.id = waypoint_marker.id = obstacle_marker.id = 0;
 	obstacles_marker.type = obstacle_marker.type = visualization_msgs::Marker::CYLINDER;
 	waypoint_marker.type = visualization_msgs::Marker::CYLINDER;
+	route_marker.type = visualization_msgs::Marker::POINTS;
 
 	obstacle_marker.scale.z = 0.5;
 	obstacle_marker.color.r = 1.0;
@@ -188,6 +212,13 @@ int main(int argc, char **argv)
 	waypoint_marker.color.g = 1.0;
 	waypoint_marker.color.a = 1.0;
 	waypoint_marker.pose.position.z = 0.0;
+
+	route_marker.scale.x = 0.2;
+	route_marker.scale.y = 0.2;
+	route_marker.scale.z = 0.2;
+	route_marker.color.b = 1.0;
+	route_marker.color.g = 1.0;
+	route_marker.color.a = 1.0;
 
 	ros::spin();
 }

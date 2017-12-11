@@ -170,7 +170,7 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	position.pose.orientation = toQuaternion(0, 0, next_state.theta);
 	
 	position.header.stamp = ros::Time::now();
-	position.header.frame_id = "/my_frame";
+	position.header.frame_id = "/map";
 	odom_pub.publish(position);
 }
 

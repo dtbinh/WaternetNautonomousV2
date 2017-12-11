@@ -2,15 +2,15 @@
 #include "vector"
 #include "cmath"
 #include "nautonomous_mpc_msgs/StageVariable.h"
+#include "nautonomous_mpc_msgs/WaypointList.h"
+#include "nautonomous_mpc_msgs/Waypoint.h"
 #include "nautonomous_mpc_msgs/Route.h"
 #include "nautonomous_mpc_msgs/Obstacle.h"
 #include "nautonomous_mpc_msgs/Obstacles.h"
 #include "geometry_msgs/Point.h"
-#include "visualization_msgs/Marker.h"
-#include <visualization_msgs/MarkerArray.h>
-#include <nautonomous_mpc_msgs/Obstacles.h>
 #include "nav_msgs/Odometry.h"
 #include "sensor_msgs/Imu.h"
+#include <std_msgs/Float64.h>
 
 int Stage = 1;
 int Next_stage = 1;
@@ -19,6 +19,9 @@ int length;
 float temp_x;
 float temp_y;
 float ellipse_value;
+
+double ellipse_x1;
+double ellipse_x2;
 
 bool Blocking_obstacle_found = false;
 bool Obstacle_still_blocking = false;
@@ -42,28 +45,41 @@ double FF2 = 0.0525;
 double FF3 = -0.0408;
 double FF4 = 0;
 
+double ref_velocity;
+double safety_margin;
+
+bool use_fuzzy;
+int number_of_fuzzy_waypoints;
+
+int maximum_accepted_waypoint_error;
+int minimum_waypoint_error;
+double decrease_waypoint_error;
+double waypoint_error;
+
+std_msgs::Float64 Uncertainty;
+
 ros::Publisher current_state_pub;
 ros::Publisher ref_pub;
+ros::Publisher refs_pub;
 ros::Publisher obstacle_pub;
+ros::Publisher obstacles_pub;
 ros::Publisher start_pub;
 ros::Publisher ekf_pub;
-ros::Publisher marker_pub;
-ros::Publisher marker_pub_2;
 ros::Publisher action_pub;
 
 ros::Subscriber next_state_sub;
 ros::Subscriber EKF_sub;
 ros::Subscriber waypoint_sub;
-ros::Subscriber imu_sub;
-ros::Subscriber gps_sub;
 ros::Subscriber obstacle_sub;
 
-nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable mpc_state;
-nautonomous_mpc_msgs::StageVariable waypoint_state;
+nautonomous_mpc_msgs::StageVariable temp_state;
 nautonomous_mpc_msgs::StageVariable starting_state;
-nautonomous_mpc_msgs::StageVariable intermediate_state;
+
+nautonomous_mpc_msgs::Waypoint intermediate_state;
+nautonomous_mpc_msgs::Waypoint waypoint_state;
+nautonomous_mpc_msgs::WaypointList multi_reference_states;
 
 nautonomous_mpc_msgs::Obstacles obstacles;
 nautonomous_mpc_msgs::Obstacle obstacle;
@@ -72,11 +88,6 @@ nautonomous_mpc_msgs::Obstacle closest_obstacle;
 nautonomous_mpc_msgs::Route Intermediate_route;
 nautonomous_mpc_msgs::Route Temp_route;
 
-visualization_msgs::Marker line_strip;
-visualization_msgs::Marker point;
-visualization_msgs::Marker obstacle_marker;
-visualization_msgs::MarkerArray obstacle_array;
-
 geometry_msgs::Point p;
 geometry_msgs::Quaternion q;
 geometry_msgs::Twist action;
@@ -84,8 +95,10 @@ geometry_msgs::Twist action;
 nav_msgs::Odometry Position;
 sensor_msgs::Imu Imu;
 
-std::vector<float> waypoint_x = {70,  50, 25, 40};
-std::vector<float> waypoint_y = {80, 100, 50, 35};
+std::vector<double> start_x, start_y, start_theta, u, v, omega, major_semiaxis, minor_semiaxis;
+
+std::vector<float> waypoint_x;
+std::vector<float> waypoint_y;
 int waypoint_stage = 0;
 int intermediate_stage = 0;
 
@@ -107,27 +120,8 @@ void toQuaternion(double pitch, double roll, double yaw)
 
 void Initialization () // State 1
 {
-	current_state.x = 50;
-	current_state.y = 40;
-	
-	for (int i = 0; i < obstacles.Nobstacles; i++)
-	{
-		obstacle = obstacles.obstacles[i];
-		obstacle_marker.scale.x = obstacle.major_semiaxis * 2;
-		obstacle_marker.scale.y = obstacle.minor_semiaxis * 2;
-		obstacle_marker.scale.z = 0.5;
-
-		obstacle_marker.pose.position.x = obstacle.state.pose.position.x;
-      		obstacle_marker.pose.position.y = obstacle.state.pose.position.y;
-      		obstacle_marker.pose.position.z = -0.5;
-		toQuaternion(obstacle.state.pose.orientation.x, obstacle.state.pose.orientation.y, obstacle.state.pose.orientation.z);
-		obstacle_marker.pose.orientation = q;
-		obstacle_marker.ns = i + 65;
-
-		obstacle_array.markers.push_back(obstacle_marker);
-	}
-    	marker_pub_2.publish(obstacle_array);
-
+	current_state.x = 0;
+	current_state.y = 0;
 
 	Next_stage = 2;
 }
@@ -137,31 +131,36 @@ void Select_waypoint() // State 2
 	starting_state = current_state;
 
 	if (waypoint_stage == waypoint_x.size()){waypoint_stage = 0;}
-	waypoint_state.x = waypoint_x[waypoint_stage];
-	waypoint_state.y = waypoint_y[waypoint_stage];
-	std::cout << "Waypoint: " << waypoint_state.x  <<","<< waypoint_state.y << std::endl;
+	waypoint_state.stage.x = waypoint_x[waypoint_stage];
+	waypoint_state.stage.y = waypoint_y[waypoint_stage];
+	std::cout << "Waypoint: " << waypoint_state.stage.x  <<","<< waypoint_state.stage.y << std::endl;
 	std::cout << "Current: " << current_state.x  <<","<< current_state.y << std::endl;
 	Next_stage = 3;
 }
 
 void Determine_closest_blocking_obstacle() // State 3
 {
+	waypoint_error = minimum_waypoint_error;
 	Blocking_obstacle_found = false;
-	float dist = sqrt(pow(waypoint_state.x - starting_state.x,2) + pow(waypoint_state.y - starting_state.y,2));
-	float theta = atan2(waypoint_state.y - starting_state.y,waypoint_state.x - starting_state.x);
+	float dist = sqrt(pow(waypoint_state.stage.x - starting_state.x,2) + pow(waypoint_state.stage.y - starting_state.y,2));
+	float theta = atan2(waypoint_state.stage.y - starting_state.y,waypoint_state.stage.x - starting_state.x);
 	float max_dist = 1e10;
 	
 	for ( int j = 0; j < obstacles.Nobstacles; j++)
 	{
 		obstacle = obstacles.obstacles[j];
 		std::cout << "Obstacle: " << obstacle << std::endl;
-		temp_x = starting_state.x;
-		temp_y = starting_state.y;
+
 		for ( double i = 0; i < dist; i+=0.1)
 		{
-			temp_x+= 0.1 * cos(theta);
-			temp_y+= 0.1 * sin(theta);
-			ellipse_value = pow((obstacle.state.pose.position.x - temp_x)/obstacle.major_semiaxis,2) + pow((obstacle.state.pose.position.y - temp_y)/obstacle.minor_semiaxis,2);
+			temp_x= current_state.x + i * cos(theta);
+			temp_y= current_state.y + i * sin(theta);
+
+			ellipse_x1 = obstacle.state.pose.position.x - temp_x;
+			ellipse_x2 = obstacle.state.pose.position.y - temp_y;
+
+			ellipse_value = pow((cos(obstacle.state.pose.orientation.z) * ellipse_x1 + sin(obstacle.state.pose.orientation.z) * ellipse_x2)/obstacle.major_semiaxis,2) + pow((-sin(obstacle.state.pose.orientation.z) * ellipse_x1 + cos(obstacle.state.pose.orientation.z) * ellipse_x2)/obstacle.minor_semiaxis,2);
+
 			std::cout << "Ellipse value: " << ellipse_value << std::endl;
 			if (ellipse_value < 1)
 			{
@@ -172,6 +171,7 @@ void Determine_closest_blocking_obstacle() // State 3
 					max_dist = dist_to_obstacle;
 					closest_obstacle = obstacle;
 					std::cout << "Close obstacle found" << std::endl;
+					waypoint_error = maximum_accepted_waypoint_error;
 					i = dist;
 				}
 			}
@@ -180,7 +180,7 @@ void Determine_closest_blocking_obstacle() // State 3
 	if (Blocking_obstacle_found){
 		Next_stage = 4; 
 		obstacle_pub.publish(closest_obstacle);
-		ros::Duration(1).sleep();
+		//ros::Duration(1).sleep();
 	}
 	else {
 		Next_stage = 11;
@@ -209,15 +209,19 @@ int Determine_length_of_route() // State 6
 	while  (Obstacle_still_blocking && i < Temp_route.waypoints.size())
 	{
 		Obstacle_still_blocking = false;
-		temp_x = starting_state.x;
-		temp_y = starting_state.y;
-		float dist = sqrt(pow(waypoint_state.x - Temp_route.waypoints[i].x,2) + pow(waypoint_state.y - Temp_route.waypoints[i].y,2));
-		float theta = atan2(waypoint_state.y - Temp_route.waypoints[i].y,waypoint_state.x - Temp_route.waypoints[i].x);
+		float dist = sqrt(pow(waypoint_state.stage.x - Temp_route.waypoints[i].x,2) + pow(waypoint_state.stage.y - Temp_route.waypoints[i].y,2));
+		float theta = atan2(waypoint_state.stage.y - Temp_route.waypoints[i].y,waypoint_state.stage.x - Temp_route.waypoints[i].x);
+
 		for (double j = 0; j < dist; j+=0.1)
 		{
-			temp_x+= 0.1 * cos(theta);
-			temp_y+= 0.1 * sin(theta);
-			ellipse_value = pow((closest_obstacle.state.pose.position.x - temp_x)/closest_obstacle.major_semiaxis,2) + pow((closest_obstacle.state.pose.position.y - temp_y)/closest_obstacle.minor_semiaxis,2);
+			temp_x= Temp_route.waypoints[i].x + j * cos(theta);
+			temp_y= Temp_route.waypoints[i].y + j * sin(theta);
+ 			
+			ellipse_x1 = closest_obstacle.state.pose.position.x - temp_x;
+			ellipse_x2 = closest_obstacle.state.pose.position.y - temp_y;
+
+			ellipse_value = pow((cos(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + sin(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/(closest_obstacle.major_semiaxis+safety_margin),2) + pow((-sin(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + cos(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/(closest_obstacle.minor_semiaxis+safety_margin),2);
+
 			if (ellipse_value < 1)
 			{
 				Obstacle_still_blocking = true;
@@ -227,14 +231,10 @@ int Determine_length_of_route() // State 6
 		Intermediate_route.waypoints.push_back(Temp_route.waypoints[i]);
 		i++;
 	}
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+1]);
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+2]);
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+3]);
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+4]);
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+5]);
+	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i]);
 	Next_stage = 7;
 	std::cout << "Route: " << Intermediate_route << std::endl;
-	length = intermediate_stage + i + 4; 
+	length = intermediate_stage + i; 
 	intermediate_stage++;
 }
 
@@ -246,20 +246,37 @@ void Initialize_MPC() // State 7
 
 void Send_action_request() // State 8
 {
-	intermediate_state.x = Intermediate_route.waypoints[intermediate_stage].x;
-	intermediate_state.y = Intermediate_route.waypoints[intermediate_stage].y;	
-	std::cout << "Stage: " << intermediate_stage <<  " Reference: " << intermediate_state.x <<","<<intermediate_state.y << std::endl;
+	intermediate_state.stage.x = Intermediate_route.waypoints[intermediate_stage].x;
+	intermediate_state.stage.y = Intermediate_route.waypoints[intermediate_stage].y;	
+	std::cout << "Stage: " << intermediate_stage <<  " Reference: " << intermediate_state.stage.x <<","<<intermediate_state.stage.y << std::endl;
 	std::cout << "Current: " << current_state.x <<","<<current_state.y << std::endl;
-	ref_pub.publish(intermediate_state);
+	intermediate_state.stage.u = ref_velocity/3.6;
+
+	if (not(use_fuzzy))
+	{
+		std::cout << "Don't use fuzzy" << std::endl;
+		intermediate_state.Uncertainty.data = waypoint_error;
+		ref_pub.publish(intermediate_state);
+	}
+	else 
+	{
+		std::cout << "Use fuzzy" << std::endl;
+		multi_reference_states.stages.clear();
+		multi_reference_states.Uncertainty.clear();
+		for (int i = 0; i < fmin(5,Intermediate_route.waypoints.size() - intermediate_stage); i++)
+		{
+			std::cout << "Waypoint[" << i << "]" << std::endl;
+			temp_state.x = Intermediate_route.waypoints[intermediate_stage+i].x;
+			temp_state.y = Intermediate_route.waypoints[intermediate_stage+i].y;
+			temp_state.u = ref_velocity/3.6;
+			multi_reference_states.stages.push_back(temp_state);
+			Uncertainty.data = fmax(waypoint_error - i * decrease_waypoint_error, 1);
+			multi_reference_states.Uncertainty.push_back(Uncertainty);
+		}
+		refs_pub.publish(multi_reference_states);
+	}
 	current_state_pub.publish(current_state); 
 	Next_stage = 9;
-	
-	p.x = intermediate_state.x;
-      	p.y = intermediate_state.y;
-
-      	point.points.push_back(p);
-
-    	marker_pub.publish(point);
 }
 
 void Wait_for_action() // State 9
@@ -273,10 +290,10 @@ void Intermediate_point_reached_check() // State 10
 {
 	Waypoint_reached = false;
 	Intermediate_point_reached = false;
-	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
-	float dist_to_intermediate = sqrt(pow(intermediate_state.x - current_state.x,2) + pow(intermediate_state.y - current_state.y,2));
-	if (dist_to_waypoint < 5){Waypoint_reached = true;}
-	if (dist_to_intermediate < 5){Intermediate_point_reached = true;}
+	float dist_to_waypoint = sqrt(pow(waypoint_state.stage.x - current_state.x,2) + pow(waypoint_state.stage.y - current_state.y,2));
+	float dist_to_intermediate = sqrt(pow(intermediate_state.stage.x - current_state.x,2) + pow(intermediate_state.stage.y - current_state.y,2));
+	if (dist_to_waypoint < waypoint_error){Waypoint_reached = true;}
+	if (dist_to_intermediate < waypoint_error){Intermediate_point_reached = true;}
 	if (Waypoint_reached){
 		Next_stage = 2;
 		std::cout << "Waypoint reached" << std::endl;
@@ -294,6 +311,7 @@ void Intermediate_point_reached_check() // State 10
 		std::cout << "Intermediate point reached" << std::endl;
 		Next_stage = 12;
 		intermediate_stage++;
+		waypoint_error = fmax(minimum_waypoint_error, waypoint_error-decrease_waypoint_error);
 	}
 	else
 	{
@@ -317,16 +335,10 @@ void Wait_for_Kalman_filter() // State 13
 
 void MPC_route_without_obstacle() // State 11
 {
-	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
-	float theta = atan2(waypoint_state.y - current_state.y,waypoint_state.x - current_state.x);
-	for (int i = 10; i < dist_to_waypoint; i+=10)
-	{
-		p.x = current_state.x + i * cos(theta);
-		p.y = current_state.y + i * sin(theta);
-		Intermediate_route.waypoints.push_back(p);
-	}
-	p.x = waypoint_state.x;
-	p.y = waypoint_state.y;
+	float dist_to_waypoint = sqrt(pow(waypoint_state.stage.x - current_state.x,2) + pow(waypoint_state.stage.y - current_state.y,2));
+	float theta = atan2(waypoint_state.stage.y - current_state.y,waypoint_state.stage.x - current_state.x);
+	p.x = waypoint_state.stage.x;
+	p.y = waypoint_state.stage.y;
 	Intermediate_route.waypoints.push_back(p);
 	std::cout << "Route: " << Intermediate_route << std::endl;
 	Next_stage = 8;
@@ -364,29 +376,7 @@ void EKF_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 	p.x = current_state.x;
       	p.y = current_state.y;
 
-      	line_strip.points.push_back(p);
-
-    	marker_pub.publish(line_strip);
 	std::cout << "Current state: " << current_state <<std::endl;
-}
-
-void gps_cb(const nav_msgs::Odometry::ConstPtr& pos_msg)
-{
-	Position = *pos_msg;
-	start_state.x = Position.pose.pose.position.x;
-	start_state.y = Position.pose.pose.position.y;
-}
-
-void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
-{
-	Imu = *imu_msg;
-	float q0 = Imu.orientation.w;
-	float q1 = Imu.orientation.x;
-	float q2 = Imu.orientation.y;
-	float q3 = Imu.orientation.z;
-
-	
-	start_state.theta = - atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
 }
 
 void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg)
@@ -401,56 +391,54 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
+	ros::Duration(5).sleep();
+
+	nh_private.getParam("reference/velocity", ref_velocity);
+	nh_private.getParam("safety_margin", safety_margin);
+	nh_private.getParam("number_of_fuzzy_waypoints", number_of_fuzzy_waypoints);
+	nh_private.getParam("use_fuzzy", use_fuzzy);
+
+	nh_private.getParam("waypoint_error/maximum_accepted_waypoint_error", maximum_accepted_waypoint_error);
+	nh_private.getParam("waypoint_error/minimum_waypoint_error", minimum_waypoint_error);
+	nh_private.getParam("waypoint_error/decrease_waypoint_error", decrease_waypoint_error);
+
+	nh_private.getParam("waypoints_x", waypoint_x);
+	ROS_ASSERT(waypoint_x.size() != 0);
+	nh_private.getParam("waypoints_y", waypoint_y);
+	ROS_ASSERT(waypoint_x.size() == waypoint_y.size());
+
+	nh_private.getParam("obstacles/start_x", start_x);
+	ROS_ASSERT(start_x.size() != 0);
+	nh_private.getParam("obstacles/start_y", start_y);
+	ROS_ASSERT(start_x.size() == start_y.size());
+	nh_private.getParam("obstacles/start_theta", start_theta);
+	ROS_ASSERT(start_x.size() == start_theta.size());
+	nh_private.getParam("obstacles/u", u);
+	ROS_ASSERT(start_x.size() == u.size());
+	nh_private.getParam("obstacles/v", v);
+	ROS_ASSERT(start_x.size() == v.size());
+	nh_private.getParam("obstacles/omega", omega);
+	ROS_ASSERT(start_x.size() == omega.size());
+	nh_private.getParam("obstacles/major_semiaxis", major_semiaxis);
+	ROS_ASSERT(start_x.size() == major_semiaxis.size());
+	nh_private.getParam("obstacles/minor_semiaxis", minor_semiaxis);
+	ROS_ASSERT(start_x.size() == minor_semiaxis.size());
 
 	current_state_pub = 	nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("current_state",10);
-	ref_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("reference_state",10);
+	ref_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Waypoint>("reference_state",10);
+	refs_pub = 		nh_private.advertise<nautonomous_mpc_msgs::WaypointList>("reference_states",10);
 	obstacle_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Obstacle>("obstacle",10);
+	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start",10);
 	ekf_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_ekf",10);
-	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
-	marker_pub_2 = 		nh_private.advertise<visualization_msgs::MarkerArray>("obstacle_marker", 10);
 	action_pub = 		nh_private.advertise<geometry_msgs::Twist>("/actuation/propulsion/mission_coordinator/cmd_vel", 10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state",10, action_cb);
 	EKF_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, EKF_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
-	imu_sub = 		nh.subscribe<sensor_msgs::Imu>("/sensor/imu/imu",10,imu_cb);
-	gps_sub = 		nh.subscribe<nav_msgs::Odometry>("/state/odom/utm",10,gps_cb);
-//	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obsacles",10,obstacle_cb);
+	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obsacles",10,obstacle_cb);
 
-	ros::Rate loop_rate(100);
-
-	point.header.frame_id = line_strip.header.frame_id = "/map";
-	point.header.stamp = line_strip.header.stamp = ros::Time::now();
-	point.ns = line_strip.ns = "points_and_lines";
-	point.action = line_strip.action = visualization_msgs::Marker::ADD;
-	point.pose.orientation.w = line_strip.pose.orientation.w = 1.0;
-    	point.id = 0;
-	line_strip.id = 1;
-    	line_strip.type = visualization_msgs::Marker::LINE_STRIP;
-	point.type = visualization_msgs::Marker::POINTS;
-
-	point.scale.x = 0.5;
-	point.scale.y = 0.5;
-	point.color.g = 1.0;
-	point.color.a = 1.0;
-
-	line_strip.scale.x = 0.1;
-	line_strip.color.r = 1.0;
-	line_strip.color.a = 1.0;
-
-	obstacle_marker.header.frame_id = "/map";
-	obstacle_marker.header.stamp = ros::Time::now();
-	obstacle_marker.ns = "points_and_lines";
-	obstacle_marker.action = visualization_msgs::Marker::ADD;
-	obstacle_marker.pose.orientation.w = 1.0;
-    	obstacle_marker.id = 0;
-	obstacle_marker.type = visualization_msgs::Marker::CYLINDER;
-
-	obstacle_marker.scale.z = 0.5;
-	obstacle_marker.color.r = 1.0;
-	obstacle_marker.color.b = 1.0;
-	obstacle_marker.color.a = 1.0;
+	ros::Rate loop_rate(70);
 
 	ros::Duration(5).sleep();
 
