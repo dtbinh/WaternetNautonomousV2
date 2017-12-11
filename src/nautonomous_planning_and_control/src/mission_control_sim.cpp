@@ -2,6 +2,8 @@
 #include "vector"
 #include "cmath"
 #include "nautonomous_mpc_msgs/StageVariable.h"
+#include "nautonomous_mpc_msgs/WaypointList.h"
+#include "nautonomous_mpc_msgs/Waypoint.h"
 #include "nautonomous_mpc_msgs/Route.h"
 #include "nautonomous_mpc_msgs/Obstacle.h"
 #include "nautonomous_mpc_msgs/Obstacles.h"
@@ -42,12 +44,25 @@ double FF3 = -0.0408;
 double FF4 = 0;
 
 double ref_velocity;
+double safety_margin;
+
+bool use_fuzzy;
+int number_of_fuzzy_waypoints;
+
+int maximum_accepted_waypoint_error;
+int minimum_waypoint_error;
+double decrease_waypoint_error;
+double waypoint_error;
+
+std_msgs::Float64 Uncertainty;
 
 ros::Publisher current_state_pub;
 ros::Publisher ref_pub;
+ros::Publisher refs_pub;
 ros::Publisher obstacle_pub;
 ros::Publisher start_pub;
 ros::Publisher ekf_pub;
+ros::Publisher obstacles_pub;
 
 ros::Subscriber next_state_sub;
 ros::Subscriber EKF_sub;
@@ -55,9 +70,12 @@ ros::Subscriber waypoint_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable mpc_state;
-nautonomous_mpc_msgs::StageVariable waypoint_state;
 nautonomous_mpc_msgs::StageVariable starting_state;
-nautonomous_mpc_msgs::StageVariable intermediate_state;
+nautonomous_mpc_msgs::StageVariable temp_state;
+
+nautonomous_mpc_msgs::Waypoint intermediate_state;
+nautonomous_mpc_msgs::Waypoint waypoint_state;
+nautonomous_mpc_msgs::WaypointList multi_reference_states;
 
 nautonomous_mpc_msgs::Obstacles obstacles;
 nautonomous_mpc_msgs::Obstacle obstacle;
@@ -114,6 +132,8 @@ void Initialization () // State 1
 		obstacles.obstacles.push_back(obstacle);
 	}
 
+	obstacles_pub.publish(obstacles);
+
 	Next_stage = 2;
 }
 
@@ -124,17 +144,18 @@ void Select_waypoint() // State 2
 	if (waypoint_stage == waypoint_x.size()){Next_stage = 14;}
 	else {Next_stage = 3;}
 
-	waypoint_state.x = waypoint_x[waypoint_stage];
-	waypoint_state.y = waypoint_y[waypoint_stage];
-	std::cout << "Waypoint: " << waypoint_state.x  <<","<< waypoint_state.y << std::endl;
+	waypoint_state.stage.x = waypoint_x[waypoint_stage];
+	waypoint_state.stage.y = waypoint_y[waypoint_stage];
+	std::cout << "Waypoint: " << waypoint_state.stage.x  <<","<< waypoint_state.stage.y << std::endl;
 	std::cout << "Current: " << current_state.x  <<","<< current_state.y << std::endl;
 }
 
 void Determine_closest_blocking_obstacle() // State 3
 {
+	waypoint_error = minimum_waypoint_error;
 	Blocking_obstacle_found = false;
-	float dist = sqrt(pow(waypoint_state.x - starting_state.x,2) + pow(waypoint_state.y - starting_state.y,2));
-	float theta = atan2(waypoint_state.y - starting_state.y,waypoint_state.x - starting_state.x);
+	float dist = sqrt(pow(waypoint_state.stage.x - starting_state.x,2) + pow(waypoint_state.stage.y - starting_state.y,2));
+	float theta = atan2(waypoint_state.stage.y - starting_state.y,waypoint_state.stage.x - starting_state.x);
 	float max_dist = 1e10;
 
 	for ( int j = 0; j < obstacles.Nobstacles; j++)
@@ -162,6 +183,7 @@ void Determine_closest_blocking_obstacle() // State 3
 					max_dist = dist_to_obstacle;
 					closest_obstacle = obstacle;
 					std::cout << "Close obstacle found" << std::endl;
+					waypoint_error = maximum_accepted_waypoint_error;
 					i = dist;
 				}
 			}
@@ -201,8 +223,8 @@ int Determine_length_of_route() // State 6
 		Obstacle_still_blocking = false;
 		std::cout << "Closest obstacle: " << closest_obstacle << std::endl;
 		std::cout << "State: " << Temp_route.waypoints[i] << std::endl;
-		float dist = sqrt(pow(waypoint_state.x - Temp_route.waypoints[i].x,2) + pow(waypoint_state.y - Temp_route.waypoints[i].y,2));
-		float theta = atan2(waypoint_state.y - Temp_route.waypoints[i].y,waypoint_state.x - Temp_route.waypoints[i].x);
+		float dist = sqrt(pow(waypoint_state.stage.x - Temp_route.waypoints[i].x,2) + pow(waypoint_state.stage.y - Temp_route.waypoints[i].y,2));
+		float theta = atan2(waypoint_state.stage.y - Temp_route.waypoints[i].y,waypoint_state.stage.x - Temp_route.waypoints[i].x);
 
 		for (double j = 0; j < dist; j+=0.1)
 		{
@@ -212,7 +234,7 @@ int Determine_length_of_route() // State 6
 			ellipse_x1 = closest_obstacle.state.pose.position.x - temp_x;
 			ellipse_x2 = closest_obstacle.state.pose.position.y - temp_y;
 
-			ellipse_value = pow((cos(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + sin(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/closest_obstacle.major_semiaxis,2) + pow((-sin(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + cos(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/closest_obstacle.minor_semiaxis,2);
+			ellipse_value = pow((cos(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + sin(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/(closest_obstacle.major_semiaxis+safety_margin),2) + pow((-sin(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + cos(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/(closest_obstacle.minor_semiaxis+safety_margin),2);
 
 			if (ellipse_value < 1)
 			{
@@ -225,12 +247,9 @@ int Determine_length_of_route() // State 6
 		i++;
 	}
 	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i]);
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+1]);
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+2]);
-	Intermediate_route.waypoints.push_back(Temp_route.waypoints[i+3]);
 	Next_stage = 7;
 	std::cout << "Route: " << Intermediate_route << std::endl;
-	length = intermediate_stage + i + 3; 
+	length = intermediate_stage + i; 
 	intermediate_stage++;
 }
 
@@ -242,12 +261,35 @@ void Initialize_MPC() // State 7
 
 void Send_action_request() // State 8
 {
-	intermediate_state.x = Intermediate_route.waypoints[intermediate_stage].x;
-	intermediate_state.y = Intermediate_route.waypoints[intermediate_stage].y;	
-	std::cout << "Stage: " << intermediate_stage <<  " Reference: " << intermediate_state.x <<","<<intermediate_state.y << std::endl;
+	intermediate_state.stage.x = Intermediate_route.waypoints[intermediate_stage].x;
+	intermediate_state.stage.y = Intermediate_route.waypoints[intermediate_stage].y;	
+	std::cout << "Intermediate stage: " << intermediate_stage <<  " Reference: " << intermediate_state.stage.x <<","<<intermediate_state.stage.y << std::endl;
 	std::cout << "Current: " << current_state.x <<","<<current_state.y << std::endl;
-	intermediate_state.u = ref_velocity/3.6;
-	ref_pub.publish(intermediate_state);
+	intermediate_state.stage.u = ref_velocity/3.6;
+
+	if (not(use_fuzzy))
+	{
+		std::cout << "Don't use fuzzy" << std::endl;
+		intermediate_state.Uncertainty.data = waypoint_error;
+		ref_pub.publish(intermediate_state);
+	}
+	else 
+	{
+		std::cout << "Use fuzzy" << std::endl;
+		multi_reference_states.stages.clear();
+		multi_reference_states.Uncertainty.clear();
+		for (int i = 0; i < fmin(5,Intermediate_route.waypoints.size() - intermediate_stage); i++)
+		{
+			std::cout << "Waypoint[" << i << "]" << std::endl;
+			temp_state.x = Intermediate_route.waypoints[intermediate_stage+i].x;
+			temp_state.y = Intermediate_route.waypoints[intermediate_stage+i].y;
+			temp_state.u = ref_velocity/3.6;
+			multi_reference_states.stages.push_back(temp_state);
+			Uncertainty.data = fmax(waypoint_error - i * decrease_waypoint_error, 1);
+			multi_reference_states.Uncertainty.push_back(Uncertainty);
+		}
+		refs_pub.publish(multi_reference_states);
+	}
 	current_state_pub.publish(current_state); 
 	Next_stage = 9;
 }
@@ -263,10 +305,10 @@ void Intermediate_point_reached_check() // State 10
 {
 	Waypoint_reached = false;
 	Intermediate_point_reached = false;
-	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
-	float dist_to_intermediate = sqrt(pow(intermediate_state.x - current_state.x,2) + pow(intermediate_state.y - current_state.y,2));
-	if (dist_to_waypoint < 1){Waypoint_reached = true;}
-	if (dist_to_intermediate < 1){Intermediate_point_reached = true;}
+	float dist_to_waypoint = sqrt(pow(waypoint_state.stage.x - current_state.x,2) + pow(waypoint_state.stage.y - current_state.y,2));
+	float dist_to_intermediate = sqrt(pow(intermediate_state.stage.x - current_state.x,2) + pow(intermediate_state.stage.y - current_state.y,2));
+	if (dist_to_waypoint < waypoint_error){Waypoint_reached = true;}
+	if (dist_to_intermediate < waypoint_error){Intermediate_point_reached = true;}
 	if (Waypoint_reached){
 		Next_stage = 2;
 		std::cout << "Waypoint reached" << std::endl;
@@ -284,6 +326,7 @@ void Intermediate_point_reached_check() // State 10
 		std::cout << "Intermediate point reached" << std::endl;
 		Next_stage = 12;
 		intermediate_stage++;
+		waypoint_error = fmax(minimum_waypoint_error, waypoint_error-decrease_waypoint_error);
 	}
 	else
 	{
@@ -307,10 +350,10 @@ void Wait_for_Kalman_filter() // State 13
 
 void MPC_route_without_obstacle() // State 11
 {
-	float dist_to_waypoint = sqrt(pow(waypoint_state.x - current_state.x,2) + pow(waypoint_state.y - current_state.y,2));
-	float theta = atan2(waypoint_state.y - current_state.y,waypoint_state.x - current_state.x);
-	p.x = waypoint_state.x;
-	p.y = waypoint_state.y;
+	float dist_to_waypoint = sqrt(pow(waypoint_state.stage.x - current_state.x,2) + pow(waypoint_state.stage.y - current_state.y,2));
+	float theta = atan2(waypoint_state.stage.y - current_state.y,waypoint_state.stage.x - current_state.x);
+	p.x = waypoint_state.stage.x;
+	p.y = waypoint_state.stage.y;
 	Intermediate_route.waypoints.push_back(p);
 	std::cout << "Route: " << Intermediate_route << std::endl;
 	Next_stage = 8;
@@ -351,13 +394,22 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
-	ros::Duration(1).sleep();
+	ros::Duration(5).sleep();
 
 	nh_private.getParam("reference/velocity", ref_velocity);
+	nh_private.getParam("safety_margin", safety_margin);
+	nh_private.getParam("number_of_fuzzy_waypoints", number_of_fuzzy_waypoints);
+	nh_private.getParam("use_fuzzy", use_fuzzy);
+
+	nh_private.getParam("waypoint_error/maximum_accepted_waypoint_error", maximum_accepted_waypoint_error);
+	nh_private.getParam("waypoint_error/minimum_waypoint_error", minimum_waypoint_error);
+	nh_private.getParam("waypoint_error/decrease_waypoint_error", decrease_waypoint_error);
+
 	nh_private.getParam("waypoints_x", waypoint_x);
 	ROS_ASSERT(waypoint_x.size() != 0);
 	nh_private.getParam("waypoints_y", waypoint_y);
 	ROS_ASSERT(waypoint_x.size() == waypoint_y.size());
+
 	nh_private.getParam("obstacles/start_x", start_x);
 	ROS_ASSERT(start_x.size() != 0);
 	nh_private.getParam("obstacles/start_y", start_y);
@@ -376,8 +428,10 @@ int main(int argc, char **argv)
 	ROS_ASSERT(start_x.size() == minor_semiaxis.size());
 
 	current_state_pub = 	nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("current_state",10);
-	ref_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("reference_state",10);
+	ref_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Waypoint>("reference_state",10);
+	refs_pub = 		nh_private.advertise<nautonomous_mpc_msgs::WaypointList>("reference_states",10);
 	obstacle_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Obstacle>("obstacle",10);
+	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start",10);
 	ekf_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_ekf",10);
 

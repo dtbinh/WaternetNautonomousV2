@@ -3,13 +3,17 @@
 #include <geometry_msgs/Point.h>
 #include <cmath>
 #include <nautonomous_mpc_msgs/StageVariable.h>
+#include <nautonomous_mpc_msgs/Waypoint.h>
+#include <nautonomous_mpc_msgs/WaypointList.h>
 #include <Eigenvalues>
 
 using namespace Eigen;
 
 nautonomous_mpc_msgs::StageVariable current_state;
-nautonomous_mpc_msgs::StageVariable reference_state;
 nautonomous_mpc_msgs::StageVariable temp_state;
+
+nautonomous_mpc_msgs::Waypoint reference_state;
+nautonomous_mpc_msgs::WaypointList reference_states;
 
 ros::Publisher action_pub;
 
@@ -31,6 +35,17 @@ double max_uf;
 double min_ut;
 double min_uf;
 
+bool use_fuzzy;
+int number_of_fuzzy_waypoints;
+double fuzzy_min_distance;
+double fuzzy_max_distance;
+double fuzzy_partition;
+double fuzzy_total_partition;
+double fuzzy_cut_distance;
+
+double temp_ut;
+double temp_uf;
+
 MatrixXd Transformation(4,4);
 
 VectorXd temp(4);
@@ -38,13 +53,10 @@ VectorXd temp(4);
 /* A template for testing of the solver. */
 void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 {
+	std::cout << "Start PID" << std::endl;
+
 	current_state = *state_msg;
 	
-	temp[0] = reference_state.x;
-	temp[1] = reference_state.y;
-	temp[2] = 0;
-	temp[3] = 1;
-
 	Transformation(0,0) = cos(current_state.theta);
 	Transformation(0,1) = -sin(current_state.theta);
 	Transformation(1,0) = sin(current_state.theta);
@@ -54,45 +66,168 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 	Transformation(0,3) = current_state.x;
 	Transformation(1,3) = current_state.y;
 
-	temp = Transformation.inverse() * temp;
 
-	a1 = temp[0];
-	a2 = temp[1];
-
-	theta_error = atan2(a2,a1);
-
-	if (a1 < 0)
+	if (not(use_fuzzy))
 	{
-		uf = 0;
-		ut = copysign(1,a2);
-		std::cout << "Facing the wrong way" << std::endl;
+		std::cout << "Don't use fuzzy" << std::endl;
+		temp[0] = reference_state.stage.x;
+		temp[1] = reference_state.stage.y;
+		temp[2] = 0;
+		temp[3] = 1;
+
+		temp = Transformation.inverse() * temp;
+		a1 = temp[0];
+		a2 = temp[1];
+
+		theta_error = atan2(a2,a1);
+
+		if (a1 < 0)
+		{
+			uf = 0;
+			ut = copysign(1,a2);
+			std::cout << "Facing the wrong way" << std::endl;
+		}
+		else if (fabs(theta_error) > max_theta_error)
+		{
+			uf = 0;
+			ut = copysign(1,a2);
+			std::cout << "Angle error is too large" << std::endl;
+		}
+		else
+		{
+			uf = fmax(fmin(uf_gain*a1 + u_gain*(reference_state.stage.u - current_state.u),max_uf),min_uf);
+			ut = fmax(fmin(ut_gain*theta_error,max_ut),min_ut);
+			std::cout << "Calculating actions" << std::endl;
+		}
+
+		std::cout << "Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << uf << " Turning action: " << ut << " Theta_error: " << theta_error << std::endl;
 	}
-	else if (fabs(theta_error) > max_theta_error)
-	{
-		uf = 0;
-		ut = copysign(1,a2);
-		std::cout << "Angle error is too large" << std::endl;
-	}
+
 	else
 	{
-		uf = fmax(fmin(uf_gain*a1 + u_gain*(reference_state.u - current_state.u),max_uf),min_uf);
-		ut = fmax(fmin(ut_gain*theta_error,max_ut),min_ut);
-		std::cout << "Calculating actions" << std::endl;
+		if (!reference_states.stages.empty())
+		{
+			std::cout << "Use fuzzy" << std::endl;
+			uf = 0;
+			ut = 0;
+			fuzzy_total_partition = 0;
+
+			for (int i = 0; i < fmin(number_of_fuzzy_waypoints,reference_states.stages.size()); i++)
+			{
+				temp[0] = reference_states.stages[i].x;
+				temp[1] = reference_states.stages[i].y;
+				temp[2] = 0;
+				temp[3] = 1;
+
+				temp = Transformation.inverse() * temp;
+				a1 = temp[0];
+				a2 = temp[1];
+
+				theta_error = atan2(a2,a1);
+/*				if (i == 0)
+				{
+					if (a1 < 0)
+					{
+						uf = 0;
+						ut = copysign(1,a2);
+						fuzzy_total_partition = 1;
+						std::cout << "Facing the wrong way" << std::endl;
+						break;
+					}
+					else if (fabs(theta_error) > max_theta_error)
+					{
+						uf = 0;
+						ut = copysign(1,a2);
+						fuzzy_total_partition = 1;
+						std::cout << "Angle error is too large" << std::endl;
+						break;
+					}
+					else
+					{
+						fuzzy_partition = fmin(a1 / fuzzy_min_distance,1);
+						fuzzy_total_partition += fuzzy_partition;
+
+						temp_uf = uf_gain*a1 + u_gain*(reference_states.stages[i].u - current_state.u);
+						temp_ut = ut_gain*theta_error;
+						uf += fuzzy_partition * temp_uf;
+						ut += fuzzy_partition * temp_ut;
+
+						std::cout << "Calculating actions" << std::endl;
+						std::cout << "Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << temp_uf << " Turning action: " << temp_ut << " Theta_error: " << theta_error << " Fuzzy partition: " << fuzzy_partition <<  std::endl;
+					}
+				}
+				else
+				{*/
+					if (i == 0)
+					{
+						fuzzy_partition = fmax(fmin(a1 / fuzzy_min_distance,1),0);
+					}
+					else
+					{
+						fuzzy_partition = fmax(fmin(fmin(a1 / fuzzy_min_distance, 1-(a1 - fuzzy_cut_distance)/(fuzzy_max_distance - fuzzy_cut_distance)),1),0);
+					}
+
+					fuzzy_total_partition += fuzzy_partition;
+
+					if (a1 < 0)
+					{
+						temp_uf = 0;
+						temp_ut = copysign(1,a2);
+						uf += fuzzy_partition * temp_uf;
+						ut += fuzzy_partition * temp_ut;
+
+						std::cout << "Facing the wrong way, ut = " << temp_ut  << std::endl;
+					}
+					else if (fabs(theta_error) > max_theta_error)
+					{
+						temp_uf = 0;
+						temp_ut = copysign(1,a2);
+						uf += fuzzy_partition * temp_uf;
+						ut += fuzzy_partition * temp_ut;
+
+						std::cout << "Angle error is too large, ut = " << temp_ut << std::endl;
+					}
+					else
+					{	
+						temp_uf = uf_gain*a1 + u_gain*(reference_states.stages[i].u - current_state.u);
+						temp_ut = ut_gain*theta_error;
+						uf += fuzzy_partition * temp_uf;
+						ut += fuzzy_partition * temp_ut;
+
+						std::cout << "Calculating actions" << std::endl;
+						std::cout << "Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << temp_uf << " Turning action: " << temp_ut << " Theta_error: " << theta_error << " Fuzzy partition: " << fuzzy_partition <<  std::endl;
+					}			
+				//}
+			}
+		}
+		else
+		{
+			std::cout << "Reference states is empty" <<std::endl;
+			uf = 0;
+			ut = 0;
+			fuzzy_total_partition = 1;
+		}
+		uf /= fuzzy_total_partition;
+		ut /= fuzzy_total_partition;
 	}
-
-	std::cout << "Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << uf << " Turning action: " << ut << " Theta_error: " << theta_error << std::endl;
-
-	temp_state.T_l = uf;
-	temp_state.T_r = ut;
+	std::cout << "Publish action" << std::endl;
+	temp_state.T_l = fmax(fmin(uf,max_uf),min_uf);
+	temp_state.T_r = fmax(fmin(ut,max_ut),min_ut);
 
 	action_pub.publish(temp_state);
+
 }
 
-void ref_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& ref_msg )
+void ref_cb( const nautonomous_mpc_msgs::Waypoint::ConstPtr& ref_msg )
 {
 	reference_state = *ref_msg;
 }
 
+void refs_cb( const nautonomous_mpc_msgs::WaypointList::ConstPtr& refs_msg )
+{
+	reference_states = *refs_msg;
+	std::cout << "Received references" << std::endl;
+}
 
 int main (int argc, char** argv)
 {
@@ -110,8 +245,15 @@ int main (int argc, char** argv)
 	nh_private.getParam("min_ut", min_ut);
 	nh_private.getParam("min_uf", min_uf);
 
+	nh_private.getParam("fuzzy/use_fuzzy", use_fuzzy);
+	nh_private.getParam("fuzzy/number_of_fuzzy_waypoints", number_of_fuzzy_waypoints);
+	nh_private.getParam("fuzzy/fuzzy_min_distance", fuzzy_min_distance);
+	nh_private.getParam("fuzzy/fuzzy_max_distance", fuzzy_max_distance);
+	nh_private.getParam("fuzzy/fuzzy_cut_distance", fuzzy_cut_distance);
+
 	ros::Subscriber state_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",10,state_cb);
-	ros::Subscriber ref_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/reference_state",1,ref_cb);
+	ros::Subscriber ref_sub = nh.subscribe<nautonomous_mpc_msgs::Waypoint>("/mission_coordinator/reference_state",1,ref_cb);
+	ros::Subscriber refs_sub = nh.subscribe<nautonomous_mpc_msgs::WaypointList>("/mission_coordinator/reference_states",1,refs_cb);
 	
 	action_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
 

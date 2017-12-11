@@ -119,7 +119,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
 		z_pos = rint(transformed_cloud->points[i].z/voxelSize)*voxelSize;
 
-		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 3) && (z_pos > 0)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
+		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 1) && (z_pos > -1)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
 		{
 			grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
 			VoxelFound = true;
@@ -540,7 +540,7 @@ void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 {
 	Boat_pos_x = rint(ekf_msg->x);
 	Boat_pos_y = rint(ekf_msg->y);
-
+/*
 	transformation1(0,3) = Boat_pos_x;
 	transformation1(1,3) = Boat_pos_y;
 
@@ -552,7 +552,7 @@ void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 	transformation2(0,0) = cos(ekf_msg->theta);
 	transformation2(0,1) = sin(ekf_msg->theta);
 	transformation2(1,0) = -sin(ekf_msg->theta);
-	transformation2(1,1) = cos(ekf_msg->theta);
+	transformation2(1,1) = cos(ekf_msg->theta);*/
 }
 
 

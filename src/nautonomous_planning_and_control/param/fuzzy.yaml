@@ -20,8 +20,8 @@ mission_coordinator:
   reference:
     velocity: 3.0
 
-  number_of_fuzzy_waypoints: 0
-  use_fuzzy: false
+  number_of_fuzzy_waypoints: 5
+  use_fuzzy: true
   safety_margin: 3.0
   frame_id: '/my_frame'
   verbose: true
@@ -44,11 +44,11 @@ PID:
   min_uf: 0
   
   fuzzy:
-    use_fuzzy: false
-    number_of_fuzzy_waypoints: 0 
-    fuzzy_min_distance: 0
-    fuzzy_max_distance: 0
-    fuzzy_cut_distance: 0
+    use_fuzzy: true
+    number_of_fuzzy_waypoints: 5
+    fuzzy_min_distance: 2
+    fuzzy_max_distance: 10
+    fuzzy_cut_distance: 5
 
 Ekf:
   disturbance: 

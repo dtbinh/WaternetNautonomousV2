@@ -10,6 +10,8 @@ find_package(catkin REQUIRED
 add_message_files(
   FILES
   StageVariable.msg
+  WaypointList.msg
+  Waypoint.msg
   CostsWN.msg
   CostsCC.msg
   Obstacle.msg
