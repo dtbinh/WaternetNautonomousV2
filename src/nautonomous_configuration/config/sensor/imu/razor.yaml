@@ -1,6 +1,6 @@
 ## USB port
 #port: /dev/nautonomous/imu
-port: /dev/tty/USB0
+port: /dev/ttyUSB0
 
 ##### Calibration ####
 ### accelerometer

@@ -1,0 +1,45 @@
+mission_coordinator:
+  waypoints_x: [  0.0, 60.0,  0.0, 0.0] #[m]
+  waypoints_y: [  100.0, 60.0, 60.0, 0.0] #[m]
+
+  obstacles:
+    start_x:        [-10, 10, -5] #[m]
+    start_y:        [30, 30, 60] #[m]
+    start_theta:    [0, 0,0] #[rad]
+    u:              [0,0,0] #[m/s]
+    v:              [0,0,0] #[m/s]
+    omega:          [0,0,0] #[rad/s]
+    major_semiaxis: [1, 1, 10] #[m]
+    minor_semiaxis: [60, 60, 1] #[m]
+
+  reference:
+    velocity: 3.0
+
+  safety_margin: 3.0
+
+  frame_id: '/my_frame'
+  verbose: true
+
+Route_generator:
+  k_max:         1.0 #
+  gamma_max:     1.0 #
+  final_time:    10 #
+  safety_margin: 3.0
+
+PID:
+  max_theta_error:           0.5
+  parallel_error_gain:       0
+  perpendicular_error_gain:  2
+  velocity_error_gain:       5
+
+  max_ut: 1
+  max_uf: 3
+  min_ut: -1
+  min_uf: 0
+  
+Ekf:
+  disturbance: 
+    fx1: 0
+    fx2: 0
+    fy1: 0
+    fy2: 0

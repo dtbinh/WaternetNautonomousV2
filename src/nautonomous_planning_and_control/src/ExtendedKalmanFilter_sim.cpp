@@ -9,9 +9,10 @@
 
 #include <Eigenvalues>
 
-#include "nav_msgs/Odometry.h"
 #include "sensor_msgs/Imu.h"
+#include <geometry_msgs/PoseStamped.h>
 
+#include <nautonomous_planning_and_control/Quaternion_conversion.h>
 
 using namespace std;
 using namespace Eigen;
@@ -24,12 +25,14 @@ ros::Subscriber imu_sub;
 ros::Subscriber start_sub;
 
 ros::Publisher state_pub;
+ros::Publisher odom_pub;
 
 double D_x = 130;
 double D_y = 5280;
 double D_t = 750;
 double m = 250;
 double l = 0.5;
+double b = 1.5;
 double I_z = 750;
 
 double th = 0;
@@ -39,6 +42,11 @@ double w = 0;
 
 double f1 = 0;
 double f2 = 0;
+
+double dist_x1;
+double dist_x2;
+double dist_y1;
+double dist_y2;
 
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable next_state;
@@ -57,8 +65,7 @@ VectorXd x_upd(6);
 VectorXd y_est(3);
 VectorXd y_meas(3);
 
-nav_msgs::Odometry Position;
-
+geometry_msgs::PoseStamped position;
 sensor_msgs::Imu Imu;
 
 void lorenz( const state_type &x , state_type &dxdt , double t )
@@ -70,9 +77,9 @@ void lorenz( const state_type &x , state_type &dxdt , double t )
 	dxdt[0] = vx * cos(th) + vy * sin(th);
 	dxdt[1] =  vx * sin(th) - vy * cos(th);
 	dxdt[2] =  - w;
-	dxdt[3] =  (f1 + f2 - D_x * vx) / m + w * vy;
-	dxdt[4] =  - D_y * vy / m - w * vx;	
-	dxdt[5] =  (l * (f1 - f2) - D_t * w) / I_z; 
+	dxdt[3] =  (f1 + f2 + dist_x1 + dist_x2 - D_x * vx) / m + w * vy;
+	dxdt[4] =  (dist_y1 + dist_y2 - D_y * vy ) / m - w * vx;	
+	dxdt[5] =  (l * (f1 + dist_x1 - f2 - dist_x2) + b * (dist_y1 - dist_y2) - D_t * w) / I_z; 
 }
 
 void write_lorenz( const state_type &x , const double t )
@@ -85,10 +92,6 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	start_state = *start_msg;
 	f1 = start_state.T_l;
 	f2 = start_state.T_r;
-
-	y_meas[0] = start_state.x;
-	y_meas[1] = start_state.y;
-	y_meas[2] = start_state.theta;
 	
 	A = MatrixXd::Zero(6,6);
 	C = MatrixXd::Zero(3,6);
@@ -113,6 +116,10 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	x_est[3] = x[3];
 	x_est[4] = x[4];
 	x_est[5] = x[5];
+	
+	y_meas[0] = x[0];
+	y_meas[1] = x[1];
+	y_meas[2] = x[2];
 
 	A(0,2) = -start_state.u * sin(start_state.theta) + start_state.v * cos(start_state.theta);
 	A(1,2) =  start_state.u * cos(start_state.theta) + start_state.v * sin(start_state.theta);
@@ -157,6 +164,14 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	next_state.T_r = f2;
 
 	state_pub.publish(next_state);
+
+	position.pose.position.x = next_state.x;
+	position.pose.position.y = next_state.y;
+	position.pose.orientation = toQuaternion(0, 0, next_state.theta);
+	
+	position.header.stamp = ros::Time::now();
+	position.header.frame_id = "/map";
+	odom_pub.publish(position);
 }
 
 int main(int argc, char **argv)
@@ -165,9 +180,15 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
+	nh_private.getParam("disturbance/fx1", dist_x1);
+	nh_private.getParam("disturbance/fx2", dist_x2);
+	nh_private.getParam("disturbance/fy1", dist_y1);
+	nh_private.getParam("disturbance/fy2", dist_y2);
+
 	start_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_ekf",10,start_cb);
 
 	state_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
+	odom_pub = nh_private.advertise<geometry_msgs::PoseStamped>("Odom" ,10);
 
 	ros::spin();
 

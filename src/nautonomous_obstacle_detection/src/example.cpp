@@ -26,6 +26,9 @@
 #include "opencv2/imgcodecs.hpp"
 #include <nautonomous_pose_msgs/PointWithCovarianceStamped.h>
 
+#include <nautonomous_mpc_msgs/StageVariable.h>
+
+
 // Namespaces
 using namespace Eigen;
 using namespace std;
@@ -55,7 +58,7 @@ float second_principle_axis = -1;
 double angle = -1;
 float theta = 0;
 float const voxelSize = 0.5;
-int const gridSize = 80; // In number of squares (gridSize(m)/voxelSize)
+int const gridSize = 160; // In number of squares (gridSize(m)/voxelSize)
 int const pointTreshold = 5;
 int const origin_x = 628604;
 int const origin_y = 5802730;
@@ -65,11 +68,16 @@ int Boat_pos_y = 0;
 
 sensor_msgs::Imu Imu;
 
-Matrix4f transformation = Eigen::Matrix4f::Identity();
+Matrix4f transformation1 = Eigen::Matrix4f::Identity();
+Matrix4f transformation2 = Eigen::Matrix4f::Identity();
 
 // Publishers
 ros::Publisher marker_pub;
 ros::Publisher message_pub;
+ros::Publisher Transformed_pcl_pub;
+// Subscribers
+ros::Subscriber pc_sub;
+ros::Subscriber EKF_sub;
 
 // Initialization
 float x_pos, y_pos, z_pos, x_pos_origin, y_pos_origin;
@@ -99,7 +107,10 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	pcl::PointCloud<pcl::PointXYZ>::Ptr transformed_cloud(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::fromPCLPointCloud2(*cloud, *temp_cloud);
 
-	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation);
+	pcl::transformPointCloud (*temp_cloud, *transformed_cloud, transformation1);
+	pcl::transformPointCloud (*transformed_cloud, *transformed_cloud, transformation2);
+
+	Transformed_pcl_pub.publish(transformed_cloud);
 
 	cout << "Create grid" << endl;
 	for ( int i = 0; i < transformed_cloud->size(); i++)
@@ -107,12 +118,12 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		x_pos = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize;
 		y_pos = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
 		z_pos = rint(transformed_cloud->points[i].z/voxelSize)*voxelSize;
-		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 3) && (z_pos > 0)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
+
+		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 1) && (z_pos > -1)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
 		{
 			grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
 			VoxelFound = true;
 		}
-
 
 		/*// ToDo fix frames
 		cout << "Point in origin frame: (" << << "," << << ") and in lidar frame "
@@ -482,6 +493,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 					first_principle_axis = minHeight;
 					second_principle_axis = minWidth;
 				}
+
 				oval.pose.position.x = AvgX * voxelSize;
 				oval.pose.position.y = AvgY * voxelSize;
 				oval.pose.position.z = 0;
@@ -510,6 +522,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		Markers.markers.push_back(points);
 
 		marker_pub.publish(Markers);
+	
+		obstacles.Nobstacles = Blobs->size();
 		message_pub.publish(obstacles);
 
 		cout << "The number of blobs is: " << Blobs->size() << endl;
@@ -522,43 +536,38 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	}
 }
 
-void gps_cb (const nautonomous_pose_msgs::PointWithCovarianceStamped::ConstPtr& utm_msg)
+void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 {
-	Boat_pos_x = rint(utm_msg->point.x);
-	Boat_pos_y = rint(utm_msg->point.y);
+	Boat_pos_x = rint(ekf_msg->x);
+	Boat_pos_y = rint(ekf_msg->y);
+/*
+	transformation1(0,3) = Boat_pos_x;
+	transformation1(1,3) = Boat_pos_y;
 
-	transformation(0,3) = Boat_pos_x - origin_x;
-	transformation(1,3) = Boat_pos_y - origin_y;
+	transformation1(0,0) = cos(ekf_msg->theta);
+	transformation1(0,1) = sin(ekf_msg->theta);
+	transformation1(1,0) = -sin(ekf_msg->theta);
+	transformation1(1,1) = cos(ekf_msg->theta);
+
+	transformation2(0,0) = cos(ekf_msg->theta);
+	transformation2(0,1) = sin(ekf_msg->theta);
+	transformation2(1,0) = -sin(ekf_msg->theta);
+	transformation2(1,1) = cos(ekf_msg->theta);*/
 }
 
-void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
-{
-	Imu = *imu_msg;
-	float q0 = Imu.orientation.w;
-	float q1 = Imu.orientation.x;
-	float q2 = Imu.orientation.y;
-	float q3 = Imu.orientation.z;
-
-	theta = atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
-
-	transformation(0,0) = cos(theta);
-	transformation(0,1) = -sin(theta);
-	transformation(1,0) = sin(theta);
-	transformation(1,1) = cos(theta);
-}
 
 int main (int argc, char** argv)
 {
-	ros::init (argc, argv,"pointcloud2_to_pcd");
+	ros::init (argc, argv,"Obstacle_detection");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
-	ros::Subscriber pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/point_cloud",1,cloud_cb);
-	ros::Subscriber pos_sub = nh.subscribe<nautonomous_pose_msgs::PointWithCovarianceStamped>("state/location/utm",1,gps_cb);
-	ros::Subscriber imu_sub = nh.subscribe<sensor_msgs::Imu>("sensor/imu/imu",1,imu_cb);
+	pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/point_cloud",1,cloud_cb);
+	EKF_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",1,EKF_cb);
 
 	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",10);
+	Transformed_pcl_pub = nh_private.advertise<sensor_msgs::PointCloud2>("transformed_pcl",10);
 
 	ros::spin();	
 }

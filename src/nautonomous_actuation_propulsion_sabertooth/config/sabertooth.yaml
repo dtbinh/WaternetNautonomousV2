@@ -1,4 +1,4 @@
-minimum_forward_value: 0.01
+minimum_forward_value: -2.0
 maximum_forward_value: 2.0
 
 minimum_turning_value: 0.01

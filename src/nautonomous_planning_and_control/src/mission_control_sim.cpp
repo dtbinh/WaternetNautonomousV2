@@ -8,8 +8,6 @@
 #include "nautonomous_mpc_msgs/Obstacle.h"
 #include "nautonomous_mpc_msgs/Obstacles.h"
 #include "geometry_msgs/Point.h"
-#include "nav_msgs/Odometry.h"
-#include "sensor_msgs/Imu.h"
 #include <std_msgs/Float64.h>
 
 int Stage = 1;
@@ -62,20 +60,18 @@ ros::Publisher current_state_pub;
 ros::Publisher ref_pub;
 ros::Publisher refs_pub;
 ros::Publisher obstacle_pub;
-ros::Publisher obstacles_pub;
 ros::Publisher start_pub;
 ros::Publisher ekf_pub;
-ros::Publisher action_pub;
+ros::Publisher obstacles_pub;
 
 ros::Subscriber next_state_sub;
 ros::Subscriber EKF_sub;
 ros::Subscriber waypoint_sub;
-ros::Subscriber obstacle_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable mpc_state;
-nautonomous_mpc_msgs::StageVariable temp_state;
 nautonomous_mpc_msgs::StageVariable starting_state;
+nautonomous_mpc_msgs::StageVariable temp_state;
 
 nautonomous_mpc_msgs::Waypoint intermediate_state;
 nautonomous_mpc_msgs::Waypoint waypoint_state;
@@ -90,10 +86,6 @@ nautonomous_mpc_msgs::Route Temp_route;
 
 geometry_msgs::Point p;
 geometry_msgs::Quaternion q;
-geometry_msgs::Twist action;
-
-nav_msgs::Odometry Position;
-sensor_msgs::Imu Imu;
 
 std::vector<double> start_x, start_y, start_theta, u, v, omega, major_semiaxis, minor_semiaxis;
 
@@ -118,10 +110,29 @@ void toQuaternion(double pitch, double roll, double yaw)
 	q.z = sy * cr * cp - cy * sr * sp;
 }
 
+
 void Initialization () // State 1
 {
 	current_state.x = 0;
 	current_state.y = 0;
+
+	obstacles.Nobstacles = start_x.size();
+
+	for (int i = 0; i < obstacles.Nobstacles; i++)
+	{
+		obstacle.major_semiaxis = major_semiaxis[i];
+		obstacle.minor_semiaxis = minor_semiaxis[i];
+		obstacle.state.pose.position.x = start_x[i];
+		obstacle.state.pose.position.y = start_y[i];
+		obstacle.state.twist.linear.x = u[i];
+		obstacle.state.twist.linear.y = v[i];
+		obstacle.state.pose.orientation.z = start_theta[i];
+		obstacle.state.twist.angular.z = omega[i];
+
+		obstacles.obstacles.push_back(obstacle);
+	}
+
+	obstacles_pub.publish(obstacles);
 
 	Next_stage = 2;
 }
@@ -130,12 +141,13 @@ void Select_waypoint() // State 2
 {
 	starting_state = current_state;
 
-	if (waypoint_stage == waypoint_x.size()){waypoint_stage = 0;}
+	if (waypoint_stage == waypoint_x.size()){Next_stage = 14;}
+	else {Next_stage = 3;}
+
 	waypoint_state.stage.x = waypoint_x[waypoint_stage];
 	waypoint_state.stage.y = waypoint_y[waypoint_stage];
 	std::cout << "Waypoint: " << waypoint_state.stage.x  <<","<< waypoint_state.stage.y << std::endl;
 	std::cout << "Current: " << current_state.x  <<","<< current_state.y << std::endl;
-	Next_stage = 3;
 }
 
 void Determine_closest_blocking_obstacle() // State 3
@@ -145,7 +157,7 @@ void Determine_closest_blocking_obstacle() // State 3
 	float dist = sqrt(pow(waypoint_state.stage.x - starting_state.x,2) + pow(waypoint_state.stage.y - starting_state.y,2));
 	float theta = atan2(waypoint_state.stage.y - starting_state.y,waypoint_state.stage.x - starting_state.x);
 	float max_dist = 1e10;
-	
+
 	for ( int j = 0; j < obstacles.Nobstacles; j++)
 	{
 		obstacle = obstacles.obstacles[j];
@@ -161,9 +173,9 @@ void Determine_closest_blocking_obstacle() // State 3
 
 			ellipse_value = pow((cos(obstacle.state.pose.orientation.z) * ellipse_x1 + sin(obstacle.state.pose.orientation.z) * ellipse_x2)/obstacle.major_semiaxis,2) + pow((-sin(obstacle.state.pose.orientation.z) * ellipse_x1 + cos(obstacle.state.pose.orientation.z) * ellipse_x2)/obstacle.minor_semiaxis,2);
 
-			std::cout << "Ellipse value: " << ellipse_value << std::endl;
 			if (ellipse_value < 1)
 			{
+				std::cout << "Ellipse [" << ellipse_x1 << " , " << ellipse_x2 << "] value: " << ellipse_value << std::endl;
 				Blocking_obstacle_found = true;
 				float dist_to_obstacle = i;
 				if (dist_to_obstacle < max_dist)
@@ -209,6 +221,8 @@ int Determine_length_of_route() // State 6
 	while  (Obstacle_still_blocking && i < Temp_route.waypoints.size())
 	{
 		Obstacle_still_blocking = false;
+		std::cout << "Closest obstacle: " << closest_obstacle << std::endl;
+		std::cout << "State: " << Temp_route.waypoints[i] << std::endl;
 		float dist = sqrt(pow(waypoint_state.stage.x - Temp_route.waypoints[i].x,2) + pow(waypoint_state.stage.y - Temp_route.waypoints[i].y,2));
 		float theta = atan2(waypoint_state.stage.y - Temp_route.waypoints[i].y,waypoint_state.stage.x - Temp_route.waypoints[i].x);
 
@@ -224,6 +238,7 @@ int Determine_length_of_route() // State 6
 
 			if (ellipse_value < 1)
 			{
+				std::cout << "Waypoint [" << i << "] -> ellipse value to closest obstacle: " << ellipse_value << std::endl;
 				Obstacle_still_blocking = true;
 				break;
 			}
@@ -248,7 +263,7 @@ void Send_action_request() // State 8
 {
 	intermediate_state.stage.x = Intermediate_route.waypoints[intermediate_stage].x;
 	intermediate_state.stage.y = Intermediate_route.waypoints[intermediate_stage].y;	
-	std::cout << "Stage: " << intermediate_stage <<  " Reference: " << intermediate_state.stage.x <<","<<intermediate_state.stage.y << std::endl;
+	std::cout << "Intermediate stage: " << intermediate_stage <<  " Reference: " << intermediate_state.stage.x <<","<<intermediate_state.stage.y << std::endl;
 	std::cout << "Current: " << current_state.x <<","<<current_state.y << std::endl;
 	intermediate_state.stage.u = ref_velocity/3.6;
 
@@ -355,11 +370,6 @@ void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 	current_state.T_l = 0.5 * Force + Torque;
 	current_state.T_r = 0.5 * Force - Torque;
 	Action_received = true;
-
-	action.linear.x = uf;
-	action.angular.z = ut;
-
-	action_pub.publish(action);
 }
 
 void route_cb(const nautonomous_mpc_msgs::Route::ConstPtr& route_msg)
@@ -373,24 +383,17 @@ void EKF_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 {
 	Kalman_received = true;
 	current_state = *ekf_msg;
-	p.x = current_state.x;
-      	p.y = current_state.y;
 
 	std::cout << "Current state: " << current_state <<std::endl;
-}
-
-void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg)
-{
-	obstacles = *obstacles_msg;
 }
 
 int main(int argc, char **argv)
 {
  	/* Initialize ROS */
-	ros::init(argc, argv, "mission_coordinator");
+	ros::init(argc, argv, "mission_coordinator");	
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
-	
+
 	ros::Duration(5).sleep();
 
 	nh_private.getParam("reference/velocity", ref_velocity);
@@ -431,16 +434,15 @@ int main(int argc, char **argv)
 	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start",10);
 	ekf_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_ekf",10);
-	action_pub = 		nh_private.advertise<geometry_msgs::Twist>("/actuation/propulsion/mission_coordinator/cmd_vel", 10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state",10, action_cb);
 	EKF_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, EKF_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
-	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obsacles",10,obstacle_cb);
 
-	ros::Rate loop_rate(70);
+	ros::Rate loop_rate(100);
 
-	ros::Duration(5).sleep();
+	
+	ros::Duration(1).sleep();
 
 	while (ros::ok())
 	{	
