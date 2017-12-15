@@ -33,8 +33,8 @@ class node
 		int getNode();
 		int getDistToFinish();
 		bool isConnected();
-		std::vector<int> getConnectedNodes();
 		int getPreviousNode();
+		std::vector<int> getConnectedNodes();
 
 };
 
