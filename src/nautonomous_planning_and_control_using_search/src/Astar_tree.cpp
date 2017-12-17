@@ -6,8 +6,10 @@
 
 #include <nav_msgs/OccupancyGrid.h>
 #include <nautonomous_mpc_msgs/StageVariable.h>
+#include <nautonomous_mpc_msgs/WaypointList.h>
 #include <geometry_msgs/Point.h>
-#include <nautonomous_planning_and_control_using_search/node.h>
+#include <nautonomous_planning_and_control_using_search/node_tree.h>
+
 
 #define INF 1000000
 #define PI 3.14
@@ -23,6 +25,8 @@ int next_node = 1;
 nav_msgs::OccupancyGrid map;
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable goal_state;
+nautonomous_mpc_msgs::StageVariable waypoint;
+nautonomous_mpc_msgs::WaypointList Route;
 
 node* starting_node = new node();
 node* current_node = new node();
@@ -33,8 +37,8 @@ float temp_x;
 float temp_y;
 
 
-float step_size = 1;
-float angle_step = 0.05*PI;
+float step_size = 2;
+float angle_step = 0.1*PI;
 
 float cost_c;
 float cost_i;
@@ -46,21 +50,21 @@ float map_center_y = 0;
 float resolution;
 
 std::vector<node>* Network = new std::vector<node>();
+
 geometry_msgs::Point p;
+geometry_msgs::Point p1;
+geometry_msgs::Point p2;
+float theta;
 
 visualization_msgs::Marker line_list;
 
-void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
+void calculate_route()
 {
-	double begin = ros::Time::now().toSec();	
-
-	std::cout << "//////////////////CLEAR PREVIOUS ROUTE//////////////////" << std::endl;
 	Network->clear();
 	next_node = 1;
 
 	std::cout << "//////////////////START NEW ROUTE//////////////////" <<std::endl;
 
-	start_state = *state_msg;
 	starting_node->initializeNode(start_state.x, start_state.y, start_state.theta, sqrt(pow(start_state.x - goal_state.x,2) + pow(start_state.y - goal_state.y,2)), 0.0, 0, 0, false);
 	
 	Network->push_back(*starting_node);
@@ -74,8 +78,6 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 			// Node left forward
 			temp_x = current_node->getX() + step_size * cos(current_node->getTheta() - angle_step);
 			temp_y = current_node->getY() + step_size * sin(current_node->getTheta() - angle_step);
-			std::cout << "Point 1: "
- << temp_x << ", " << temp_y <<std::endl; 
 			p.x = current_node->getX();
 			p.y = current_node->getY();
       			line_list.points.push_back(p);
@@ -87,12 +89,10 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 			
 			if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] < 50)
 			{
-				std::cout << "Create new node" << std::endl;
 				new_node->initializeNode(temp_x, temp_y, current_node->getTheta() - angle_step, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), current_node->getCost()+1,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				next_node++;
-				std::cout << "Node is free" << std::endl;
 			}
 			else
 			{	
@@ -100,15 +100,12 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				next_node++;
-				std::cout << "Node is occupied" << std::endl;
-				std::cout << "Map value at: " << (floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution) << " is: " << (int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] << std::endl;
 			}
 
 			// Node forwards
 			
 			temp_x = current_node->getX() + step_size * cos(current_node->getTheta());
 			temp_y = current_node->getY() + step_size * sin(current_node->getTheta());
-			std::cout << "Point 2: " << temp_x << ", " << temp_y <<std::endl;
 			p.x = current_node->getX();
 			p.y = current_node->getY();
       			line_list.points.push_back(p);
@@ -118,12 +115,10 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 
 			if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] < 50)
 			{
-				std::cout << "Create new node" << std::endl;
 				new_node->initializeNode(temp_x, temp_y, current_node->getTheta(), sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), current_node->getCost()+1,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				next_node++;
-				std::cout << "Node is free" << std::endl;
 			}
 			else
 			{
@@ -131,15 +126,12 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				next_node++;
-				std::cout << "Node is occupied" << std::endl;
-				std::cout << "Map value at: " << (floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution) << " is: " << (int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] << std::endl;
 			}
 
 			// Node right forward
 			
 			temp_x = current_node->getX() + step_size * cos(current_node->getTheta() + angle_step);
 			temp_y = current_node->getY() + step_size * sin(current_node->getTheta() + angle_step);
-			std::cout << "Point 3: " << temp_x << ", " << temp_y <<std::endl;
 			p.x = current_node->getX();
 			p.y = current_node->getY();
       			line_list.points.push_back(p);
@@ -149,12 +141,10 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 
 			if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] < 50)
 			{
-				std::cout << "Create new node" << std::endl;
 				new_node->initializeNode(temp_x, temp_y, current_node->getTheta() + angle_step, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), current_node->getCost()+1,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				next_node++;
-				std::cout << "Node is free" << std::endl;
 			}
 			else
 			{
@@ -162,8 +152,6 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				next_node++;
-				std::cout << "Node is occupied" << std::endl;
-				std::cout << "Map value at: " << (floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x) /resolution) << " is: " << (int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] << std::endl;
 			}
 			cost_c = Network->at(next_node - 3).getTotalCost();
 			cost_i = 0;
@@ -181,7 +169,6 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 			}	
 			else
 			{
-				std::cout << "Node is a dead end" << std::endl;
 				current_node->setDistToFinishToINF();
 				current_node = &Network->at(current_node->getPreviousNode());
 			}
@@ -211,9 +198,30 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 			}
 		}
 
-		std::cout << "Current node is now: node " << current_node->getNode() <<std::endl; 
 		marker_pub.publish(line_list);
 	}
+}
+
+void generate_route()
+{
+	while (not(current_node->getNode() == 0))
+	{
+		waypoint.x = current_node->getX();
+		waypoint.y = current_node->getY();
+		Route.stages.push_back(waypoint);
+		current_node = &Network->at(current_node->getPreviousNode());
+	}
+}
+
+void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
+{
+	double begin = ros::Time::now().toSec();	
+	start_state = *state_msg;
+
+	
+
+	calculate_route();
+	
 	double end = ros::Time::now().toSec();	
 	std::cout << "Elapsed time is: " << end-begin << std::endl;
 }
