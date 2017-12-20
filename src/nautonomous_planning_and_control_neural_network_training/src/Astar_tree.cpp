@@ -7,8 +7,9 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <nautonomous_mpc_msgs/StageVariable.h>
 #include <nautonomous_mpc_msgs/WaypointList.h>
+#include <nautonomous_mpc_msgs/Obstacle.h>
 #include <geometry_msgs/Point.h>
-#include <nautonomous_planning_and_control_using_search/node_tree.h>
+#include <nautonomous_planning_and_control_neural_network_training/node_tree.h>
 
 
 #define INF 1000000
@@ -17,7 +18,9 @@
 ros::Subscriber map_sub;
 ros::Subscriber start_sub;
 ros::Subscriber goal_sub;
+ros::Subscriber obstacle_sub;
 
+ros::Publisher map_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_2_pub;
 
@@ -28,6 +31,7 @@ nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable goal_state;
 nautonomous_mpc_msgs::StageVariable waypoint;
 nautonomous_mpc_msgs::WaypointList Route;
+nautonomous_mpc_msgs::Obstacle Obstacle;
 
 node* starting_node = new node();
 node* current_node = new node();
@@ -55,6 +59,7 @@ std::vector<node>* Network = new std::vector<node>();
 geometry_msgs::Point p;
 geometry_msgs::Point p1;
 geometry_msgs::Point p2;
+
 float theta;
 
 visualization_msgs::Marker line_list;
@@ -252,6 +257,26 @@ void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 	final_node->initializeNode(goal_state.x, goal_state.y, goal_state.theta, 0.0, INF, 0, 0, false);
 }
 
+void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
+{
+	Obstacle = *obstacle_msg;
+	for (float i = -Obstacle.major_semiaxis; i < Obstacle.major_semiaxis; i+= resolution)
+	{
+		for (float j = -Obstacle.minor_semiaxis; j < Obstacle.minor_semiaxis; j+= resolution)
+		{
+			temp_x = Obstacle.state.pose.position.x + i;
+			temp_y = Obstacle.state.pose.position.y + j;
+			map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] = 100;
+			std::cout << "Set obstacle" <<std::endl;
+		}		
+	}
+
+
+	map_pub.publish(map);
+
+	std::cout << "Obstacle map published" << std::cout;
+}
+
 void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 {
 	std::cout << "map received" << std::endl;
@@ -277,9 +302,11 @@ int main (int argc, char** argv)
 	map_sub = 	nh.subscribe<nav_msgs::OccupancyGrid>("/map",10,map_cb);
 	start_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start",10,start_cb);
 	goal_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal",10,goal_cb);
+	obstacle_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacle>("/mission_coordinator/obstacle",10,obstacle_cb);
 
-	marker_pub = nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
-	marker_2_pub = nh_private.advertise<visualization_msgs::Marker>("visualization_marker_route", 10);
+	map_pub = 	nh_private.advertise<nav_msgs::OccupancyGrid>("obstacle_map", 10);
+	marker_pub = 	nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
+	marker_2_pub = 	nh_private.advertise<visualization_msgs::Marker>("visualization_marker_route", 10);
 
 	Network->reserve(100000);
 

@@ -1,0 +1,6 @@
+free_thresh: 0.196
+image: amsterdam_cropped_probeersel_2.png
+negate: 0
+occupied_thresh: 0.65
+origin: [628556.74, 5802817.86, 0.0]
+resolution: 0.5
