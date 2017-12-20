@@ -26,6 +26,15 @@ include_directories(
 )
 
 
-add_executable(example src/example.cpp)
-target_link_libraries(example ${catkin_LIBRARIES})
-target_link_libraries(example ${OpenCV_LIBRARIES})
+add_executable(Ellipse src/Ellipse.cpp)
+add_executable(map src/map.cpp)
+add_executable(Voxelize src/Voxelize.cpp)
+
+target_link_libraries(Ellipse ${catkin_LIBRARIES})
+target_link_libraries(Ellipse ${OpenCV_LIBRARIES})
+target_link_libraries(map ${catkin_LIBRARIES})
+target_link_libraries(map ${OpenCV_LIBRARIES})
+target_link_libraries(Voxelize ${catkin_LIBRARIES})
+target_link_libraries(Voxelize ${OpenCV_LIBRARIES})
+
+

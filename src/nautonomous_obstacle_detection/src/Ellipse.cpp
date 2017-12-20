@@ -13,11 +13,11 @@
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <vector>
-//#include <Eigen/Eigenvalues>
 #include <iostream>
 
 #include <nautonomous_obstacle_detection/PVector.h>
 #include <nautonomous_obstacle_detection/Blob.h>
+#include <nautonomous_obstacle_detection/Eigen/Eigenvalues>
 #include <nautonomous_mpc_msgs/Obstacles.h>
 #include <sensor_msgs/Imu.h>
 
