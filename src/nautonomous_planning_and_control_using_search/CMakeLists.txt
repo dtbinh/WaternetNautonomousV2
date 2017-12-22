@@ -20,13 +20,9 @@ include_directories(
 # add executable
 add_executable(tree_path_planner src/Astar_tree.cpp)
 add_executable(opt_tree_path_planner src/Astar_tree_opt.cpp)
-add_executable(opt_tree_path_planner_2 src/Astar_tree_opt_2.cpp)
-add_executable(grid_path_planner src/Astar_grid.cpp)
 
 
 # target link libraries
 target_link_libraries(tree_path_planner ${catkin_LIBRARIES} )
 target_link_libraries(opt_tree_path_planner ${catkin_LIBRARIES} )
-target_link_libraries(opt_tree_path_planner_2 ${catkin_LIBRARIES} )
-target_link_libraries(grid_path_planner ${catkin_LIBRARIES} )
 

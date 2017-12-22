@@ -7,6 +7,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <nautonomous_mpc_msgs/StageVariable.h>
 #include <nautonomous_mpc_msgs/WaypointList.h>
+#include <nautonomous_mpc_msgs/Obstacle.h>
 #include <geometry_msgs/Point.h>
 #include <nautonomous_planning_and_control_using_search/node_tree.h>
 
@@ -17,17 +18,21 @@
 ros::Subscriber map_sub;
 ros::Subscriber start_sub;
 ros::Subscriber goal_sub;
+ros::Subscriber obstacle_sub;
 
+ros::Publisher map_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_2_pub;
 
 int next_node = 1;
 
 nav_msgs::OccupancyGrid map;
+nav_msgs::OccupancyGrid temp_map;
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable goal_state;
 nautonomous_mpc_msgs::StageVariable waypoint;
 nautonomous_mpc_msgs::WaypointList Route;
+nautonomous_mpc_msgs::Obstacle Obstacle;
 
 node* starting_node = new node();
 node* current_node = new node();
@@ -38,8 +43,9 @@ float temp_x;
 float temp_y;
 
 
-float step_size = 2.5;
-float angle_step = 0.25*PI;
+float step_size = 2;
+float angle_step = 0.05*PI;
+float Nangles = 5;
 
 float cost_c;
 float cost_i;
@@ -158,19 +164,72 @@ void calculate_route()
 				next_node++;
 			}
 
-			cost_c = Network->at(next_node - 3).getTotalCost();
-			cost_i = 0;
-			for (int i = 1; i < 3 ; i++)
+			// Node slightly right forward
+			
+			temp_x = current_node->getX() + step_size * cos(current_node->getTheta() + angle_step/2);
+			temp_y = current_node->getY() + step_size * sin(current_node->getTheta() + angle_step/2);
+			p.x = current_node->getX();
+			p.y = current_node->getY();
+      			line_list.points.push_back(p);
+			p.x = temp_x;
+			p.y = temp_y;
+      			line_list.points.push_back(p);
+	
+			if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] < 50)
 			{
-				if (Network->at(next_node - 3 + i).getTotalCost() < cost_c)
+				new_node->initializeNode(temp_x, temp_y, current_node->getTheta(), sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), current_node->getCost()+1,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
+				current_node->addConnectedNode(next_node);
+				next_node++;
+			}
+			else
+			{
+				new_node->initializeNode(temp_x, temp_y, current_node->getTheta(), INF, current_node->getCost()+1,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
+				current_node->addConnectedNode(next_node);
+				next_node++;
+			}
+
+			// Node slightly left forward
+			
+			temp_x = current_node->getX() + step_size * cos(current_node->getTheta() - angle_step/2);
+			temp_y = current_node->getY() + step_size * sin(current_node->getTheta() - angle_step/2);
+			p.x = current_node->getX();
+			p.y = current_node->getY();
+      			line_list.points.push_back(p);
+			p.x = temp_x;
+			p.y = temp_y;
+      			line_list.points.push_back(p);
+	
+			if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] < 50)
+			{
+				new_node->initializeNode(temp_x, temp_y, current_node->getTheta(), sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), current_node->getCost()+1,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
+				current_node->addConnectedNode(next_node);
+				next_node++;
+			}
+			else
+			{
+				new_node->initializeNode(temp_x, temp_y, current_node->getTheta(), INF, current_node->getCost()+1,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
+				current_node->addConnectedNode(next_node);
+				next_node++;
+			}
+
+
+			cost_c = Network->at(next_node - 5).getTotalCost();
+			cost_i = 0;
+			for (int i = 1; i < 5 ; i++)
+			{
+				if (Network->at(next_node - 5 + i).getTotalCost() < cost_c)
 				{
-					cost_c = Network->at(next_node - 3 + i).getTotalCost();
+					cost_c = Network->at(next_node - 5 + i).getTotalCost();
 					cost_i = i;
 				}
 			}
 			if (not(cost_c >= INF))
 			{
-				current_node = &Network->at(next_node - 3 + cost_i);
+				current_node = &Network->at(next_node - 5 + cost_i);
 			}	
 			else
 			{
@@ -182,7 +241,7 @@ void calculate_route()
 		{
 			cost_c = Network->at(current_node->getConnectedNodes().at(0)).getTotalCost();
 			cost_i = 0;
-			for (int i = 1; i < 3 ; i++)
+			for (int i = 1; i < 5 ; i++)
 			{
 				if (Network->at(current_node->getConnectedNodes().at(i)).getTotalCost() < cost_c)
 				{
@@ -256,6 +315,7 @@ void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 {
 	std::cout << "map received" << std::endl;
 	map = *map_msg;
+	temp_map = map;
 	
 	std::cout << "Data length is: " << map.data.size() <<std::endl;
 	map_width = (float)map.info.width;
@@ -268,6 +328,25 @@ void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 	std::cout << "Map center: " << map_center_x << ", " << map_center_y <<std::endl;
 }
 
+void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
+{
+	Obstacle = *obstacle_msg;
+	map = temp_map;
+	for (float i = -Obstacle.major_semiaxis; i < Obstacle.major_semiaxis; i+= resolution)
+	{
+		for (float j = -Obstacle.minor_semiaxis; j < Obstacle.minor_semiaxis; j+= resolution)
+		{
+			temp_x = Obstacle.state.pose.position.x + i;
+			temp_y = Obstacle.state.pose.position.y + j;
+			map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] = 100;
+		}		
+	}
+
+	map_pub.publish(map);
+
+	std::cout << "Obstacle map published" << std::endl;
+}
+
 int main (int argc, char** argv)
 {
 	ros::init (argc, argv,"A_star_tree_path_finding");
@@ -278,8 +357,10 @@ int main (int argc, char** argv)
 	start_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start",10,start_cb);
 	goal_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal",10,goal_cb);
 
+	map_pub = 	nh.advertise<nav_msgs::OccupancyGrid>("/map_tree",10);
 	marker_pub = nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_2_pub = nh_private.advertise<visualization_msgs::Marker>("visualization_marker_route", 10);
+	obstacle_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacle>("/mission_coordinator/obstacle",10,obstacle_cb);
 
 	Network->reserve(100000);
 

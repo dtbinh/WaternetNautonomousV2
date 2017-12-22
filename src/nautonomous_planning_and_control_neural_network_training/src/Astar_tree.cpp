@@ -27,6 +27,7 @@ ros::Publisher marker_2_pub;
 int next_node = 1;
 
 nav_msgs::OccupancyGrid map;
+nav_msgs::OccupancyGrid temp_map;
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable goal_state;
 nautonomous_mpc_msgs::StageVariable waypoint;
@@ -291,6 +292,25 @@ void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 
 	resolution = (float)map.info.resolution;
 	std::cout << "Map center: " << map_center_x << ", " << map_center_y <<std::endl;
+}
+
+void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
+{
+	Obstacle = *obstacle_msg;
+	map = temp_map;
+	for (float i = -Obstacle.major_semiaxis; i < Obstacle.major_semiaxis; i+= resolution)
+	{
+		for (float j = -Obstacle.minor_semiaxis; j < Obstacle.minor_semiaxis; j+= resolution)
+		{
+			temp_x = Obstacle.state.pose.position.x + i;
+			temp_y = Obstacle.state.pose.position.y + j;
+			map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] = 100;
+		}		
+	}
+
+	map_pub.publish(map);
+
+	std::cout << "Obstacle map published" << std::cout;
 }
 
 int main (int argc, char** argv)
