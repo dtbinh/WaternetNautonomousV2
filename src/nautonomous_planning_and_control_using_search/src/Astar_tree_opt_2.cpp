@@ -46,7 +46,7 @@ float temp_x;
 float temp_y;
 float temp_theta;
 
-float step_size = 2.5;
+float step_size = 10;
 float angle_step = 0.25*PI;
 
 float cost_c;
