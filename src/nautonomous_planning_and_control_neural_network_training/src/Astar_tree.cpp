@@ -258,26 +258,6 @@ void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 	final_node->initializeNode(goal_state.x, goal_state.y, goal_state.theta, 0.0, INF, 0, 0, false);
 }
 
-void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
-{
-	Obstacle = *obstacle_msg;
-	for (float i = -Obstacle.major_semiaxis; i < Obstacle.major_semiaxis; i+= resolution)
-	{
-		for (float j = -Obstacle.minor_semiaxis; j < Obstacle.minor_semiaxis; j+= resolution)
-		{
-			temp_x = Obstacle.state.pose.position.x + i;
-			temp_y = Obstacle.state.pose.position.y + j;
-			map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] = 100;
-			std::cout << "Set obstacle" <<std::endl;
-		}		
-	}
-
-
-	map_pub.publish(map);
-
-	std::cout << "Obstacle map published" << std::cout;
-}
-
 void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 {
 	std::cout << "map received" << std::endl;

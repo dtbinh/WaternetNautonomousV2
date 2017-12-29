@@ -24,6 +24,8 @@ class node
 
 		void addConnectedNode(int connected_node_nr_);
 
+		void setCost(float cost_, int connected_node_prev_);
+		
 		void setDistToFinishToINF();
 		float getX();
 		float getY();
@@ -31,7 +33,7 @@ class node
 		float getCost();
 		float getTotalCost();
 		int getNode();
-		int getDistToFinish();
+		float getDistToFinish();
 		bool isConnected();
 		int getPreviousNode();
 		std::vector<int> getConnectedNodes();
@@ -107,7 +109,7 @@ int node::getNode()
 	return node_nr;
 }
 
-int node::getDistToFinish()
+float node::getDistToFinish()
 {
 	return dist_to_finish;
 }
@@ -125,4 +127,11 @@ std::vector<int> node::getConnectedNodes()
 int node::getPreviousNode()
 {
 	return connected_node_prev;
+}
+
+void node::setCost(float cost_, int connected_node_prev_)
+{
+	cost = cost_;
+	total_cost = cost_ + dist_to_finish;
+	connected_node_prev = connected_node_prev_;
 }
