@@ -47,11 +47,12 @@ node* current_node = new node();
 node* new_node = new node();
 node* final_node = new node();
 
+float minCost = INF;
 float temp_x;
 float temp_y;
 float temp_theta;
 
-float step_size = 1;
+float step_size = 5;
 float angle_step = 0.25*PI;
 
 float cost_c;
@@ -62,6 +63,13 @@ float map_height = 0;
 float map_center_x = 0;
 float map_center_y = 0;
 float resolution;
+
+float check1 = 0;
+float check2 = 0;
+float check3 = 0;
+float check4 = 0;
+float check5 = 0;
+float check6 = 0;
 
 std::vector<node>* Network = new std::vector<node>();
 
@@ -80,6 +88,8 @@ bool useplot = true;
 
 bool check_pos_already_exists(int pos_x_, int pos_y_)
 {
+	double begin_check1 = ros::Time::now().toSec();	
+	
 	bool return_value = false;
 	for (int i = 0; i < next_node; i++)
 	{
@@ -92,12 +102,30 @@ bool check_pos_already_exists(int pos_x_, int pos_y_)
 			}
 		}
 	}
+	check1 += ros::Time::now().toSec() - begin_check1;
+	std::cout << "Elapsed time of check 1 is: " << check1 << std::endl;
 	return return_value;
+}
+
+void get_minimum_node()
+{
+	minRow = 0;
+	minCost = INF;
+	for ( int i = 0; i < next_node ; i++)
+	{
+		if (CostMatrix(i) < minCost)
+		{
+			minCost = CostMatrix(i);
+			minRow = i;
+		}
+	}
+
 }
 
 void calculate_route()
 {
 	// Clear and initialize
+	double begin_check4 = ros::Time::now().toSec();	
 	Network->clear();
 	CostMatrix = VectorXd::Ones(100000) * INF;
 	next_node = 1;
@@ -114,12 +142,17 @@ void calculate_route()
 	PosMatrix(0,0) = floor(start_state.x);
 	PosMatrix(0,1) = floor(start_state.y);
 
+	check4 += ros::Time::now().toSec() - begin_check4;
+
 	std::cout << "//////////////////Generate//////////////////" <<std::endl;
+	double begin_check5 = ros::Time::now().toSec();	
 	while ((current_node->getDistToFinish() > step_size ))
 	{
+		double begin_check2 = ros::Time::now().toSec();	
+	
 		if ((std::abs(fmod(current_node->getTheta(),0.5*PI)) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) - 0.5 * PI) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) + 0.5 * PI) < 0.01))
 		{
-			// Node left forward	
+			// Node right forward	
 			temp_theta = current_node->getTheta() - angle_step;
 			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
 			temp_y = current_node->getY() + step_size * sq2 * sin(temp_theta);
@@ -139,8 +172,8 @@ void calculate_route()
 		
 			if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -155,8 +188,9 @@ void calculate_route()
 			}
 			else if(check_pos_already_exists(PosMatrix(next_node,0), PosMatrix(next_node,1)))
 			{
-				Network->push_back(*new_node);
+
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -166,10 +200,10 @@ void calculate_route()
 				new_node->initializeNode(temp_x, temp_y, temp_theta, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), new_cost,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
-				CostMatrix(next_node) = current_node->getTotalCost();
+				CostMatrix(next_node) = new_node->getTotalCost();
 				next_node++;
 			}
-
+ 
 			// Node forwards
 		
 			temp_theta = current_node->getTheta();
@@ -190,8 +224,8 @@ void calculate_route()
 		
 			if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -207,8 +241,8 @@ void calculate_route()
 		
 			else if(check_pos_already_exists(PosMatrix(next_node,0), PosMatrix(next_node,1)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -218,11 +252,11 @@ void calculate_route()
 				new_node->initializeNode(temp_x, temp_y, temp_theta, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), new_cost,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
-				CostMatrix(next_node) = current_node->getTotalCost();
+				CostMatrix(next_node) = new_node->getTotalCost();
 				next_node++;
 			}
 
-			// Node right forward
+			// Node left forward
 		
 			temp_theta = current_node->getTheta() + angle_step;
 			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
@@ -242,8 +276,8 @@ void calculate_route()
 		
 			if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -259,8 +293,8 @@ void calculate_route()
 		
 			else if(check_pos_already_exists(PosMatrix(next_node,0), PosMatrix(next_node,1)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -270,14 +304,14 @@ void calculate_route()
 				new_node->initializeNode(temp_x, temp_y, temp_theta, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), new_cost,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
-				CostMatrix(next_node) = current_node->getTotalCost();
+				CostMatrix(next_node) = new_node->getTotalCost();
 				next_node++;
 			}
 		}
 
 		else if ((std::abs(fmod(current_node->getTheta(),0.5*PI) - 0.25*PI) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) + 0.25*PI) < 0.01))
 		{
-			// Node left forward	
+			// Node right forward	
 			temp_theta = current_node->getTheta() - angle_step;
 			temp_x = current_node->getX() + step_size * cos(temp_theta);
 			temp_y = current_node->getY() + step_size * sin(temp_theta);
@@ -296,8 +330,8 @@ void calculate_route()
 		
 			if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -313,8 +347,8 @@ void calculate_route()
 		
 			else if(check_pos_already_exists(PosMatrix(next_node,0), PosMatrix(next_node,1)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -324,7 +358,7 @@ void calculate_route()
 				new_node->initializeNode(temp_x, temp_y, temp_theta, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), new_cost,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
-				CostMatrix(next_node) = current_node->getTotalCost();
+				CostMatrix(next_node) = new_node->getTotalCost();
 				next_node++;
 			}
 
@@ -347,8 +381,8 @@ void calculate_route()
 
 			if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -364,8 +398,8 @@ void calculate_route()
 		
 			else if(check_pos_already_exists(PosMatrix(next_node,0), PosMatrix(next_node,1)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -375,11 +409,11 @@ void calculate_route()
 				new_node->initializeNode(temp_x, temp_y, temp_theta, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), new_cost,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
-				CostMatrix(next_node) = current_node->getTotalCost();
+				CostMatrix(next_node) = new_node->getTotalCost();
 				next_node++;
 			}
 
-			// Node right forward
+			// Node left forward
 			temp_theta = current_node->getTheta() + angle_step;
 			temp_x = current_node->getX() + step_size * cos(temp_theta);
 			temp_y = current_node->getY() + step_size * sin(temp_theta);
@@ -398,8 +432,8 @@ void calculate_route()
 
 			if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -415,8 +449,8 @@ void calculate_route()
 		
 			else if(check_pos_already_exists(PosMatrix(next_node,0), PosMatrix(next_node,1)))
 			{
-				Network->push_back(*new_node);
 				new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), next_node, false);
+				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
 				CostMatrix(next_node) = INF;
 				next_node++;
@@ -426,7 +460,7 @@ void calculate_route()
 				new_node->initializeNode(temp_x, temp_y, temp_theta, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), new_cost,current_node->getNode(), next_node, false);
 				Network->push_back(*new_node);
 				current_node->addConnectedNode(next_node);
-				CostMatrix(next_node) = current_node->getTotalCost();
+				CostMatrix(next_node) = new_node->getTotalCost();
 				next_node++;
 			}
 		}
@@ -437,13 +471,33 @@ void calculate_route()
 			break;
 		}
 
+		check2 += ros::Time::now().toSec() - begin_check2;
+		std::cout << "Elapsed time of check 2 is: " << check2 << std::endl;
+
+		double begin_check3 = ros::Time::now().toSec();	
 		CostMatrix(current_node->getNode()) = INF;
-		CostMatrix.minCoeff(&minRow, &minCol);
+
+
+	
+		get_minimum_node();
+
+
 
 		current_node = &Network->at(minRow);
 
-		marker_pub.publish(line_list);
+		check3 += ros::Time::now().toSec() - begin_check3;
+		std::cout << "Elapsed time of check 3 is: " << check3 << std::endl;
+
+		double begin_check6 = ros::Time::now().toSec();	
+
+		marker_pub.publish(line_list);		
+
+		check6 += ros::Time::now().toSec() - begin_check3;
+		std::cout << "Elapsed time of check 6 is: " << check6 << std::endl;		
+
 	}
+
+	std::cout << "Elapsed time of initialization: " << check4 << std::endl;
 
 
 	std::cout << "//////////////////Track back//////////////////" <<std::endl;
@@ -460,6 +514,9 @@ void calculate_route()
       		route_list.points.push_back(p);
 		marker_2_pub.publish(route_list);
 	}
+
+	check5 += ros::Time::now().toSec() - begin_check5;
+	std::cout << "Elapsed time of route calculation: " << check5 << std::endl;
 }
 
 void generate_route()
@@ -481,7 +538,6 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 	
 
 	calculate_route();
-	
 	double end = ros::Time::now().toSec();	
 	std::cout << "Elapsed time is: " << end-begin << std::endl;
 	std::cout << "Nodes checked: " << next_node << std::endl;
