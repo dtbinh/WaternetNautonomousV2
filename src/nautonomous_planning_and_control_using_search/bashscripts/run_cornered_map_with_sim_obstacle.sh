@@ -34,6 +34,13 @@ rostopic pub --once /mission_coordinator/obstacle nautonomous_mpc_msgs/Obstacle 
 major_semiaxis: $(( ( RANDOM % 6 )  + 3 ))
 minor_semiaxis: $(( ( RANDOM % 3 )  + 3 ))" &
 
+#sleep 2
+#rostopic pub --once /mission_coordinator/start nautonomous_mpc_msgs/StageVariable "{T_l: 0.0, T_r: 0.0, x: -112.0, y: 18.0, theta: 0.0, u: 0.0, v: 0.0, omega: 0.0}" &
+
+#sleep 10
+
+#rostopic pub --once /mission_coordinator/goal nautonomous_mpc_msgs/StageVariable "{T_l: 0.0, T_r: 0.0, x: 115.0, y: 15.0, theta: 0.0, u: 0.0, v: 0.0, omega: 0.0}" &
+
 sleep 1
 
 rostopic pub --once /mission_coordinator/start nautonomous_mpc_msgs/StageVariable "{T_l: 0.0, T_r: 0.0, x: -112.0, y: 18.0, theta: 0.0, u: 0.0, v: 0.0, omega: 0.0}" &
