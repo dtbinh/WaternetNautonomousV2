@@ -4,7 +4,8 @@ rosservice call /load "config_name: '/home/daley/WaternetNautonomousV2/src/nauto
 
 sleep 1
 
-rosrun nautonomous_planning_and_control_using_search tree_opt &
+#rosrun nautonomous_planning_and_control_using_search tree_opt &
+rosrun nautonomous_planning_and_control_using_search grid_planner_3 &
 
 sleep 1
 
@@ -14,8 +15,8 @@ sleep 1
 rostopic pub --once /mission_coordinator/obstacle nautonomous_mpc_msgs/Obstacle "state:
   pose:
     position:
-      x: $(( ( RANDOM % 1 )  + 6  ))
-      y: $(( ( RANDOM % 1 )  - 1 ))
+      x: 10
+      y: 0
       z: 0.0
     orientation:
       x: 0.0
@@ -31,8 +32,8 @@ rostopic pub --once /mission_coordinator/obstacle nautonomous_mpc_msgs/Obstacle 
       x: 0.0
       y: 0.0
       z: 0.0
-major_semiaxis: $(( ( RANDOM % 6 )  + 3 ))
-minor_semiaxis: $(( ( RANDOM % 3 )  + 3 ))" &
+major_semiaxis: 10
+minor_semiaxis: 10" &
 
 sleep 1
 

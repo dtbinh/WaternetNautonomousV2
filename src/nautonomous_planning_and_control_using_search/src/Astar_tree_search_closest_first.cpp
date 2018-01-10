@@ -57,7 +57,7 @@ int dx;
 int dy;
 int h;
 
-float step_size = 5;
+float step_size = 10;
 float angle_step = 0.05;
 
 float cost_c;
@@ -157,7 +157,7 @@ void add_new_node()
 	{
 		new_node->initializeNode(temp_x, temp_y, temp_theta, new_dist, new_cost ,current_node->getNode(), next_node, false);
 		current_node->addConnectedNode(next_node);
-		CostMatrix(next_node,0) = new_node->getTotalCost();
+		CostMatrix(next_node,0) = new_node->getDistToFinish();
 		CostMatrix(next_node,1) = floor(temp_x);
 		CostMatrix(next_node,2) = floor(temp_y);
 		NodeNrMatrix(floor(temp_x),floor(temp_y)) = next_node;
@@ -179,7 +179,7 @@ void add_new_node()
 	else if ((new_cost + new_dist) < Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getTotalCost())
 	{
 		Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).setCost(new_cost,current_node->getNode());;
-		CostMatrix(next_node,0) = new_node->getTotalCost();
+		CostMatrix(next_node,0) = new_node->getDistToFinish();
 		CostMatrix(next_node,1) = floor(temp_x);
 		CostMatrix(next_node,2) = floor(temp_y);
 		std::cout << "Node already exists and is smaller" << std::endl;
@@ -301,7 +301,7 @@ void calculate_route()
 		std::cout << "next node is: " << next_node << std::endl;
 
 		checks++;
-		if (checks > 1000000)
+		if (checks > 10000)
 		{
 			break;
 		}

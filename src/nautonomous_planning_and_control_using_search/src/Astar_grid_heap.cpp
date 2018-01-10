@@ -19,9 +19,8 @@
 
 using namespace Eigen;
 
-VectorXd NodeNrMatrix(4000000);
-MatrixXd CostMatrix(100000,2);	// Colummn 0: cost, Colummn 1: X-pos, Colummn 2: Y-pos
-MatrixX2i PosMatrix(100000,2);		// Colummn 0: cost, Colummn 1: X-pos, Colummn 2: Y-pos
+MatrixXd Heap(100000,2);
+MatrixXd CostMatrix(4000000,2);		// Colummn 0: cost, Colummn 1: X-pos, Colummn 2: Y-pos
 
 MatrixXf::Index minRow, minCol;
 
@@ -84,6 +83,11 @@ visualization_msgs::Marker route_list;
 
 int current_node_nr = 0;
 int new_node_nr = 0;
+int heap_nr = 0;
+int heap_length = 0;
+float heap_parent = 0;
+float heap_child_left = 0;
+float heap_child_right = 0;
 int start_node_nr = 0;
 int Nx = 0;
 int Ny = 0;
@@ -91,23 +95,68 @@ float new_cost = 0;
 
 bool useplot = true;
 
-void get_minimum_node()
-{
-	minRow = 0;
-	minCost = INF;
+void add_heap_element()
+{	
+	heap_nr = heap_length;
+	heap_length++;
+	std::cout << "Add heap element" << std::endl;
 
-	for ( int i = 0; i < next_node ; i++)
-	{
-		//std::cout << "Node: " << i << " cost: " << CostMatrix(i,0) << "	 " ;
+	Heap(heap_nr,0) = new_node->getTotalCost();
+	Heap(heap_nr,1) = new_node_nr;
 		
-		if (CostMatrix(i,0) < minCost)
+	while (true)
+	{
+		if (Heap(heap_nr,0) < Heap((heap_nr-1)/2,0))
 		{
-			minCost = CostMatrix(i,0);
-			minRow = i;
+			Heap.row(heap_nr).swap(Heap.row((heap_nr-1)/2));
+			heap_nr = (heap_nr-1)/2;
+		}
+		else
+		{
+			break;
 		}
 	}
-	//std::cout << std::endl;
+}
 
+void remove_heap_element()
+{
+	heap_length--;
+	std::cout << "Remove heap element" << std::endl;
+	Heap.row(0) = Heap.row(heap_length);
+	Heap(heap_length,0) = INF;
+	Heap(heap_length,1) = INF;
+	
+	
+	heap_nr = 0;
+	while (true)
+	{
+		heap_parent = Heap(heap_nr,0);
+		heap_child_left = Heap(2*heap_nr + 1,0);
+		heap_child_right = Heap(2*heap_nr + 2,0);
+		if ((heap_parent < heap_child_left) && (heap_parent < heap_child_right))
+		{
+			break;
+		}
+		else if(heap_child_left < heap_child_right)
+		{
+			Heap.row(heap_nr).swap(Heap.row(2*heap_nr + 1));
+			heap_nr = 2*heap_nr + 1;
+		}
+		else
+		{
+			Heap.row(heap_nr).swap(Heap.row(2*heap_nr + 2));
+			heap_nr = 2*heap_nr + 2;
+		}
+	}
+}
+
+void get_minimum_node()
+{
+	minCost = Heap(0,0);
+	minRow = CostMatrix(Heap(0,1),1);
+	remove_heap_element();
+	std::cout << "Cost: " << minCost << std::endl;	
+	std::cout << "Row: " << minRow << std::endl;
 }
 
 void add_new_node()
@@ -123,8 +172,6 @@ void add_new_node()
 		p.y = temp_y;
 		line_list.points.push_back(p);
 	}
-	PosMatrix(next_node,0) = floor(temp_x);
-	PosMatrix(next_node,1) = floor(temp_y);
 	
 	if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 	{	
@@ -145,21 +192,22 @@ void add_new_node()
 	{
 		// Do nothing
 	}
-	else if (NodeNrMatrix(new_node_nr) >= INF)
+	else if (CostMatrix(new_node_nr,0) >= INF)
 	{
 		Network->push_back(*new_node);
 		current_node->addConnectedNode(next_node);
-		CostMatrix(next_node,0) = new_node->getTotalCost();
-		CostMatrix(next_node,1) = new_node_nr;
-		NodeNrMatrix(new_node_nr) = next_node;
+		CostMatrix(new_node_nr,0) = new_node->getTotalCost();
+		CostMatrix(new_node_nr,1) = next_node;
+		add_heap_element();
 		next_node++;
 
 	}
-	else if (new_node->getTotalCost() < Network->at(NodeNrMatrix(new_node_nr)).getTotalCost())
+	else if (new_node->getTotalCost() < Network->at(CostMatrix(new_node_nr,1)).getTotalCost())
 	{
-		Network->at(NodeNrMatrix(new_node_nr)) = *new_node;
-		CostMatrix(next_node,0) = new_node->getTotalCost();
-		CostMatrix(next_node,1) = new_node_nr;
+		Network->at(CostMatrix(new_node_nr,1)) = *new_node;
+		CostMatrix(new_node_nr,0) = new_node->getTotalCost();
+		CostMatrix(new_node_nr,1) = next_node;
+		add_heap_element();
 	}
 
 }
@@ -181,11 +229,8 @@ void calculate_route()
 
 	current_node = starting_node;
 
-	CostMatrix(0,0) = 0.0;
-	CostMatrix(0,1) = new_node_nr;
-	NodeNrMatrix(new_node_nr) = 0.0;
-	PosMatrix(0,0) = floor(start_state.x);
-	PosMatrix(0,1) = floor(start_state.y);
+	CostMatrix(new_node_nr,0) = 0.0;
+	CostMatrix(new_node_nr,1) = 0;
 
 	check4 += ros::Time::now().toSec() - begin_check4;
 
@@ -262,11 +307,12 @@ void calculate_route()
 
 		double begin_check3 = ros::Time::now().toSec();	
 
-		CostMatrix(NodeNrMatrix(current_node->getNode()),0) = INF;
+		CostMatrix(CostMatrix(current_node->getNode(),1),0) = INF;
 	
 		std::cout << "Check minimum node" << std::endl;
 		get_minimum_node();
 
+		std::cout << "Network size: " << Network->size() << std::endl;
 		std::cout << "Minimum node is: " << minRow << " at " << Network->at(minRow).getNode() << std::endl;
 		current_node = &Network->at(minRow);
 
@@ -299,7 +345,7 @@ void calculate_route()
 		p.x = current_node->getX();
 		p.y = current_node->getY();
       		route_list.points.push_back(p);
-		current_node = &Network->at(NodeNrMatrix(current_node->getPreviousNode()));
+		current_node = &Network->at(CostMatrix(current_node->getPreviousNode(),1));
 		p.x = current_node->getX();
 		p.y = current_node->getY();
       		route_list.points.push_back(p);
@@ -396,6 +442,7 @@ int main (int argc, char** argv)
 	marker_2_pub = nh_private.advertise<visualization_msgs::Marker>("visualization_marker_route", 10);
 
 	Network->reserve(100000);
+	std::cout << std::setprecision(8) << std::endl;
 
 	line_list.header.frame_id = "/map";
 	line_list.header.stamp = ros::Time::now();
@@ -422,8 +469,8 @@ int main (int argc, char** argv)
 	route_list.color.a = 1.0;
 
 	Network->clear();
-	CostMatrix = MatrixXd::Ones(100000,2) * INF;
-	NodeNrMatrix = VectorXd::Ones(4000000) * INF;
+	CostMatrix = MatrixXd::Ones(4000000,2) * INF;
+	Heap = MatrixXd::Ones(100000,2) * INF;
 	next_node = 1;
 
 	ros::spin();	

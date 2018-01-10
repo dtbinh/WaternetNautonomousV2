@@ -14,12 +14,14 @@
 
 #define INF 1000000
 #define PI 3.141592653589793238462643383279502884197169399375105820974
+#define sq2 1.414213562373095048801688724209698078569671875376948073176
+#define sq5 2.236067977499789696409173668731276235440618359611525724270
 
 using namespace Eigen;
 
-MatrixXd NodeNrMatrix(2000,2000);
-MatrixXd CostMatrix(100000,3);
-MatrixX2i PosMatrix(100000,2);
+VectorXd NodeNrMatrix(4000000);
+MatrixXd CostMatrix(100000,2);	// Colummn 0: cost, Colummn 1: X-pos, Colummn 2: Y-pos
+MatrixX2i PosMatrix(100000,2);		// Colummn 0: cost, Colummn 1: X-pos, Colummn 2: Y-pos
 
 MatrixXf::Index minRow, minCol;
 
@@ -52,13 +54,11 @@ float temp_x;
 float temp_y;
 float temp_theta;
 
-
 int dx;
 int dy;
 int h;
 
 float step_size = 5;
-float angle_step = 0.05;
 
 float cost_c;
 float cost_i;
@@ -75,7 +75,6 @@ float check3 = 0;
 float check4 = 0;
 float check5 = 0;
 float check6 = 0;
-float checks = 0;
 
 std::vector<node>* Network = new std::vector<node>();
 
@@ -88,14 +87,13 @@ visualization_msgs::Marker line_list;
 visualization_msgs::Marker route_list;
 
 int current_node_nr = 0;
+int new_node_nr = 0;
 int start_node_nr = 0;
 int Nx = 0;
 int Ny = 0;
 float new_cost = 0;
-float new_dist = 0;
 
 bool useplot = true;
-bool useHeuristics = false;
 
 void get_minimum_node()
 {
@@ -104,99 +102,68 @@ void get_minimum_node()
 
 	for ( int i = 0; i < next_node ; i++)
 	{
-		//std::cout << "Node: " << i << " cost: " << CostMatrix(i,0) << "	 " ;
-		
 		if (CostMatrix(i,0) < minCost)
 		{
 			minCost = CostMatrix(i,0);
 			minRow = i;
 		}
 	}
-//	std::cout << std::endl;
-
 }
 
 void add_new_node()
 {
+	new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y);
+
+	if (useplot)
+	{
+		p.x = current_node->getX();
+		p.y = current_node->getY();
+		line_list.points.push_back(p);
+		p.x = temp_x;
+		p.y = temp_y;
+		line_list.points.push_back(p);
+	}
 	PosMatrix(next_node,0) = floor(temp_x);
 	PosMatrix(next_node,1) = floor(temp_y);
 	
-	if((temp_x < 0) || (temp_x > (map_width*resolution)) || (temp_y < 0) || (temp_y > (map_height*resolution)))
+	if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 	{	
-		new_dist = INF;
+		new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), new_node_nr, false);
 	}
-	else if((int)map.data[(floor((temp_y)/resolution)-1) * map_width + floor((temp_x)/resolution)] > 50)
+	else if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] > 50)
 	{
-		new_dist = INF;
+		new_node->initializeNode(temp_x, temp_y, temp_theta, INF, new_cost,current_node->getNode(), new_node_nr, false);
 	}			
 	else
 	{	
-		if(useHeuristics)
-		{
-			dx = fabs(temp_x - final_node->getX());
-			dy = fabs(temp_y - final_node->getY());
-			h = fmin(dx, dy) * 1.4 + fabs(dx - dy) * 1 ;
-			new_dist = h;
-		}		
-		else
-		{
-			new_dist = sqrt(pow(temp_x - final_node->getX(),2) + pow(temp_y - final_node->getY(),2));
-		}
-
+		dx = fabs(temp_x - goal_state.x);
+		dy = fabs(temp_y - goal_state.y);
+		h = fmin(dx, dy) * 14 + fabs(dx - dy) * 10 ;
+		
+		new_node->initializeNode(temp_x, temp_y, temp_theta, h, new_cost,current_node->getNode(), new_node_nr, false);	
 	}
 
-	new_cost = current_node->getCost() + step_size;
+	std::cout << "Node " << new_node_nr << " is at [" << temp_x << ", " << temp_y << "] at a theta of " << temp_theta << " with a cost of " << new_node->getTotalCost() << std::endl;
 
-
-
-	if ((new_cost + new_dist) >= INF)
+	if (new_node->getTotalCost() >= INF)
 	{
-		std::cout << "New node cost is too high" << std::endl;
+		// Do nothing
 	}
-	else if (NodeNrMatrix(floor(temp_x),floor(temp_y)) >= INF)
+	else if (NodeNrMatrix(new_node_nr) >= INF)
 	{
-		new_node->initializeNode(temp_x, temp_y, temp_theta, new_dist, new_cost ,current_node->getNode(), next_node, false);
+		Network->push_back(*new_node);
 		current_node->addConnectedNode(next_node);
 		CostMatrix(next_node,0) = new_node->getTotalCost();
-		CostMatrix(next_node,1) = floor(temp_x);
-		CostMatrix(next_node,2) = floor(temp_y);
-		NodeNrMatrix(floor(temp_x),floor(temp_y)) = next_node;
+		CostMatrix(next_node,1) = new_node_nr;
+		NodeNrMatrix(new_node_nr) = next_node;
 		next_node++;
-		Network->push_back(*new_node);
-		std::cout << "Node does not exist" << std::endl;
-		std::cout << "Node " << new_node->getNode() << " is at [" << new_node->getX() << ", " << new_node->getY() << "] at a theta of " << new_node->getTheta() << " with a cost of " << new_node->getCost() << " and a distTofinish of " << new_node->getDistToFinish() << " and node " << new_node->getPreviousNode() << " before"<<  std::endl;
-		if (useplot)
-		{
-			p.x = current_node->getX() + map_center_x;
-			p.y = current_node->getY() + map_center_y;
-			line_list.points.push_back(p);
-			p.x = temp_x + map_center_x;
-			p.y = temp_y + map_center_y;
-			line_list.points.push_back(p);
-		}
 
 	}
-	else if ((new_cost + new_dist) < Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getTotalCost())
+	else if (new_node->getTotalCost() < Network->at(NodeNrMatrix(new_node_nr)).getTotalCost())
 	{
-		Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).setCost(new_cost,current_node->getNode());;
+		Network->at(NodeNrMatrix(new_node_nr)) = *new_node;
 		CostMatrix(next_node,0) = new_node->getTotalCost();
-		CostMatrix(next_node,1) = floor(temp_x);
-		CostMatrix(next_node,2) = floor(temp_y);
-		std::cout << "Node already exists and is smaller" << std::endl;
-		std::cout << "Node " << Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getNode() << " is at [" << Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getX() << ", " << Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getY() << "] at a theta of " << Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getTheta() << " with a cost of " << Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getCost() << " and a distTofinish of " << Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getDistToFinish() << " and node " << Network->at(NodeNrMatrix(floor(temp_x),floor(temp_y))).getPreviousNode() << " before"<<  std::endl;
-		/*if (useplot)
-		{
-			p.x = current_node->getX() + map_center_x;
-			p.y = current_node->getY() + map_center_y;
-			line_list.points.push_back(p);
-			p.x = temp_x + map_center_x;
-			p.y = temp_y + map_center_y;
-			line_list.points.push_back(p);
-		}*/
-	}
-	else
-	{
-		std::cout << "New node cost is higher than existing node" << std::endl;
+		CostMatrix(next_node,1) = new_node_nr;
 	}
 
 }
@@ -209,77 +176,111 @@ void calculate_route()
 
 	std::cout << "//////////////////START NEW ROUTE//////////////////" <<std::endl;
 
-	if (useHeuristics)
-	{
-		dx = fabs(start_state.x - map_center_x - final_node->getX());
-		dy = fabs(start_state.y - map_center_y - final_node->getY());
-		h = fmin(dx, dy) * 1.4 + fabs(dx - dy) * 1 ;
-		starting_node->initializeNode(start_state.x - map_center_x, start_state.y - map_center_y, start_state.theta, h, 0.0, 0, 0, false);
-	}	
-	else
-	{
-		starting_node->initializeNode(start_state.x - map_center_x, start_state.y - map_center_y, start_state.theta, sqrt(pow(start_state.x - map_center_x - final_node->getX(),2) + pow(start_state.y - map_center_y - final_node->getY(),2)), 0.0, 0, 0, false);
-	}
-	
+	new_node_nr = (start_state.x - map_center_x) + Nx * (start_state.y - map_center_y);
+	start_node_nr = new_node_nr;
+
+	std::cout << "//////////////////get start node//////////////////" <<std::endl;
+	dx = fabs(start_state.x - goal_state.x);
+	dy = fabs(start_state.y - goal_state.y);
+	h = fmin(dx, dy) * 14 + fabs(dx - dy) * 10 ;
+
+	std::cout << "//////////////////calculated h//////////////////" <<std::endl;
+	starting_node->initializeNode(start_state.x, start_state.y, start_state.theta, h, 0.0, 0, new_node_nr, false);
+	std::cout << "//////////////////initialized node//////////////////" <<std::endl;
 
 	Network->push_back(*starting_node);
 
 	current_node = starting_node;
 
-	std::cout << "Finish is at [" << final_node->getX() << ", " << final_node->getY() << "]" << std::endl;
-	std::cout << "Starting node is at [" << start_state.x - map_center_x << ", " << start_state.y - map_center_y << "] at a theta of " << start_state.theta << " with a cost of " << starting_node->getCost() << " and a distance to the finish of " << starting_node->getDistToFinish() << std::endl;
-
-	std::cout << CostMatrix.cols() <<std::endl;
-	std::cout << CostMatrix.rows() <<std::endl;
-	
+	std::cout << "//////////////////initialized network//////////////////" <<std::endl;
 	CostMatrix(0,0) = 0.0;
-	CostMatrix(0,1) = floor(start_state.x - map_center_x);
-	CostMatrix(0,2) = floor(start_state.y - map_center_y);
-	NodeNrMatrix(floor(start_state.x - map_center_x),floor(start_state.y - map_center_y)) = 0.0;
+	std::cout << "1" <<std::endl;
+	CostMatrix(0,1) = new_node_nr;
+	std::cout << "2" <<std::endl;
+	std::cout << new_node_nr <<std::endl;
+	NodeNrMatrix(new_node_nr) = 0.0;
+	std::cout << "3" <<std::endl;
 	PosMatrix(0,0) = floor(start_state.x);
+	std::cout << "4" <<std::endl;
 	PosMatrix(0,1) = floor(start_state.y);
+	std::cout << "5" <<std::endl;
 
 	check4 += ros::Time::now().toSec() - begin_check4;
 
 	std::cout << "//////////////////Generate//////////////////" <<std::endl;
 	double begin_check5 = ros::Time::now().toSec();	
-	while (current_node->getDistToFinish() > step_size )
+	while (current_node->getDistToFinish() > (step_size * 10) )
 	{
 		double begin_check2 = ros::Time::now().toSec();	
 	
-		// Node right forward	
-		temp_theta = current_node->getTheta() - angle_step * PI;
-		temp_x = current_node->getX() + step_size * cos(temp_theta);
-		temp_y = current_node->getY() + step_size * sin(temp_theta);
-		new_cost = current_node->getCost() + step_size;
-		std::cout << "Current node " << current_node->getNode() << " is at [" << current_node->getX() << ", " << current_node->getY() << "]" << std::endl;
+		if ((std::abs(fmod(current_node->getTheta(),0.5*PI)) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) - 0.5 * PI) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) + 0.5 * PI) < 0.01))
+		{
+			// Node right forward	
+			temp_theta = current_node->getTheta() - 0.25 * PI;
+			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sq2 * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * 14;
+			
+			add_new_node();
 
-		add_new_node();
+			// Node forwards
+		
+			temp_theta = current_node->getTheta();
+			temp_x = current_node->getX() + step_size * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * 10;
+	
+			add_new_node();
 
-		// Node forwards
-		temp_theta = current_node->getTheta();
-		temp_x = current_node->getX() + step_size * cos(temp_theta);
-		temp_y = current_node->getY() + step_size * sin(temp_theta);
-		new_cost = current_node->getCost() + step_size;
-		std::cout << "Current node " << current_node->getNode() << " is at [" << current_node->getX() << ", " << current_node->getY() << "]" << std::endl;
+			// Node left forward
+		
+			temp_theta = current_node->getTheta() +  0.25 * PI;
+			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sq2 * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * 14;
+			
+			add_new_node();
+		}
 
-		add_new_node();
+		else if ((std::abs(fmod(current_node->getTheta(),0.5*PI) - 0.25*PI) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) + 0.25*PI) < 0.01))
+		{
+			// Node right forward	
+			temp_theta = current_node->getTheta() -  0.25 * PI;
+			temp_x = current_node->getX() + step_size * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * 10;
+			
+			add_new_node();
 
-		// Node left forward
-		temp_theta = current_node->getTheta() +  angle_step * PI;
-		temp_x = current_node->getX() + step_size * cos(temp_theta);
-		temp_y = current_node->getY() + step_size * sin(temp_theta);
-		new_cost = current_node->getCost() + step_size;
-		std::cout << "Current node " << current_node->getNode() << " is at [" << current_node->getX() << ", " << current_node->getY() << "]" << std::endl;
+			// Node forwards
+			temp_theta = current_node->getTheta();
+			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sq2 * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * 14;
+			
+			add_new_node();
 
-		add_new_node();
+			// Node left forward
+			temp_theta = current_node->getTheta() +  0.25 * PI;
+			temp_x = current_node->getX() + step_size * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * 10;
+			
+			add_new_node();
+		}
+
+		else
+		{
+			std::cout << "Angle: " << fmod(current_node->getTheta(),0.5*PI) << std::endl;
+			break;
+		}
 
 		check2 += ros::Time::now().toSec() - begin_check2;
 		std::cout << "Elapsed time of check 2 is: " << check2 << std::endl;
 
 		double begin_check3 = ros::Time::now().toSec();	
 
-		CostMatrix(NodeNrMatrix(floor(current_node->getX()),floor(current_node->getY())),0) = INF;
+		CostMatrix(NodeNrMatrix(current_node->getNode()),0) = INF;
 	
 		std::cout << "Check minimum node" << std::endl;
 		get_minimum_node();
@@ -298,14 +299,6 @@ void calculate_route()
 		check6 += ros::Time::now().toSec() - begin_check6;
 		std::cout << "Elapsed time of check 6 is: " << check6 << std::endl;
 
-		std::cout << "next node is: " << next_node << std::endl;
-
-		checks++;
-		if (checks > 1000000)
-		{
-			break;
-		}
-		/*ros::Duration(0.2).sleep();*/
 		std::cout << std::endl << std::endl << std::endl;	
 	}
 
@@ -314,20 +307,16 @@ void calculate_route()
 
 	std::cout << "//////////////////Track back//////////////////" <<std::endl;
 	p.z = 1.0;
-	while (not(current_node->getNode() == 0))
+	while (not(current_node->getNode() == start_node_nr))
 	{
-		p.x = current_node->getX() + map_center_x;
-		p.y = current_node->getY() + map_center_y;
+		p.x = current_node->getX();
+		p.y = current_node->getY();
       		route_list.points.push_back(p);
-		
-		std::cout << "Node " << current_node->getNode() << " is at [" << current_node->getX() << ", " << current_node->getY() << "] at a theta of " << current_node->getTheta() << " with a cost of " << current_node->getCost() << " and a distTofinish of " << current_node->getDistToFinish() << " and node " << current_node->getPreviousNode() << " before"<<  std::endl;
-
-		current_node = &Network->at(current_node->getPreviousNode());
-		p.x = current_node->getX() + map_center_x;
-		p.y = current_node->getY() + map_center_y;
+		current_node = &Network->at(NodeNrMatrix(current_node->getPreviousNode()));
+		p.x = current_node->getX();
+		p.y = current_node->getY();
       		route_list.points.push_back(p);
 		marker_2_pub.publish(route_list);
-		//ros::Duration(0.2).sleep();
 	}
 
 	check5 += ros::Time::now().toSec() - begin_check5;
@@ -350,7 +339,7 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 	double begin = ros::Time::now().toSec();	
 	start_state = *state_msg;
 
-	
+	ros::Duration(5).sleep();
 
 	calculate_route();
 	double end = ros::Time::now().toSec();	
@@ -361,8 +350,7 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 {
 	goal_state = *state_msg;
-	final_node->initializeNode(goal_state.x - map_center_x, goal_state.y - map_center_y, goal_state.theta, 0.0, INF, 0, 0, false);
-	std::cout << "Final node: [" << final_node->getX() << ", " << final_node->getY() << "]" << std::endl;
+	final_node->initializeNode(goal_state.x, goal_state.y, goal_state.theta, 0.0, INF, 0, 0, false);
 }
 
 void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
@@ -447,8 +435,8 @@ int main (int argc, char** argv)
 	route_list.color.a = 1.0;
 
 	Network->clear();
-	CostMatrix = MatrixXd::Ones(100000,3) * INF;
-	NodeNrMatrix = MatrixXd::Ones(2000,2000) * INF;
+	CostMatrix = MatrixXd::Ones(100000,2) * INF;
+	NodeNrMatrix = VectorXd::Ones(4000000) * INF;
 	next_node = 1;
 
 	ros::spin();	
