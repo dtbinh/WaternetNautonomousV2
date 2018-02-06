@@ -1,6 +1,6 @@
 <launch>
 
-	<arg name="debug" default="False"/>
+	<arg name="debug" default="True"/>
 	<arg name="test" default="False"/>
 	
 	<node name="nautonomous_routing_vaarkaart" pkg="nautonomous_routing_vaarkaart" type="vaarkaart_routing_node.py"  output="screen" >
