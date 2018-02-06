@@ -1,6 +1,0 @@
-nautonomous_sensor_gps_ublox/ublox_gps
-/home/daley/WaternetNautonomousV2/devel/.private/ublox_gps/share/ublox_gps/cmake/ublox_gpsConfig-version.cmake /home/daley/WaternetNautonomousV2/devel/share/ublox_gps/cmake/ublox_gpsConfig-version.cmake
-/home/daley/WaternetNautonomousV2/devel/.private/ublox_gps/share/ublox_gps/cmake/ublox_gpsConfig.cmake /home/daley/WaternetNautonomousV2/devel/share/ublox_gps/cmake/ublox_gpsConfig.cmake
-/home/daley/WaternetNautonomousV2/devel/.private/ublox_gps/lib/libublox_gps.so /home/daley/WaternetNautonomousV2/devel/lib/libublox_gps.so
-/home/daley/WaternetNautonomousV2/devel/.private/ublox_gps/lib/pkgconfig/ublox_gps.pc /home/daley/WaternetNautonomousV2/devel/lib/pkgconfig/ublox_gps.pc
-/home/daley/WaternetNautonomousV2/devel/.private/ublox_gps/lib/ublox_gps/ublox_gps /home/daley/WaternetNautonomousV2/devel/lib/ublox_gps/ublox_gps
