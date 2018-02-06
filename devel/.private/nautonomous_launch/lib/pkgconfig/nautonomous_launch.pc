@@ -1,8 +1,8 @@
-prefix=/home/nvidia/ROS/WaternetNautonomousV2/devel/.private/nautonomous_launch
+prefix=/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_launch
 
 Name: nautonomous_launch
 Description: Description of nautonomous_launch
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/nvidia/ROS/WaternetNautonomousV2/devel/.private/nautonomous_launch/lib 
+Libs: -L/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_launch/lib 
 Requires: 

@@ -82,12 +82,21 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	/* Initialize the states and controls. */
 	current_state = *twist_msg;
 
-	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 1.0;
+	for (i = 0; i < NX * (N + 1); ++i)  acadoVariables.x[ i ] = 0.0;
 	for (i = 0; i < NU * N; ++i)  acadoVariables.u[ i ] = 0.0;
 	
 
 	/* Initialize the measurements/reference. */
-	for (i = 0; i < NY * N; ++i)  acadoVariables.y[ i ] = 0.0;
+	for (i = 0; i < N; ++i) 
+	{
+		acadoVariables.y[ (NY * i) + 0 ] = reference_state.x;
+		acadoVariables.y[ (NY * i) + 1 ] = reference_state.y;
+		acadoVariables.y[ (NY * i) + 2 ] = reference_state.theta;
+		acadoVariables.y[ (NY * i) + 3 ] = reference_state.u;
+		acadoVariables.y[ (NY * i) + 4 ] = reference_state.v;
+		acadoVariables.y[ (NY * i) + 5 ] = reference_state.omega;
+	}
+
 	acadoVariables.yN[ 0 ] = reference_state.x;
 	acadoVariables.yN[ 1 ] = reference_state.y;
 	acadoVariables.yN[ 2 ] = reference_state.theta;
@@ -105,7 +114,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	acadoVariables.x0[ 5 ] = current_state.omega;
 #endif
 
-	if( VERBOSE ) acado_printHeader();
+	//if( VERBOSE ) acado_printHeader();
 
 	/* Prepare first step */
 	acado_preparationStep();
@@ -118,7 +127,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 
 	/* Apply the new control immediately to the process, first NU components. */
 
-	if( VERBOSE ) printf("\tReal-Time Iteration %d:  KKT Tolerance = %.3e\n\n", iter, acado_getKKT() );
+	if( VERBOSE ) printf("\tReal-Time Iteration %d:  KKT Tolerance = %.3e, Objective = %.3e\n\n", iter, acado_getKKT(), acado_getObjective() );
 
 	/* Prepare for the next step. */
 	acado_preparationStep();
@@ -131,16 +140,17 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 
 		/* Apply the new control immediately to the process, first NU components. */
 
-		if( VERBOSE ) printf("\tReal-Time Iteration %d:  KKT Tolerance = %.3e\n\n", iter, acado_getKKT() );
+		if( VERBOSE ) printf("\tReal-Time Iteration %d:  KKT Tolerance = %.3e, Objective = %.3e\n\n", iter, acado_getKKT(), acado_getObjective() );
 
 		/* Prepare for the next step. */
 		acado_preparationStep();
 		iter++;
 	}
+
 	/* Read the elapsed time. */
 	real_t te = acado_toc( &t );
 
-	if( VERBOSE ) printf("\n\nEnd of the RTI loop. \n\n\n");
+	if( VERBOSE ) printf("\n\nEnd of the RTI loop at t: %.3e. \n\n\n", te);
 
 	/* Eye-candy. */
 

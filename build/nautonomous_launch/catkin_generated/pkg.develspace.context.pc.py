@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "nautonomous_launch"
-PROJECT_SPACE_DIR = "/home/nvidia/ROS/WaternetNautonomousV2/devel/.private/nautonomous_launch"
+PROJECT_SPACE_DIR = "/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_launch"
 PROJECT_VERSION = "0.0.0"

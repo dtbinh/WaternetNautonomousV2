@@ -25,6 +25,7 @@ add_executable(grid_planner_4 src/Astar_grid_heuristics.cpp)
 add_executable(tree_path_planner src/Astar_tree.cpp)
 add_executable(tree_opt src/Astar_tree_search.cpp)
 add_executable(tree_opt_closest_first src/Astar_tree_search_closest_first.cpp)
+add_executable(tree_opt_map_weight src/Astar_tree_search_map_weight.cpp)
 
 
 # target link libraries
@@ -35,4 +36,5 @@ target_link_libraries(grid_planner_4 ${catkin_LIBRARIES} )
 target_link_libraries(tree_path_planner ${catkin_LIBRARIES} )
 target_link_libraries(tree_opt ${catkin_LIBRARIES} )
 target_link_libraries(tree_opt_closest_first ${catkin_LIBRARIES} )
+target_link_libraries(tree_opt_map_weight ${catkin_LIBRARIES} )
 

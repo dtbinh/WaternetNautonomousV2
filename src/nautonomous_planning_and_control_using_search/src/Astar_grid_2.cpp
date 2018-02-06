@@ -21,9 +21,8 @@ using namespace Eigen;
 
 VectorXd NodeNrMatrix(4000000);
 MatrixXd CostMatrix(100000,2);	// Colummn 0: cost, Colummn 1: X-pos, Colummn 2: Y-pos
-MatrixX2i PosMatrix(100000,2);		// Colummn 0: cost, Colummn 1: X-pos, Colummn 2: Y-pos
 
-MatrixXf::Index minRow, minCol;
+MatrixXf::Index minRow;
 
 ros::Subscriber map_sub;
 ros::Subscriber start_sub;
@@ -33,8 +32,6 @@ ros::Subscriber obstacle_sub;
 ros::Publisher map_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_2_pub;
-
-int next_node = 1;
 
 nav_msgs::OccupancyGrid map;
 nav_msgs::OccupancyGrid temp_map;
@@ -65,6 +62,7 @@ float map_center_x = 0;
 float map_center_y = 0;
 float resolution;
 
+int checks = 0;
 float check1 = 0;
 float check2 = 0;
 float check3 = 0;
@@ -82,6 +80,7 @@ geometry_msgs::Point p2;
 visualization_msgs::Marker line_list;
 visualization_msgs::Marker route_list;
 
+int next_node = 1;
 int current_node_nr = 0;
 int new_node_nr = 0;
 int start_node_nr = 0;
@@ -98,7 +97,7 @@ void get_minimum_node()
 
 	for ( int i = 0; i < next_node ; i++)
 	{
-		//std::cout << "Node: " << i << " cost: " << CostMatrix(i,0) << "	 " ;
+		//ROS_DEBUG_STREAM( "Node: " << i << " cost: " << CostMatrix(i,0) << "	 " ;
 		
 		if (CostMatrix(i,0) < minCost)
 		{
@@ -106,13 +105,21 @@ void get_minimum_node()
 			minRow = i;
 		}
 	}
-	//std::cout << std::endl;
+	//ROS_DEBUG_STREAM( std::endl;
 
 }
 
 void add_new_node()
 {
+	ROS_DEBUG_STREAM( "Temp_x: " << temp_x );
+	ROS_DEBUG_STREAM( "Temp_y: " << temp_y );
+	ROS_DEBUG_STREAM( "map_center_x: " << map_center_x );
+	ROS_DEBUG_STREAM( "Nx: " << Nx );
+	ROS_DEBUG_STREAM( "map_center_y: " << map_center_y );
+
 	new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y);
+
+	ROS_DEBUG_STREAM( "new_node_nr: " << new_node_nr );
 
 	if (useplot)
 	{
@@ -123,8 +130,6 @@ void add_new_node()
 		p.y = temp_y;
 		line_list.points.push_back(p);
 	}
-	PosMatrix(next_node,0) = floor(temp_x);
-	PosMatrix(next_node,1) = floor(temp_y);
 	
 	if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 	{	
@@ -139,7 +144,7 @@ void add_new_node()
 		new_node->initializeNode(temp_x, temp_y, temp_theta, sqrt(pow(temp_x - goal_state.x,2) + pow(temp_y - goal_state.y,2)), new_cost,current_node->getNode(), new_node_nr, false);	
 	}
 
-	std::cout << "Node " << new_node_nr << " is at [" << temp_x << ", " << temp_y << "] at a theta of " << temp_theta << " with a cost of " << new_node->getTotalCost() << std::endl;
+	ROS_DEBUG_STREAM( "Node " << new_node_nr << " is at [" << new_node->getX() << ", " << new_node->getX() << "] at a theta of " << temp_theta << " with a cost of " << new_node->getTotalCost() );
 
 	if (new_node->getTotalCost() >= INF)
 	{
@@ -170,9 +175,10 @@ void calculate_route()
 	double begin_check4 = ros::Time::now().toSec();	
 	p.z = 0.5;
 
-	std::cout << "//////////////////START NEW ROUTE//////////////////" <<std::endl;
+	ROS_DEBUG_STREAM( "//////////////////START NEW ROUTE//////////////////" );
 
 	new_node_nr = (start_state.x - map_center_x) + Nx * (start_state.y - map_center_y);
+
 	start_node_nr = new_node_nr;
 
 	starting_node->initializeNode(start_state.x, start_state.y, start_state.theta, sqrt(pow(start_state.x - goal_state.x,2) + pow(start_state.y - goal_state.y,2)), 0.0, 0, new_node_nr, false);
@@ -184,12 +190,10 @@ void calculate_route()
 	CostMatrix(0,0) = 0.0;
 	CostMatrix(0,1) = new_node_nr;
 	NodeNrMatrix(new_node_nr) = 0.0;
-	PosMatrix(0,0) = floor(start_state.x);
-	PosMatrix(0,1) = floor(start_state.y);
 
 	check4 += ros::Time::now().toSec() - begin_check4;
 
-	std::cout << "//////////////////Generate//////////////////" <<std::endl;
+	ROS_DEBUG_STREAM( "//////////////////Generate//////////////////" );
 	double begin_check5 = ros::Time::now().toSec();	
 	while (current_node->getDistToFinish() > step_size )
 	{
@@ -253,25 +257,25 @@ void calculate_route()
 
 		else
 		{
-			std::cout << "Angle: " << fmod(current_node->getTheta(),0.5*PI) << std::endl;
+			ROS_DEBUG_STREAM( "Angle: " << fmod(current_node->getTheta(),0.5*PI) );
 			break;
 		}
 
 		check2 += ros::Time::now().toSec() - begin_check2;
-		std::cout << "Elapsed time of check 2 is: " << check2 << std::endl;
+		ROS_DEBUG_STREAM( "Elapsed time of check 2 is: " << check2 );
 
 		double begin_check3 = ros::Time::now().toSec();	
 
 		CostMatrix(NodeNrMatrix(current_node->getNode()),0) = INF;
 	
-		std::cout << "Check minimum node" << std::endl;
+		ROS_DEBUG_STREAM( "Check minimum node" );
 		get_minimum_node();
 
-		std::cout << "Minimum node is: " << minRow << " at " << Network->at(minRow).getNode() << std::endl;
+		ROS_DEBUG_STREAM( "Minimum node is: " << minRow << " at " << Network->at(minRow).getNode() );
 		current_node = &Network->at(minRow);
 
 		check3 += ros::Time::now().toSec() - begin_check3;
-		std::cout << "Elapsed time of check 3 is: " << check3 << std::endl;
+		ROS_DEBUG_STREAM( "Elapsed time of check 3 is: " << check3 );
 
 		double begin_check6 = ros::Time::now().toSec();	
 		if (useplot)
@@ -279,20 +283,20 @@ void calculate_route()
 			marker_pub.publish(line_list);		
 		}
 		check6 += ros::Time::now().toSec() - begin_check6;
-		std::cout << "Elapsed time of check 6 is: " << check6 << std::endl;
+		ROS_DEBUG_STREAM( "Elapsed time of check 6 is: " << check6 );
 
-		/*if (next_node > 200)
+		checks++;
+		if (checks > 10000)
 		{
 			break;
 		}
-		ros::Duration(0.01).sleep();*/
-		std::cout << std::endl << std::endl << std::endl;	
+		//ros::Duration(0.01).sleep();
 	}
 
-	std::cout << "Elapsed time of initialization: " << check4 << std::endl;
+	ROS_DEBUG_STREAM( "Elapsed time of initialization: " << check4 );
 
 
-	std::cout << "//////////////////Track back//////////////////" <<std::endl;
+	ROS_DEBUG_STREAM( "//////////////////Track back//////////////////" );
 	p.z = 1.0;
 	while (not(current_node->getNode() == start_node_nr))
 	{
@@ -307,7 +311,7 @@ void calculate_route()
 	}
 
 	check5 += ros::Time::now().toSec() - begin_check5;
-	std::cout << "Elapsed time of route calculation: " << check5 << std::endl;
+	ROS_DEBUG_STREAM( "Elapsed time of route calculation: " << check5 );
 }
 
 void generate_route()
@@ -323,15 +327,32 @@ void generate_route()
 
 void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 {
-	double begin = ros::Time::now().toSec();	
-	start_state = *state_msg;
 
+	start_state = *state_msg;
+	ROS_DEBUG_STREAM( "Start: " << start_state );
+
+	ROS_DEBUG_STREAM( "End: " << goal_state );
 	ros::Duration(5).sleep();
 
+	double begin = ros::Time::now().toSec();
+	
 	calculate_route();
+
 	double end = ros::Time::now().toSec();	
-	std::cout << "Elapsed time is: " << end-begin << std::endl;
-	std::cout << "Nodes checked: " << next_node << std::endl;
+	ROS_INFO_STREAM( "Elapsed time is: " << end-begin );
+	ROS_DEBUG_STREAM( "Nodes checked: " << next_node );
+
+	Network->clear();
+	CostMatrix = MatrixXd::Ones(100000,2) * INF;
+	NodeNrMatrix = VectorXd::Ones(4000000) * INF;
+	Network->reserve(100000);
+
+	next_node = 1;
+	current_node_nr = 0;
+	new_node_nr = 0;
+	start_node_nr = 0;
+	new_cost = 0;
+	checks = 0;
 }
 
 void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
@@ -342,11 +363,11 @@ void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 
 void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 {
-	std::cout << "map received" << std::endl;
+	ROS_DEBUG_STREAM( "map received" );
 	map = *map_msg;
 	temp_map = map;
 	
-	std::cout << "Data length is: " << map.data.size() <<std::endl;
+	ROS_DEBUG_STREAM( "Data length is: " << map.data.size() );
 	map_width = (float)map.info.width;
 	map_height = (float)map.info.height;
 
@@ -357,8 +378,8 @@ void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 	map_center_y = (float)map.info.origin.position.y;
 
 	resolution = (float)map.info.resolution;
-	std::cout << "Map center: " << map_center_x << ", " << map_center_y <<std::endl;
-	std::cout << "Map size: " << map_width << " x " << map_height <<std::endl;
+	ROS_DEBUG_STREAM( "Map center: " << map_center_x << ", " << map_center_y );
+	ROS_DEBUG_STREAM( "Map size: " << map_width << " x " << map_height );
 }
 
 void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
@@ -377,7 +398,7 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 
 	map_pub.publish(map);
 
-	std::cout << "Obstacle map published" << std::endl;
+	ROS_DEBUG_STREAM( "Obstacle map published" );
 }
 
 int main (int argc, char** argv)

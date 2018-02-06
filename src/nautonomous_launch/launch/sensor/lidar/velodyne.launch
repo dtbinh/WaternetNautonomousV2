@@ -3,7 +3,7 @@
   <arg name="fixed_frame_id" default="map"/>
   <arg name="child_frame_id" default="lidar_link"/>
 
-  <arg name="pointcloud_topic" default="point_cloud"/>
+  <arg name="pointcloud_topic" default="velodyne_points"/>
 
   <include file="$(find velodyne_puck_driver)/launch/velodyne_puck_driver_nodelet.launch"/>
 

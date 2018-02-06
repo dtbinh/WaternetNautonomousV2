@@ -1,6 +1,6 @@
-devel_space: /home/nvidia/ROS/WaternetNautonomousV2/devel
+devel_space: /home/daley/WaternetNautonomousV2/devel
 install: false
-install_space: /home/nvidia/ROS/WaternetNautonomousV2/install
+install_space: /home/daley/WaternetNautonomousV2/install
 profile: default
-source_space: /home/nvidia/ROS/WaternetNautonomousV2/src
-workspace: /home/nvidia/ROS/WaternetNautonomousV2
+source_space: /home/daley/WaternetNautonomousV2/src
+workspace: /home/daley/WaternetNautonomousV2

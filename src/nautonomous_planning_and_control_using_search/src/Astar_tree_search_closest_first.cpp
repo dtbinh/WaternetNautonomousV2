@@ -57,7 +57,7 @@ int dx;
 int dy;
 int h;
 
-float step_size = 10;
+float step_size = 5;
 float angle_step = 0.05;
 
 float cost_c;

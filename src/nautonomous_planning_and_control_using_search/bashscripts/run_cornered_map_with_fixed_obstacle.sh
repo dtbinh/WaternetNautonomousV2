@@ -4,12 +4,9 @@ rosservice call /load "config_name: '/home/daley/WaternetNautonomousV2/src/nauto
 
 sleep 1
 
-#rosrun nautonomous_planning_and_control_using_search tree_opt &
-rosrun nautonomous_planning_and_control_using_search grid_planner_3 &
+#rostopic pub --once /mission_coordinator/goal nautonomous_mpc_msgs/StageVariable "{T_l: 0.0, T_r: 0.0, x: 113.0, y: 14.0, theta: 0.0, u: 0.0, v: 0.0, omega: 0.0}" &
 
-sleep 1
-
-rostopic pub --once /mission_coordinator/goal nautonomous_mpc_msgs/StageVariable "{T_l: 0.0, T_r: 0.0, x: 113.0, y: 14.0, theta: 0.0, u: 0.0, v: 0.0, omega: 0.0}" &
+rostopic pub --once /mission_coordinator/goal nautonomous_mpc_msgs/StageVariable "{T_l: 0.0, T_r: 0.0, x: 8.0, y: -16.0, theta: 0.0, u: 0.0, v: 0.0, omega: 0.0}" &
 
 sleep 1
 rostopic pub --once /mission_coordinator/obstacle nautonomous_mpc_msgs/Obstacle "state:

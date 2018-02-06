@@ -1,8 +1,8 @@
-prefix=/home/nvidia/ROS/WaternetNautonomousV2/install
+prefix=/home/daley/WaternetNautonomousV2/install
 
 Name: catkin_tools_prebuild
 Description: Description of catkin_tools_prebuild
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/nvidia/ROS/WaternetNautonomousV2/install/lib 
+Libs: -L/home/daley/WaternetNautonomousV2/install/lib 
 Requires: 
