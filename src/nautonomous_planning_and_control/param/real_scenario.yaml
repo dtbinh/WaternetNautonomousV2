@@ -18,6 +18,7 @@ mission_coordinator:
   safety_margin: 3.0
 
   frame_id: '/my_frame'
+  use_PID: true
   verbose: true
 
 Route_generator:

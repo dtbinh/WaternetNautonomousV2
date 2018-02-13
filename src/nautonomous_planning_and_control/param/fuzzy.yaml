@@ -22,6 +22,7 @@ mission_coordinator:
 
   number_of_fuzzy_waypoints: 5
   use_fuzzy: true
+  use_PID: true
   safety_margin: 3.0
   frame_id: '/my_frame'
   verbose: true

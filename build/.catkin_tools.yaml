@@ -1,6 +1,0 @@
-devel_space: /home/daley/WaternetNautonomousV2/devel
-install: false
-install_space: /home/daley/WaternetNautonomousV2/install
-profile: default
-source_space: /home/daley/WaternetNautonomousV2/src
-workspace: /home/daley/WaternetNautonomousV2

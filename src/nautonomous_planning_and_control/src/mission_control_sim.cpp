@@ -47,6 +47,7 @@ double ref_velocity;
 double safety_margin;
 
 bool use_fuzzy;
+bool use_PID;
 int number_of_fuzzy_waypoints;
 
 int maximum_accepted_waypoint_error;
@@ -400,6 +401,7 @@ int main(int argc, char **argv)
 	nh_private.getParam("safety_margin", safety_margin);
 	nh_private.getParam("number_of_fuzzy_waypoints", number_of_fuzzy_waypoints);
 	nh_private.getParam("use_fuzzy", use_fuzzy);
+	nh_private.getParam("use_PID", use_PID);
 
 	nh_private.getParam("waypoint_error/maximum_accepted_waypoint_error", maximum_accepted_waypoint_error);
 	nh_private.getParam("waypoint_error/minimum_waypoint_error", minimum_waypoint_error);
@@ -435,7 +437,12 @@ int main(int argc, char **argv)
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start",10);
 	ekf_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_ekf",10);
 
-	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state",10, action_cb);
+	if (use_PID){
+		next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state",10, action_cb);
+	}
+	else{
+		next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
+	}
 	EKF_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, EKF_cb);
 	waypoint_sub = 		nh.subscribe<nautonomous_mpc_msgs::Route>("/Route_generator/waypoint_route", 10, route_cb);
 
