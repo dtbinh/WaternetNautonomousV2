@@ -1,4 +1,4 @@
-z<launch>
+<launch>
 
 	<!-- 	base_link is typically the center of mass or the center of turning for your robot, 
 			while base_footprint is located at ground level directly below base_link. 
