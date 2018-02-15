@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <!-- Load default parameters -->
-  <rosparam command="load" file="$(find nautonomous_planning_and_control)/param/default.yaml"/>
+  <rosparam command="load" file="$(find nautonomous_planning_and_control)/param/mpc.yaml"/>
 
   <!-- Launch mission_control_sim -->
   <node name="mission_coordinator" pkg="nautonomous_planning_and_control" type="mission_control_sim" output="screen"/>
@@ -13,7 +13,7 @@
   <node name="Route_generator" pkg="nautonomous_planning_and_control" type="ODEsolver" output="log"/>
 
   <!-- Launch PID -->
-  <node name="PID" pkg="nautonomous_planning_and_control" type="PID" output="log"/>
+  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log"/>
 
   <!-- Launch Visualization -->
   <node name="visualization" pkg="nautonomous_planning_and_control" type="Visualization" output="log"/>

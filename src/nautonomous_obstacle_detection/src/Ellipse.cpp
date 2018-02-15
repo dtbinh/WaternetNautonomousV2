@@ -87,10 +87,6 @@ std::vector<Blob>* Blobs = new std::vector<Blob>();
 
 void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 {
-	// Create image
-	src = imread("/home/waternet/programmeren/nautonomous/WaternetNautonomous/src/nautonomous_configuration/config/navigation/map/amsterdam_cropped_debug_rotated.png" , IMREAD_COLOR);
-	cout << "Image size is " << src.cols << "x" << src.rows <<endl;
-
 	cout << "Initialize grid" << endl;
 	for (int i = 0; i < gridSize; i++){
 		for (int j = 0; j < gridSize; j++){
@@ -124,20 +120,6 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 			grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
 			VoxelFound = true;
 		}
-
-		/*// ToDo fix frames
-		cout << "Point in origin frame: (" << << "," << << ") and in lidar frame "
-		if ((x_pos_origin > 0 ) && (x_pos_origin < src.cols) && (y_pos_origin > 0 ) && (y_pos_origin < src.rows))
-		{
-			if ((int)src.at<uchar>(y_pos_origin*2,x_pos_origin*2) > 1)
-			{
-				if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 0) && (z_pos > -5)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
-		{
-				grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
-				VoxelFound = true;
-		}
-			}
-		}*/
 	}
 
 	cout << "Setup markers" << endl;
@@ -184,13 +166,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	
 	Markers.markers.push_back(Boat);
 
-
-
 	nautonomous_mpc_msgs::Obstacle obstacle;
 	nautonomous_mpc_msgs::Obstacles obstacles;
-
-
-		
 	
 	if (VoxelFound)
 	{
@@ -294,206 +271,38 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 					points.points.push_back(p);
 				}
 
-				if (!UseJarvis)
+
+				// Use eigenvalue decomposition for the oval markers
+				MatrixXd centered = PointsMatrix.rowwise() - PointsMatrix.colwise().mean();
+				MatrixXd cov = (centered.adjoint() * centered)/ double(PointsMatrix.rows() -1);
+			
+				EigenSolver<MatrixXd> eigensolver(cov);
+				MatrixXcd Eigenvalues = eigensolver.eigenvalues().asDiagonal();
+				MatrixXcd Eigenvectors = eigensolver.eigenvectors();
+	
+				MatrixXd RealEigenvalues = Eigenvalues.real();
+				MatrixXd RealEigenvectors = Eigenvectors.real();
+		
+				std::ptrdiff_t a,b,c,d;
+				float smallest_eigenvalue = RealEigenvalues.diagonal().minCoeff(&a,&b);
+				float largest_eigenvalue = RealEigenvalues.maxCoeff(&c,&d);
+	
+				VectorXd smallest_eigenvector = RealEigenvectors.col(a);
+				VectorXd largest_eigenvector =  RealEigenvectors.col(c);
+
+				angle = atan2((double)largest_eigenvector(1,0), (double)largest_eigenvector(0,0));
+				if (angle < 0)
 				{
-		
-					// Use eigenvalue decomposition for the oval markers
-					MatrixXd centered = PointsMatrix.rowwise() - PointsMatrix.colwise().mean();
-					MatrixXd cov = (centered.adjoint() * centered)/ double(PointsMatrix.rows() -1);
-				
-					EigenSolver<MatrixXd> eigensolver(cov);
-					MatrixXcd Eigenvalues = eigensolver.eigenvalues().asDiagonal();
-					MatrixXcd Eigenvectors = eigensolver.eigenvectors();
-		
-					MatrixXd RealEigenvalues = Eigenvalues.real();
-					MatrixXd RealEigenvectors = Eigenvectors.real();
-			
-					std::ptrdiff_t a,b,c,d;
-					float smallest_eigenvalue = RealEigenvalues.diagonal().minCoeff(&a,&b);
-					float largest_eigenvalue = RealEigenvalues.maxCoeff(&c,&d);
-		
-					VectorXd smallest_eigenvector = RealEigenvectors.col(a);
-					VectorXd largest_eigenvector =  RealEigenvectors.col(c);
-
-					angle = atan2((double)largest_eigenvector(1,0), (double)largest_eigenvector(0,0));
-					if (angle < 0)
-					{
-						angle += 6.28;
-					}
-		
-					float chisvalue = 3;
-					AvgX = PointsMatrix.col(0).mean() - gridSize/2;
-					AvgY = PointsMatrix.col(1).mean() - gridSize/2;
-			
-					first_principle_axis = chisvalue * sqrt(largest_eigenvalue);
-					second_principle_axis = chisvalue * sqrt(smallest_eigenvalue);
-			
+					angle += 6.28;
 				}
-				else
-				{
-					// Use Jarvis
-					cout << "Start Jarvis" << endl;
-					MatrixXd ConvexSet(1,3);
-					MatrixXd TempSet(1,3);
-					ConvexSet (0,0) = 500;
-					ConvexSet (0,1) = 500;
-					ConvexSet (0,2) = 0;
-
-					// Find minimum corner point
-					for (int j = 0; j < Blobs->at(i).getSize() ;j++)
-					{
-						if ((PointsMatrix(j,0) < ConvexSet (0,0)) && (PointsMatrix(j,1) < ConvexSet (0,1)))
-						{
-							ConvexSet (0,0) = PointsMatrix(j,0);
-							ConvexSet (0,1) = PointsMatrix(j,1);
-						}
-					}			
-					// Find second point
-					float NewAngle = -6.28;
-					float PrevAngle = -6.28;
-
-					TempSet = ConvexSet;
-					ConvexSet.resize(ConvexSet.rows()+1,3);
-					ConvexSet.topRows(TempSet.rows()) = TempSet;
-					TempSet.resize(ConvexSet.rows(),3);
-					for (int j = 0; j < Blobs->at(i).getSize() ;j++)
-					{
-						if ((PointsMatrix(j,1) == ConvexSet(0,1)) && (PointsMatrix(j,0) == ConvexSet(0,0)))
-						{
-							continue;
-						}
-						else
-						{
-							NewAngle = atan2((double)(PointsMatrix(j,1) - ConvexSet(0,1)), (double)(PointsMatrix(j,0) - ConvexSet(0,0)));
-							if (NewAngle > PrevAngle)
-							{
-								PrevAngle = NewAngle;
-								ConvexSet (1,0) = PointsMatrix(j,0);
-								ConvexSet (1,1) = PointsMatrix(j,1);
-								ConvexSet (1,2) = NewAngle;
-							}
-						}
-					}	
-					PrevAngle = -6.28;
-					int k = 1;
-					do 
-					{
-						TempSet = ConvexSet;
-						ConvexSet.resize(ConvexSet.rows()+1,3);
-						ConvexSet.topRows(TempSet.rows()) = TempSet;
-						TempSet.resize(ConvexSet.rows(),3);
-						k++;
-						for (int j = 0; j < Blobs->at(i).getSize() ; j++)
-						{
-							if (((PointsMatrix(j,1) == ConvexSet(k-1,1)) && (PointsMatrix(j,0) == ConvexSet(k-1,0))) || ((ConvexSet(k-2,1) == PointsMatrix(j,1) ) && (ConvexSet(k-2,0) == PointsMatrix(j,0))))
-							{
-								continue;
-							}
-							else
-							{
-								NewAngle = atan2((double)(PointsMatrix(j,1) - ConvexSet(k-1,1)), (double)(PointsMatrix(j,0) - ConvexSet(k-1,0))) - atan2((double)(ConvexSet(k-2,1)- ConvexSet(k-1,1)), (double)(ConvexSet(k-2,0) - ConvexSet(k-1,0)));
-								
-								if (NewAngle < 0)
-								{
-									NewAngle += 6.28;
-								}
-
-								if (NewAngle > PrevAngle)
-								{
-									PrevAngle = NewAngle;
-									ConvexSet(k,0) = PointsMatrix(j,0);
-									ConvexSet(k,1) = PointsMatrix(j,1);
-									ConvexSet(k,2) = NewAngle;
-								}
-							}
-						}
-						PrevAngle = -6.28;
-						
-					} while (not((ConvexSet(k,0) == ConvexSet(0,0)) && (ConvexSet(k,1) == ConvexSet(0,1))));
-
-					MatrixXd TempVec(ConvexSet.rows(),2);
-					TempVec.leftCols(1) = ConvexSet(0,0)*MatrixXd::Ones(ConvexSet.rows(),1);
-					TempVec.rightCols(1) = ConvexSet(0,1)*MatrixXd::Ones(ConvexSet.rows(),1);
-					MatrixXd Transform(3,3);
-					MatrixXd FullTransform(3,3);
-					MatrixXd tempTransform(3,3);
-					tempTransform = MatrixXd::Identity(3,3);
-					MatrixXd TransformedConvexSet(ConvexSet.rows(),2) ;
-					TransformedConvexSet.leftCols(2) = ConvexSet.leftCols(2) - TempVec ;
-					TempVec.resize(3,1);
-					Transform(2,0) = 0.0;
-					Transform(2,1) = 0.0;
-					Transform(2,2) = 1.0;
-
-					float minArea = 10000.0;
-					float minWidth = 0.0;
-					float minHeight = 0.0;
-					float minAngle = 0.0;
-					float minCenterX = 0.0;
-					float minCenterY = 0.0;
-					float tempAngle = 0;
-					float CenterX = 0;
-					float CenterY = 0;
-					for (int l = 1; l < ConvexSet.rows(); l++)
-					{
-						Transform(0,0) = cos(ConvexSet(l,2));
-						Transform(0,1) = sin(ConvexSet(l,2));
-						Transform(1,0) = -sin(ConvexSet(l,2));
-						Transform(1,1) = cos(ConvexSet(l,2));
-						Transform(0,2) = -(TransformedConvexSet(l,0) - TransformedConvexSet(l-1,0)) * cos(ConvexSet(l,2)) - (TransformedConvexSet(l,1) - TransformedConvexSet(l-1,1)) * sin(ConvexSet(l,2));
-						Transform(1,2) = (TransformedConvexSet(l,0) - TransformedConvexSet(l-1,0)) * sin(ConvexSet(l,2)) - (TransformedConvexSet(l,1) - TransformedConvexSet(l-1,1)) * cos(ConvexSet(l,2));
-						
-						for (int j = 1; j < ConvexSet.rows(); j++)
-						{
-							TempVec(0,0) = TransformedConvexSet(j,0);
-							TempVec(1,0) = TransformedConvexSet(j,1);
-							TempVec(2,0) = 1.0;
-							TempVec = Transform * TempVec;
-							
-							TransformedConvexSet(j,0) = TempVec(0,0);
-							TransformedConvexSet(j,1) = TempVec(1,0);
-						}
-
-						tempTransform = Transform * tempTransform;
-						tempAngle += ConvexSet(l,2);
-
-						// Get max min
-						float height = TransformedConvexSet.leftCols(1).maxCoeff() - TransformedConvexSet.leftCols(1).minCoeff();
-						float width = TransformedConvexSet.rightCols(1).maxCoeff() - TransformedConvexSet.rightCols(1).minCoeff();		
-						float relativeCenterX = (TransformedConvexSet.leftCols(1).maxCoeff() + TransformedConvexSet.leftCols(1).minCoeff())/2.0;
-						float relativeCenterY = (TransformedConvexSet.rightCols(1).maxCoeff() + TransformedConvexSet.rightCols(1).minCoeff())/2.0;
-						
-						TempVec(0,0) = relativeCenterX;
-						TempVec(1,0) = relativeCenterY;
-						TempVec(2,0) = 1.0;
-						TempVec = tempTransform.inverse() * TempVec;
-						
-						CenterX = TempVec(0,0);
-						CenterY = TempVec(1,0);
-
-
-						// Check greatest area
-						if ((height * width) < minArea)
-						{
-							minArea = height * width;
-							minWidth = width;
-							minHeight = height;
-							minAngle = tempAngle;
-							minCenterX = CenterX;
-							minCenterY = CenterY;
-							FullTransform = tempTransform;
-						}
-					}
-						
-					AvgX = CenterX - gridSize/2 + ConvexSet(0,0);
-					AvgY = CenterY - gridSize/2 + ConvexSet(0,1);
-
-					// Get priciple axis	
-					angle = fmod(minAngle,6.28);
-					first_principle_axis = minHeight;
-					second_principle_axis = minWidth;
-				}
-
+	
+				float chisvalue = 3;
+				AvgX = PointsMatrix.col(0).mean() - gridSize/2;
+				AvgY = PointsMatrix.col(1).mean() - gridSize/2;
+		
+				first_principle_axis = chisvalue * sqrt(largest_eigenvalue);
+				second_principle_axis = chisvalue * sqrt(smallest_eigenvalue);
+			
 				oval.pose.position.x = AvgX * voxelSize;
 				oval.pose.position.y = AvgY * voxelSize;
 				oval.pose.position.z = 0;

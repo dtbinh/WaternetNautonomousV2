@@ -1,0 +1,59 @@
+mission_coordinator:
+  waypoints_x: [ 40.0, 0.0] #[m]
+  waypoints_y: [  0.0, 0.0] #[m]
+
+  waypoint_error:
+    maximum_accepted_waypoint_error: 5
+    minimum_waypoint_error: 1
+    decrease_waypoint_error: 1
+
+  obstacles:
+    start_x:        [20] #[m]
+    start_y:        [0] #[m]
+    start_theta:    [0] #[rad]
+    u:              [0] #[m/s]
+    v:              [0] #[m/s]
+    omega:          [0] #[rad/s]
+    major_semiaxis: [3] #[m]
+    minor_semiaxis: [3] #[m]
+
+  reference:
+    velocity: 3.0
+
+  number_of_fuzzy_waypoints: 5
+  use_fuzzy: true
+  use_PID: true
+  safety_margin: 3.0
+  frame_id: '/my_frame'
+  verbose: true
+
+Route_generator:
+  k_max:         1.0 #
+  gamma_max:     1.0 #
+  final_time:    10 #
+  safety_margin: 3.0
+
+PID:
+  max_theta_error:           0.75
+  parallel_error_gain:       0.25
+  perpendicular_error_gain:  3
+  velocity_error_gain:       5
+
+  max_ut: 1
+  max_uf: 2
+  min_ut: -1
+  min_uf: 0
+  
+  fuzzy:
+    use_fuzzy: true
+    number_of_fuzzy_waypoints: 5
+    fuzzy_min_distance: 2
+    fuzzy_max_distance: 10
+    fuzzy_cut_distance: 5
+
+Ekf:
+  disturbance: 
+    fx1: 0
+    fx2: 0
+    fy1: 0
+    fy2: 0

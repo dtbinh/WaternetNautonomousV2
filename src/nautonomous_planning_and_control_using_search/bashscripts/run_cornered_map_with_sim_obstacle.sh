@@ -4,7 +4,7 @@ rosservice call /load "config_name: '/home/daley/WaternetNautonomousV2/src/nauto
 
 sleep 1
 
-rosrun nautonomous_planning_and_control_using_search tree_opt &
+#rosrun nautonomous_planning_and_control_using_search tree_opt &
 
 sleep 1
 
