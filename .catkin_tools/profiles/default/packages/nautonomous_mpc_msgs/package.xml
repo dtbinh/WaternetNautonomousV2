@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+  <name>nautonomous_mpc_msgs</name>
+  <version>0.0.0</version>
+  <description>Custom messages for the mpc_ros package</description>
+
+  <maintainer email="seewera@student.ethz.ch">Antoine Seewer</maintainer>
+  <author email="seewera@student.ethz.ch">Antoine Seewer</author>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
