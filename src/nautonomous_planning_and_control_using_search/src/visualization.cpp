@@ -6,6 +6,7 @@
 #include <nautonomous_mpc_msgs/StageVariable.h>
 #include <nav_msgs/Path.h>
 #include <nautonomous_planning_and_control_using_search/Quaternion_conversion.h>
+#include <geometry_msgs/PoseStamped.h>
 
 ros::Publisher marker_pub_1;
 ros::Publisher marker_pub_2;
@@ -20,6 +21,8 @@ geometry_msgs::Point p;
 
 visualization_msgs::Marker point;
 visualization_msgs::Marker obstacle_marker;
+
+geometry_msgs::PoseStamped position_marker;
 
 double ns = 0;
 
@@ -36,14 +39,15 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 void position_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& position_msg)
 {
 	std::cout << "Pos found" << std::endl;
-	point.pose.position.x = position_msg->x;
-	point.pose.position.y = position_msg->y;
-	point.pose.position.z = 1.0;
-	
+	position_marker.pose.position.x = position_msg->x;
+	position_marker.pose.position.y = position_msg->y;
+	position_marker.pose.position.z = 1.0;
+	position_marker.pose.orientation = toQuaternion(0.0, 0.0, position_msg->theta);
+
 	obstacle_marker.pose.position.x = obstacle_marker.pose.position.x + cos(obstacle.state.pose.position.z) * obstacle.state.twist.linear.x;
 	obstacle_marker.pose.position.y = obstacle_marker.pose.position.y + sin(obstacle.state.pose.position.z) * obstacle.state.twist.linear.x;
 
-	marker_pub_1.publish(point);
+	marker_pub_1.publish(position_marker);
 	marker_pub_2.publish(obstacle_marker);
 }
 
@@ -54,25 +58,14 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
-	marker_pub_1 = 		nh_private.advertise<visualization_msgs::Marker>("Position_marker", 10);
+	marker_pub_1 = 		nh_private.advertise<geometry_msgs::PoseStamped>("Position_marker", 10);
 	marker_pub_2 = 		nh_private.advertise<visualization_msgs::Marker>("Obstacle_marker",10);
 
-	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacle>("/mission_coordinator/obstacle",1,obstacle_cb);
+	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacle>("/true_obstacle",1,obstacle_cb);
 	position_sub = 		nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",1,position_cb);
 
-	point.header.frame_id = "/map";
-	point.header.stamp = ros::Time::now();
-	point.ns = "waypoints";
-	point.action = visualization_msgs::Marker::ADD;
-	point.pose.orientation.w = 1.0;
-    	point.id = 0;
-	point.type = visualization_msgs::Marker::CYLINDER;
-
-	point.scale.x = 1;
-	point.scale.y = 1;
-	point.scale.z = 1;
-	point.color.g = 1.0;
-	point.color.a = 1.0;
+	position_marker.header.frame_id = "/map";
+	position_marker.header.stamp = ros::Time::now();
 
 	obstacle_marker.header.frame_id = "/map";
 	obstacle_marker.header.stamp = ros::Time::now();

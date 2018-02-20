@@ -51,7 +51,7 @@ float temp_x;
 float temp_y;
 float temp_theta;
 
-float step_size = 1;
+float step_size = 5;
 
 float cost_c;
 float cost_i;

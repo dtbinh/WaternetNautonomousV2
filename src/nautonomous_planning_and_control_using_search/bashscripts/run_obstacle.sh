@@ -11,9 +11,9 @@ sleep 1
 rostopic pub --once /mission_coordinator/obstacle nautonomous_mpc_msgs/Obstacle "state:
   pose:
     position:
-      x: 20
+      x: -15.0
       y: 0.0
-      z: 3.14
+      z: 0.0
     orientation:
       x: 0.0
       y: 0.0
@@ -29,7 +29,32 @@ rostopic pub --once /mission_coordinator/obstacle nautonomous_mpc_msgs/Obstacle 
       y: 0.0
       z: 0.0
 major_semiaxis: 5
-minor_semiaxis: 5" &
+minor_semiaxis: 4" &
+
+sleep 1
+
+rostopic pub --once /true_obstacle nautonomous_mpc_msgs/Obstacle "state:
+  pose:
+    position:
+      x: -15.0
+      y: 0.0
+      z: 0.0
+    orientation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 0.0
+  twist:
+    linear:
+      x: 0.7
+      y: 0.0
+      z: 0.0
+    angular:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+major_semiaxis: 5
+minor_semiaxis: 4" &
 
 sleep 1
 
