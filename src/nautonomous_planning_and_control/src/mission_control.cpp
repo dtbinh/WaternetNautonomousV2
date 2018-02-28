@@ -146,7 +146,7 @@ void Determine_closest_blocking_obstacle() // State 3
 	float theta = atan2(waypoint_state.stage.y - starting_state.y,waypoint_state.stage.x - starting_state.x);
 	float max_dist = 1e10;
 	
-	for ( int j = 0; j < obstacles.Nobstacles; j++)
+	for ( int j = 0; j < obstacles.obstacles.size(); j++)
 	{
 		obstacle = obstacles.obstacles[j];
 		std::cout << "Obstacle: " << obstacle << std::endl;

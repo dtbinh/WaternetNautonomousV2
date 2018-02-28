@@ -59,7 +59,7 @@ float temp_dist;
 float current_x;
 float current_y;
 
-float step_size = 2;
+float step_size = 1;
 int weighted_map_border = 10;
 
 float cost_c;
@@ -353,83 +353,73 @@ void calculate_route()
 	{
 		double begin_check2 = ros::Time::now().toSec();	
 	
-		// Node right up
-		temp_theta = 0.25 * PI;
-		temp_x = current_node->getX() + step_size;
-		temp_y = current_node->getY() + step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+		if ((std::abs(fmod(current_node->getTheta(),0.5*PI)) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) - 0.5 * PI) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) + 0.5 * PI) < 0.01))
+		{
+			// Node right forward	
+			temp_theta = current_node->getTheta() - 0.25 * PI;
+			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sq2 * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * sq2 + turning_penalty;
+			time_stamp = current_node->getTimeStamp() + 1;
 
-		add_new_node();
+			add_new_node();
 
-		// Node right
-	
-		temp_theta = 0.0;
-		temp_x = current_node->getX() + step_size;
-		temp_y = current_node->getY() + 0;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
-
-		add_new_node();
-
-		// Node right down
-	
-		temp_theta = 0.25 * PI;
-		temp_x = current_node->getX() + step_size;
-		temp_y = current_node->getY() - step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			// Node forwards
 		
-		add_new_node();
-
-		// Node left up
-		temp_theta = 0.75 * PI;
-		temp_x = current_node->getX() - step_size;
-		temp_y = current_node->getY() + step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
-
-		add_new_node();
-
-		// Node left
+			temp_theta = current_node->getTheta();
+			temp_x = current_node->getX() + step_size * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size;
+			time_stamp = current_node->getTimeStamp() + 1;
 	
-		temp_theta = -PI;
-		temp_x = current_node->getX() - step_size;
-		temp_y = current_node->getY() + 0;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			add_new_node();
 
-		add_new_node();
-
-		// Node left down
-	
-		temp_theta = -0.75 * PI;
-		temp_x = current_node->getX() - step_size;
-		temp_y = current_node->getY() - step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			// Node left forward
 		
-		add_new_node();
+			temp_theta = current_node->getTheta() +  0.25 * PI;
+			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sq2 * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * sq2 + turning_penalty;
+			time_stamp = current_node->getTimeStamp() + 1;
+			
+			add_new_node();
+		}
 
-		// Node up
-	
-		temp_theta = 0.5 * PI;
-		temp_x = current_node->getX() + 0;
-		temp_y = current_node->getY() + step_size;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+		else if ((std::abs(fmod(current_node->getTheta(),0.5*PI) - 0.25*PI) < 0.01) || (std::abs(fmod(current_node->getTheta(),0.5*PI) + 0.25*PI) < 0.01))
+		{
+			// Node right forward	
+			temp_theta = current_node->getTheta() -  0.25 * PI;
+			temp_x = current_node->getX() + step_size * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size + turning_penalty;
+			time_stamp = current_node->getTimeStamp() + 1;
+			
+			add_new_node();
 
-		add_new_node();
+			// Node forwards
+			temp_theta = current_node->getTheta();
+			temp_x = current_node->getX() + step_size * sq2 * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sq2 * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size * sq2;
+			time_stamp = current_node->getTimeStamp() + 1;
+			
+			add_new_node();
 
-		// Node down
-	
-		temp_theta = -0.5 * PI;
-		temp_x = current_node->getX() - 0;
-		temp_y = current_node->getY() - step_size;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
-		
-		add_new_node();
+			// Node left forward
+			temp_theta = current_node->getTheta() +  0.25 * PI;
+			temp_x = current_node->getX() + step_size * cos(temp_theta);
+			temp_y = current_node->getY() + step_size * sin(temp_theta);
+			new_cost = current_node->getCost() + step_size + turning_penalty;
+			time_stamp = current_node->getTimeStamp() + 1;
+			
+			add_new_node();
+		}
+
+		else
+		{
+			ROS_DEBUG_STREAM( "Angle: " << fmod(current_node->getTheta(),0.5*PI) );
+			break;
+		}
 
 		check2 += ros::Time::now().toSec() - begin_check2;
 		ROS_DEBUG_STREAM( "Elapsed time of check 2 is: " << check2 );

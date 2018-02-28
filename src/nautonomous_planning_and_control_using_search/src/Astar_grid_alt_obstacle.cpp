@@ -92,6 +92,7 @@ geometry_msgs::Point p2;
 
 visualization_msgs::Marker line_list;
 nav_msgs::Path route_list;
+nav_msgs::Path temp_route_list;
 nav_msgs::Path flipped_route_list;
 
 int next_node = 1;
@@ -127,7 +128,7 @@ float obstacle_b = 1;
 
 std::string inputString;
 
-void smooth_path()
+/*void smooth_path()
 {
 	route_list.poses.clear();
 
@@ -145,39 +146,13 @@ void smooth_path()
 		for (i = current_waypoint + 1; i < flipped_route_list.poses.size(); i++)
 		{
 			temp_theta = atan2(flipped_route_list.poses[i].pose.position.y - current_y, flipped_route_list.poses[i].pose.position.x - current_x);
-			for (int j = 0; j < (5 * (i - current_waypoint)); j++)
+			temp_dist = sqrt(pow(flipped_route_list.poses[i].pose.position.x - current_x,2)  + pow(flipped_route_list.poses[i].pose.position.y - current_y,2));
+			for (int j = 0; j < (5 * temp_dist); j++)
 			{
 				temp_x = current_x + cos(temp_theta) * 0.2 * j;
 				temp_y = current_y + sin(temp_theta) * 0.2 * j;
 
-				obstacle_is_blocking = false;
-				for (int k = 0; k < Obstacles.obstacles.size(); k++)
-				{
-					obstacle_x = Obstacles.obstacles[k].state.pose.position.x;
-					obstacle_y = Obstacles.obstacles[k].state.pose.position.y;
-					obstacle_th = Obstacles.obstacles[k].state.pose.position.z;
-					obstacle_u = Obstacles.obstacles[k].state.twist.linear.x;
-					obstacle_v = Obstacles.obstacles[k].state.twist.linear.y;
-					obstacle_w = Obstacles.obstacles[k].state.twist.linear.z;
-					obstacle_a = Obstacles.obstacles[k].major_semiaxis;
-					obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
-
-					Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) * (current_node->getTimeStamp() + 1);
-					Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) * (current_node->getTimeStamp() + 1);
-					Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
-					Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
-
-					if((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
-					{
-						obstacle_is_blocking = true;
-					}
-				}
-				if ((int)weighted_map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] > 10)
-				{
-					tile_is_occupied = true;
-					break;
-				}
-				else if	(obstacle_is_blocking)
+				if ((int)weighted_map.data[(round((temp_y-map_center_y)/resolution)-1) * map_width + round((temp_x-map_center_x)/resolution)] > 99)
 				{
 					tile_is_occupied = true;
 					break;
@@ -215,7 +190,88 @@ void smooth_path()
 		}
 		marker_3_pub.publish(route_list);
 	}
+}*/
+
+
+void smooth_path()
+{
+	temp_route_list = route_list;
+	route_list.poses.clear();
+
+	int current_waypoint = 0;
+	temp_x = temp_route_list.poses[0].pose.position.x;
+	temp_y = temp_route_list.poses[0].pose.position.y;
+	current_x = temp_x;
+	current_y = temp_y;
+	p1.pose.position.x = temp_x;
+	p1.pose.position.y = temp_y;
+	route_list.poses.push_back(p1);
+	new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y);
+	current_node = &Network->at(NodeNrMatrix(new_node_nr));
+	float current_weight = current_node->getCost();
+	float best_weight = current_weight;
+	int best_it = 1;
+	bool obstacle_found = false;
+	std::cout << "Current weight: " << current_weight << std::endl;
+
+ 	while ((current_waypoint + 1) < temp_route_list.poses.size())
+	{
+		for (i = current_waypoint + 1; i < temp_route_list.poses.size(); i++)
+		{
+			temp_x = temp_route_list.poses[i].pose.position.x;
+			temp_y = temp_route_list.poses[i].pose.position.y;
+			new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y);
+			current_node = &Network->at(NodeNrMatrix(new_node_nr));
+			temp_theta = atan2(current_y - temp_y, current_x - temp_x);
+			temp_dist = sqrt(pow(current_x - temp_x,2)  + pow(current_y - temp_y,2));		
+			current_weight = current_node->getCost() + temp_dist;
+			for (int j = 1; j < temp_dist; j += step_size)
+			{
+				temp_x += cos(temp_theta);
+				temp_y += sin(temp_theta);
+				int map_weight = weighted_map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)];
+				if (map_weight < 99)
+				{
+					current_weight += map_weight;
+				}
+				else 
+				{
+					obstacle_found = true;
+					break;
+				}
+			}
+
+			if ((current_weight < best_weight) && !(obstacle_found))
+			{
+				best_weight = current_weight;
+				std::cout << "New best weight: " << current_weight << " at (" << current_node->getX() << ", " << current_node->getY() << ")" << std::endl;
+				best_it = i;
+			}
+			else if (obstacle_found)
+			{
+				break;
+			}
+		}
+		current_waypoint = best_it;
+		best_it++;
+		temp_x = temp_route_list.poses[current_waypoint].pose.position.x;
+		temp_y = temp_route_list.poses[current_waypoint].pose.position.y;
+	
+		current_x = temp_x;
+		current_y = temp_y;
+		p1.pose.position.x = temp_x;
+		p1.pose.position.y = temp_y;
+		route_list.poses.push_back(p1);
+		new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y);
+		current_node = &Network->at(NodeNrMatrix(new_node_nr));
+		current_weight = current_node->getCost();
+		std::cout << "Current weight: " << current_weight << std::endl;
+		best_weight = current_weight;
+		obstacle_found = false;
+	}
+	marker_3_pub.publish(route_list);
 }
+
 
 void get_minimum_node()
 {
@@ -246,30 +302,6 @@ void add_new_node()
 
 	ROS_DEBUG_STREAM( "new_node_nr: " << new_node_nr );
 
-	obstacle_is_blocking = false;
-	for (i = 0; i < Obstacles.obstacles.size(); i++)
-	{
-		obstacle_x = Obstacles.obstacles[i].state.pose.position.x;
-		obstacle_y = Obstacles.obstacles[i].state.pose.position.y;
-		obstacle_th = Obstacles.obstacles[i].state.pose.position.z;
-		obstacle_u = Obstacles.obstacles[i].state.twist.linear.x;
-		obstacle_v = Obstacles.obstacles[i].state.twist.linear.y;
-		obstacle_w = Obstacles.obstacles[i].state.twist.linear.z;
-		obstacle_a = Obstacles.obstacles[i].major_semiaxis;
-		obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
-
-		Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) * (current_node->getTimeStamp() + 1);
-		Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) * (current_node->getTimeStamp() + 1);
-		Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
-		Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
-
-		if((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
-		{
-			obstacle_is_blocking = true;
-			break;
-		}
-	}
-
 	if (useplot)
 	{
 		p.x = current_node->getX();
@@ -287,17 +319,13 @@ void add_new_node()
 	else if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] > 90)
 	{
 		new_dist = INF;
-	}	
-	else if	(obstacle_is_blocking)
-	{
-		new_dist = INF;
-	}		
+	}			
 	else
 	{	
 		new_dist = sqrt(pow(temp_x - final_node->getX(),2) + pow(temp_y - final_node->getY(),2));
 	}
 
-	new_cost += weighted_map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)]/weighted_map_border;
+	new_cost += weighted_map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)];
 
 	if ((new_cost + new_dist) >= INF)
 	{
@@ -484,6 +512,10 @@ void calculate_route()
 	std::cout << "//////////////////Flipping route//////////////////" <<std::endl;
 	std::cout << "Size:" << route_list.poses.size() <<std::endl;
 
+	marker_2_pub.publish(route_list);
+
+	smooth_path();
+
 	for (i = 1; i <= route_list.poses.size(); i++)
 	{
 		flipped_route_list.poses.push_back(route_list.poses[route_list.poses.size() - i]);
@@ -492,10 +524,6 @@ void calculate_route()
 	std::cout << "//////////////////Final point//////////////////" <<std::endl;
 	flipped_route_list.poses[0].pose.position.x = start_state.x;
 	flipped_route_list.poses[0].pose.position.y = start_state.y;
-
-	marker_2_pub.publish(flipped_route_list);
-
-	smooth_path();
 
 	check7 += ros::Time::now().toSec() - begin_check7;
 
@@ -650,11 +678,11 @@ void make_weighted_map()
 
 void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 {
-	ROS_DEBUG_STREAM( "map received" );
+	ROS_INFO_STREAM( "map received" );
 	map = *map_msg;
 	temp_map = map;
 	
-	ROS_DEBUG_STREAM( "Data length is: " << map.data.size() );
+	ROS_INFO_STREAM( "Data length is: " << map.data.size() );
 	map_width = (float)map.info.width;
 	map_height = (float)map.info.height;
 
@@ -665,8 +693,8 @@ void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 	map_center_y = (float)map.info.origin.position.y;
 
 	resolution = (float)map.info.resolution;
-	ROS_DEBUG_STREAM( "Map center: " << map_center_x << ", " << map_center_y );
-	ROS_DEBUG_STREAM( "Map size: " << map_width << " x " << map_height );
+	ROS_INFO_STREAM( "Map center: " << map_center_x << ", " << map_center_y );
+	ROS_INFO_STREAM( "Map size: " << map_width << " x " << map_height );
 
 	make_weighted_map();
 }
@@ -674,7 +702,36 @@ void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
 void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg)
 {
 	Obstacles = *obstacles_msg;
+	obstacle_is_blocking = false;
 
+	for (int j = 0; j < map_width; j++)
+	{
+		for (int k = 0; k < map_height; k++)
+		{
+			for (i = 0; i < Obstacles.obstacles.size(); i++)
+			{
+				obstacle_x = Obstacles.obstacles[i].state.pose.position.x;
+				obstacle_y = Obstacles.obstacles[i].state.pose.position.y;
+				obstacle_th = Obstacles.obstacles[i].state.pose.position.z;
+				obstacle_u = Obstacles.obstacles[i].state.twist.linear.x;
+				obstacle_v = Obstacles.obstacles[i].state.twist.linear.y;
+				obstacle_w = Obstacles.obstacles[i].state.twist.linear.z;
+				obstacle_a = Obstacles.obstacles[i].major_semiaxis;
+				obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
+
+				Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th);
+				Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th);
+				Xcan = (Xobst - j*resolution - map_center_x) * cos(obstacle_th) + (Yobst - k*resolution - map_center_y) * sin(obstacle_th);
+				Ycan = -(Xobst - j*resolution - map_center_x) * sin(obstacle_th) + (Yobst - k*resolution - map_center_y) * cos(obstacle_th);
+
+				if((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
+				{
+					map.data[k * map_width + j] = 100;
+				}
+			}
+		}
+	}
+	make_weighted_map();
 	std::cout << "Obstacle received" << std::endl;
 }
 

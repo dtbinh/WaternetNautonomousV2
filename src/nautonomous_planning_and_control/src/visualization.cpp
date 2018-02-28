@@ -77,7 +77,7 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 void obstacles_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg)
 {
 	obstacles = *obstacles_msg;
-	for (int i = 0; i < obstacles.Nobstacles; i++)
+	for (int i = 0; i < obstacles.obstacles.size(); i++)
 	{
 		obstacle = obstacles.obstacles[i];
 		obstacles_marker.scale.x = obstacle.major_semiaxis * 2;

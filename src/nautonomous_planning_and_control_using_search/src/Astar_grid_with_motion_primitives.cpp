@@ -18,12 +18,13 @@
 #define PI 3.141592653589793238462643383279502884197169399375105820974
 #define sq2 1.414213562373095048801688724209698078569671875376948073176
 #define sq5 2.236067977499789696409173668731276235440618359611525724270
+#define sq10 3.162277660168379331998893544432718533719555139325216826857
 
 using namespace Eigen;
 
 int i = 0;
 
-VectorXd NodeNrMatrix(4000000);
+VectorXd NodeNrMatrix(600000);
 
 ros::Subscriber map_sub;
 ros::Subscriber start_sub;
@@ -59,7 +60,7 @@ float temp_dist;
 float current_x;
 float current_y;
 
-float step_size = 2;
+float step_size = 1;
 int weighted_map_border = 10;
 
 float cost_c;
@@ -242,7 +243,7 @@ void add_new_node()
 	ROS_DEBUG_STREAM( "Nx: " << Nx );
 	ROS_DEBUG_STREAM( "map_center_y: " << map_center_y );
 
-	new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y);
+	new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y) + Nx * Ny * 4 * temp_theta;
 
 	ROS_DEBUG_STREAM( "new_node_nr: " << new_node_nr );
 
@@ -320,7 +321,7 @@ void add_new_node()
 		OpenList->push_back(*new_node);
 	}
 
-	ROS_DEBUG_STREAM( "Node " << new_node_nr << " is at [" << new_node->getX() << ", " << new_node->getY() << "] at a theta of " << temp_theta << " with a cost of " << new_node->getTotalCost() );
+	ROS_DEBUG_STREAM( "Node " << new_node_nr << " is at [" << new_node->getX() << ", " << new_node->getY() << "] at a theta of " << temp_theta << " pi with a cost of " << new_node->getTotalCost() );
 
 }
 
@@ -353,83 +354,650 @@ void calculate_route()
 	{
 		double begin_check2 = ros::Time::now().toSec();	
 	
-		// Node right up
-		temp_theta = 0.25 * PI;
-		temp_x = current_node->getX() + step_size;
-		temp_y = current_node->getY() + step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+		temp_theta = current_node->getTheta();
+		if ( temp_theta == 0.0)
+		{
+			// Node right forward	
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
 
-		add_new_node();
+			add_new_node();
 
-		// Node right
-	
-		temp_theta = 0.0;
-		temp_x = current_node->getX() + step_size;
-		temp_y = current_node->getY() + 0;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			// Node right forward	
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
 
-		add_new_node();
+			add_new_node();
 
-		// Node right down
-	
-		temp_theta = 0.25 * PI;
-		temp_x = current_node->getX() + step_size;
-		temp_y = current_node->getY() - step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			// Node right forward	
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
 		
-		add_new_node();
-
-		// Node left up
-		temp_theta = 0.75 * PI;
-		temp_x = current_node->getX() - step_size;
-		temp_y = current_node->getY() + step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
-
-		add_new_node();
-
-		// Node left
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 0;
+			new_cost = current_node->getCost() + 1;
 	
-		temp_theta = -PI;
-		temp_x = current_node->getX() - step_size;
-		temp_y = current_node->getY() + 0;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			add_new_node();
 
-		add_new_node();
-
-		// Node left down
-	
-		temp_theta = -0.75 * PI;
-		temp_x = current_node->getX() - step_size;
-		temp_y = current_node->getY() - step_size;
-		new_cost = current_node->getCost() + sq2 * step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			// Node left forward
 		
-		add_new_node();
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
 
-		// Node up
-	
-		temp_theta = 0.5 * PI;
-		temp_x = current_node->getX() + 0;
-		temp_y = current_node->getY() + step_size;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
-
-		add_new_node();
-
-		// Node down
-	
-		temp_theta = -0.5 * PI;
-		temp_x = current_node->getX() - 0;
-		temp_y = current_node->getY() - step_size;
-		new_cost = current_node->getCost() + step_size;
-		time_stamp = current_node->getTimeStamp() + step_size;
+			// Node left forward
 		
-		add_new_node();
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+		else if (temp_theta == 0.25)
+		{
+			// Node right forward	
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
+		
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq2;
+	
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+		else if ( temp_theta == 0.5)
+		{
+			// Node right forward	
+			temp_theta = 0.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.25;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
+		
+			temp_theta = 0.5;
+			temp_x = current_node->getX() + 0;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + 1;
+
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+
+		else if (temp_theta == 0.75)
+		{
+			// Node right forward	
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
+		
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq2;
+	
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+
+		else if ( temp_theta == 1.0)
+		{
+			// Node right forward	
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 0.75;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() + 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
+		
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() + 0;
+			new_cost = current_node->getCost() + 1;
+	
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+
+		else if (temp_theta == 1.25)
+		{
+			// Node right forward	
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.0;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
+		
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq2;
+	
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+
+		else if ( temp_theta == 1.5)
+		{
+			// Node right forward	
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.25;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.5;
+			temp_x = current_node->getX() - 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
+		
+			temp_theta = 1.5;
+			temp_x = current_node->getX() + 0;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + 1;
+	
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+
+		else if (temp_theta == 1.75)
+		{
+			// Node right forward	
+			temp_theta = 1.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 2;
+			new_cost = current_node->getCost() + sq5;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.5;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node right forward	
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 3;
+			new_cost = current_node->getCost() + sq10;
+
+			add_new_node();
+
+			// Node forwards
+		
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 1;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq2;
+	
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 2;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq5;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 1.75;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+
+			// Node left forward
+		
+			temp_theta = 0.0;
+			temp_x = current_node->getX() + 3;
+			temp_y = current_node->getY() - 1;
+			new_cost = current_node->getCost() + sq10;
+			
+			add_new_node();
+		}
+
+		else
+		{
+			ROS_DEBUG_STREAM( "Angle: " << fmod(current_node->getTheta(),2) );
+			break;
+		}
 
 		check2 += ros::Time::now().toSec() - begin_check2;
 		ROS_DEBUG_STREAM( "Elapsed time of check 2 is: " << check2 );
@@ -458,6 +1026,13 @@ void calculate_route()
 		}
 		check6 += ros::Time::now().toSec() - begin_check6;
 		ROS_DEBUG_STREAM( "Elapsed time of check 6 is: " << check6 );
+
+		/*ros::Duration(1).sleep();
+		checks++;
+		if(checks >= 100)
+		{
+			break;
+		}*/		
 	}
 
 	ROS_INFO_STREAM( "Elapsed time of initialization: " << check4 );
@@ -708,7 +1283,7 @@ int main (int argc, char** argv)
 
 	line_list.id = 0;
 	line_list.type = visualization_msgs::Marker::LINE_LIST;
-	line_list.scale.x = 0.2;
+	line_list.scale.x = 0.1;
 	line_list.color.r = 1.0;
 	line_list.color.a = 1.0;
 

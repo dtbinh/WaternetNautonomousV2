@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Launch mission_control_sim -->
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control" output="log"/>
+
+  <!-- Launch ODEsolver -->
+  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner_2" output="log"/>
+
+  <!-- Launch PID -->
+  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log"/>
+
+  <!-- Launch Visualization -->
+  <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>
+
+  
+</launch>
