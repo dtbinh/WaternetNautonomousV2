@@ -55,13 +55,7 @@ void position_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& position_m
 	position_marker.pose.position.z = 1.0;
 	position_marker.pose.orientation = toQuaternion(0.0, 0.0, position_msg->theta);
 	
-	for (int i = 0; i < obstacles.obstacles.size(); i++)
-	{
-		obstacles_marker.markers[i].pose.position.x = obstacles_marker.markers[i].pose.position.x + cos(obstacles.obstacles[i].state.pose.position.z) * obstacles.obstacles[i].state.twist.linear.x;
-		obstacles_marker.markers[i].pose.position.y = obstacles_marker.markers[i].pose.position.y + sin(obstacles.obstacles[i].state.pose.position.z) * obstacles.obstacles[i].state.twist.linear.x;
-	}
 	marker_pub_1.publish(position_marker);
-	marker_pub_2.publish(obstacles_marker);
 }
 
 int main(int argc, char **argv)

@@ -1,4 +1,4 @@
-target_frame: lidar_link # Leave disabled to output scan in pointcloud frame
+target_frame: laser # Leave disabled to output scan in pointcloud frame
 transform_tolerance: 0.1
 min_height: -1.0 # 100 * tan(-15 degrees)
 max_height: 1.0 # 100 * tan(15 degrees)

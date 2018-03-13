@@ -24,7 +24,7 @@ using namespace Eigen;
 
 int i = 0;
 
-VectorXd NodeNrMatrix(600000);
+VectorXd NodeNrMatrix(4000000);
 
 ros::Subscriber map_sub;
 ros::Subscriber start_sub;
@@ -60,7 +60,7 @@ float temp_dist;
 float current_x;
 float current_y;
 
-float step_size = 1;
+float step_size = 5;
 int weighted_map_border = 10;
 
 float cost_c;
@@ -80,7 +80,6 @@ float check4 = 0;
 float check5 = 0;
 float check6 = 0;
 float check7 = 0;
-int route_length = 0;
 
 std::vector<node>* Network = new std::vector<node>();
 std::vector<node>* OpenList = new std::vector<node>();
@@ -89,7 +88,6 @@ int max_open_list_size = 0;
 geometry_msgs::Point p;
 geometry_msgs::PoseStamped p1;
 geometry_msgs::Point p2;
-
 
 visualization_msgs::Marker line_list;
 nav_msgs::Path route_list;
@@ -106,11 +104,13 @@ float new_dist;
 float map_weight;
 float turning_penalty = 0.00;
 int time_stamp = 0;
+int replan_interval = 10;
 
 bool useplot = true;
 bool final_path_point_found = false;
 bool tile_is_occupied = false;
 bool obstacle_is_blocking = false;
+bool initialize = false;
 
 float Xobst = 0;
 float Yobst = 0;
@@ -125,8 +125,6 @@ float obstacle_v = 0;
 float obstacle_w = 0;
 float obstacle_a = 1;
 float obstacle_b = 1;
-
-std::string inputString;
 
 void smooth_path()
 {
@@ -146,7 +144,7 @@ void smooth_path()
 		for (i = current_waypoint + 1; i < flipped_route_list.poses.size(); i++)
 		{
 			temp_theta = atan2(flipped_route_list.poses[i].pose.position.y - current_y, flipped_route_list.poses[i].pose.position.x - current_x);
-			for (int j = 0; j < (5 * (i - current_waypoint)); j++)
+			for (int j = 0; j < (step_size * 5 * (i - current_waypoint)); j++)
 			{
 				temp_x = current_x + cos(temp_theta) * 0.2 * j;
 				temp_y = current_y + sin(temp_theta) * 0.2 * j;
@@ -163,12 +161,12 @@ void smooth_path()
 					obstacle_a = Obstacles.obstacles[k].major_semiaxis;
 					obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
 
-					Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) * (current_node->getTimeStamp() + 1);
-					Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) * (current_node->getTimeStamp() + 1);
+					Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
+					Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
 					Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
-					Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
-
-					if((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
+					Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th)
+;
+					if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
 					{
 						obstacle_is_blocking = true;
 					}
@@ -243,7 +241,7 @@ void add_new_node()
 	ROS_DEBUG_STREAM( "Nx: " << Nx );
 	ROS_DEBUG_STREAM( "map_center_y: " << map_center_y );
 
-	new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y) + Nx * Ny * 4 * temp_theta;
+	new_node_nr = (temp_x - map_center_x) + Nx * (temp_y - map_center_y) + Nx * Ny * temp_theta;
 
 	ROS_DEBUG_STREAM( "new_node_nr: " << new_node_nr );
 
@@ -259,12 +257,12 @@ void add_new_node()
 		obstacle_a = Obstacles.obstacles[i].major_semiaxis;
 		obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
 
-		Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) * (current_node->getTimeStamp() + 1);
-		Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) * (current_node->getTimeStamp() + 1);
+		Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
+		Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
 		Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
 		Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
 
-		if((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
+		if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
 		{
 			obstacle_is_blocking = true;
 			break;
@@ -321,7 +319,7 @@ void add_new_node()
 		OpenList->push_back(*new_node);
 	}
 
-	ROS_DEBUG_STREAM( "Node " << new_node_nr << " is at [" << new_node->getX() << ", " << new_node->getY() << "] at a theta of " << temp_theta << " pi with a cost of " << new_node->getTotalCost() );
+	ROS_DEBUG_STREAM( "Node " << new_node_nr << " is at [" << new_node->getX() << ", " << new_node->getY() << "] at a theta of " << temp_theta << " with a cost of " << new_node->getTotalCost() );
 
 }
 
@@ -333,7 +331,7 @@ void calculate_route()
 
 	ROS_INFO_STREAM( "//////////////////START NEW ROUTE//////////////////" );
 
-	new_node_nr = (start_state.x - map_center_x) + Nx * (start_state.y - map_center_y);
+	new_node_nr = (start_state.x - map_center_x) + Nx * (start_state.y - map_center_y) + Nx * Ny * temp_theta;
 
 	start_node_nr = new_node_nr;
 
@@ -353,84 +351,84 @@ void calculate_route()
 	while (current_node->getDistToFinish() > step_size )
 	{
 		double begin_check2 = ros::Time::now().toSec();	
-	
 		temp_theta = current_node->getTheta();
-		if ( temp_theta == 0.0)
+
+		if (temp_theta == 0.0)
 		{
 			// Node right forward	
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 0;
-			new_cost = current_node->getCost() + 1;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 0 * step_size;
+			new_cost = current_node->getCost() + 1 * step_size;
 	
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
@@ -438,78 +436,78 @@ void calculate_route()
 		{
 			// Node right forward	
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq2;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq2 * step_size;
 	
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
@@ -517,78 +515,78 @@ void calculate_route()
 		{
 			// Node right forward	
 			temp_theta = 0.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.25;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 0.5;
-			temp_x = current_node->getX() + 0;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + 1;
+			temp_x = current_node->getX() + 0 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + 1 * step_size;
 
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
@@ -597,78 +595,78 @@ void calculate_route()
 		{
 			// Node right forward	
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq2;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq2 * step_size;
 	
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
@@ -677,78 +675,78 @@ void calculate_route()
 		{
 			// Node right forward	
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 0.75;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() + 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() + 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() + 0;
-			new_cost = current_node->getCost() + 1;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() + 0 * step_size;
+			new_cost = current_node->getCost() + 1 * step_size;
 	
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
@@ -757,78 +755,78 @@ void calculate_route()
 		{
 			// Node right forward	
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.0;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq2;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq2 * step_size;
 	
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
@@ -837,78 +835,78 @@ void calculate_route()
 		{
 			// Node right forward	
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.25;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.5;
-			temp_x = current_node->getX() - 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() - 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 1.5;
-			temp_x = current_node->getX() + 0;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + 1;
+			temp_x = current_node->getX() + 0 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + 1 * step_size;
 	
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
@@ -917,87 +915,82 @@ void calculate_route()
 		{
 			// Node right forward	
 			temp_theta = 1.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 2;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 2 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.5;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node right forward	
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 3;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 3 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 
 			add_new_node();
 
 			// Node forwards
 		
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 1;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq2;
+			temp_x = current_node->getX() + 1 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq2 * step_size;
 	
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 2;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq5;
+			temp_x = current_node->getX() + 2 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq5 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 1.75;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 
 			// Node left forward
 		
 			temp_theta = 0.0;
-			temp_x = current_node->getX() + 3;
-			temp_y = current_node->getY() - 1;
-			new_cost = current_node->getCost() + sq10;
+			temp_x = current_node->getX() + 3 * step_size;
+			temp_y = current_node->getY() - 1 * step_size;
+			new_cost = current_node->getCost() + sq10 * step_size;
 			
 			add_new_node();
 		}
 
-		else
-		{
-			ROS_DEBUG_STREAM( "Angle: " << fmod(current_node->getTheta(),2) );
-			break;
-		}
 
 		check2 += ros::Time::now().toSec() - begin_check2;
 		ROS_DEBUG_STREAM( "Elapsed time of check 2 is: " << check2 );
@@ -1026,13 +1019,6 @@ void calculate_route()
 		}
 		check6 += ros::Time::now().toSec() - begin_check6;
 		ROS_DEBUG_STREAM( "Elapsed time of check 6 is: " << check6 );
-
-		/*ros::Duration(1).sleep();
-		checks++;
-		if(checks >= 100)
-		{
-			break;
-		}*/		
 	}
 
 	ROS_INFO_STREAM( "Elapsed time of initialization: " << check4 );
@@ -1053,7 +1039,6 @@ void calculate_route()
 		p1.pose.position.x = current_node->getX();
 		p1.pose.position.y = current_node->getY();
 		route_list.poses.push_back(p1);
-		route_length++;
 	}
 
 	std::cout << "//////////////////Flipping route//////////////////" <<std::endl;
@@ -1082,7 +1067,7 @@ void calculate_route()
 	ROS_INFO_STREAM( "Total time of backtracking: " << check7 );
 	ROS_INFO_STREAM( "Network size: " << Network->size() );
 	ROS_INFO_STREAM( "Number of checked nodes: " << check1 );
-	ROS_INFO_STREAM( "Length of the route: " << route_length * step_size << "[m]" );
+	ROS_INFO_STREAM( "Length of the route: " <<  route_list.poses.size() << "[m]" );
 	ROS_INFO_STREAM( "Maximum size of the open list: " << max_open_list_size );
 }
 
@@ -1120,7 +1105,6 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 	check5 = 0;
 	check6 = 0;
 	check7 = 0;
-	route_length = 0;
 	Network->clear();
 	OpenList->clear();
 	flipped_route_list.poses.clear();

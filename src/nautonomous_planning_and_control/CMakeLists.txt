@@ -9,6 +9,7 @@ find_package(catkin REQUIRED
 roscpp
 nautonomous_mpc_msgs
 nautonomous_state_msgs
+nautonomous_pose_msgs
 )
 
 #find_package( ACADO REQUIRED )
@@ -59,6 +60,8 @@ add_executable(ODEsolver_dynamic src/ODEsolver_dynamic.cpp)
 add_executable(ExtendedKalmanFilter src/ExtendedKalmanFilter.cpp)
 add_executable(ExtendedKalmanFilter_sim src/ExtendedKalmanFilter_sim.cpp)
 add_executable(Visualization src/visualization.cpp)
+add_executable(Combine_imu_gps src/Combine_imu_gps.cpp)
+
 
 # target link libraries
 target_link_libraries(mpc ${catkin_LIBRARIES} acado_auxiliary_functions acado_integrator acado_solver acado_qpoases_interface)
@@ -70,6 +73,7 @@ target_link_libraries(ODEsolver_dynamic ${catkin_LIBRARIES} )
 target_link_libraries(ExtendedKalmanFilter ${catkin_LIBRARIES} )
 target_link_libraries(ExtendedKalmanFilter_sim ${catkin_LIBRARIES} )
 target_link_libraries(Visualization ${catkin_LIBRARIES} )
+target_link_libraries(Combine_imu_gps ${catkin_LIBRARIES} )
 
 target_link_libraries(acado_auxiliary_functions ${catkin_LIBRARIES} )
 target_link_libraries(acado_integrator 		${catkin_LIBRARIES} )

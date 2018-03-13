@@ -59,7 +59,7 @@ float temp_dist;
 float current_x;
 float current_y;
 
-float step_size = 2;
+float step_size = 1;
 int weighted_map_border = 10;
 
 float cost_c;
@@ -79,7 +79,6 @@ float check4 = 0;
 float check5 = 0;
 float check6 = 0;
 float check7 = 0;
-int route_length = 0;
 
 std::vector<node>* Network = new std::vector<node>();
 std::vector<node>* OpenList = new std::vector<node>();
@@ -88,7 +87,6 @@ int max_open_list_size = 0;
 geometry_msgs::Point p;
 geometry_msgs::PoseStamped p1;
 geometry_msgs::Point p2;
-
 
 visualization_msgs::Marker line_list;
 nav_msgs::Path route_list;
@@ -105,11 +103,13 @@ float new_dist;
 float map_weight;
 float turning_penalty = 0.00;
 int time_stamp = 0;
+int replan_interval = 10;
 
 bool useplot = true;
 bool final_path_point_found = false;
 bool tile_is_occupied = false;
 bool obstacle_is_blocking = false;
+bool initialize = false;
 
 float Xobst = 0;
 float Yobst = 0;
@@ -124,8 +124,6 @@ float obstacle_v = 0;
 float obstacle_w = 0;
 float obstacle_a = 1;
 float obstacle_b = 1;
-
-std::string inputString;
 
 void smooth_path()
 {
@@ -145,7 +143,7 @@ void smooth_path()
 		for (i = current_waypoint + 1; i < flipped_route_list.poses.size(); i++)
 		{
 			temp_theta = atan2(flipped_route_list.poses[i].pose.position.y - current_y, flipped_route_list.poses[i].pose.position.x - current_x);
-			for (int j = 0; j < (5 * (i - current_waypoint)); j++)
+			for (int j = 0; j < (step_size * 5 * (i - current_waypoint)); j++)
 			{
 				temp_x = current_x + cos(temp_theta) * 0.2 * j;
 				temp_y = current_y + sin(temp_theta) * 0.2 * j;
@@ -155,19 +153,19 @@ void smooth_path()
 				{
 					obstacle_x = Obstacles.obstacles[k].state.pose.position.x;
 					obstacle_y = Obstacles.obstacles[k].state.pose.position.y;
-					obstacle_th = Obstacles.obstacles[k].state.pose.position.z;
+					obstacle_th = Obstacles.obstacles[k].state.pose.orientation.z;
 					obstacle_u = Obstacles.obstacles[k].state.twist.linear.x;
 					obstacle_v = Obstacles.obstacles[k].state.twist.linear.y;
-					obstacle_w = Obstacles.obstacles[k].state.twist.linear.z;
+					obstacle_w = Obstacles.obstacles[k].state.twist.angular.z;
 					obstacle_a = Obstacles.obstacles[k].major_semiaxis;
 					obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
 
-					Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) * (current_node->getTimeStamp() + 1);
-					Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) * (current_node->getTimeStamp() + 1);
+					Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
+					Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
 					Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
 					Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
 
-					if((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
+					if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
 					{
 						obstacle_is_blocking = true;
 					}
@@ -251,19 +249,19 @@ void add_new_node()
 	{
 		obstacle_x = Obstacles.obstacles[i].state.pose.position.x;
 		obstacle_y = Obstacles.obstacles[i].state.pose.position.y;
-		obstacle_th = Obstacles.obstacles[i].state.pose.position.z;
+		obstacle_th = Obstacles.obstacles[i].state.pose.orientation.z;
 		obstacle_u = Obstacles.obstacles[i].state.twist.linear.x;
 		obstacle_v = Obstacles.obstacles[i].state.twist.linear.y;
 		obstacle_w = Obstacles.obstacles[i].state.twist.linear.z;
 		obstacle_a = Obstacles.obstacles[i].major_semiaxis;
 		obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
 
-		Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) * (current_node->getTimeStamp() + 1);
-		Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) * (current_node->getTimeStamp() + 1);
+		Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
+		Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
 		Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
 		Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
 
-		if((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
+		if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
 		{
 			obstacle_is_blocking = true;
 			break;
@@ -374,7 +372,7 @@ void calculate_route()
 
 		// Node right down
 	
-		temp_theta = 0.25 * PI;
+		temp_theta = -0.25 * PI;
 		temp_x = current_node->getX() + step_size;
 		temp_y = current_node->getY() - step_size;
 		new_cost = current_node->getCost() + sq2 * step_size;
@@ -478,7 +476,6 @@ void calculate_route()
 		p1.pose.position.x = current_node->getX();
 		p1.pose.position.y = current_node->getY();
 		route_list.poses.push_back(p1);
-		route_length++;
 	}
 
 	std::cout << "//////////////////Flipping route//////////////////" <<std::endl;
@@ -507,7 +504,7 @@ void calculate_route()
 	ROS_INFO_STREAM( "Total time of backtracking: " << check7 );
 	ROS_INFO_STREAM( "Network size: " << Network->size() );
 	ROS_INFO_STREAM( "Number of checked nodes: " << check1 );
-	ROS_INFO_STREAM( "Length of the route: " << route_length * step_size << "[m]" );
+	ROS_INFO_STREAM( "Length of the route: " << route_list.poses.size() << "[m]" );
 	ROS_INFO_STREAM( "Maximum size of the open list: " << max_open_list_size );
 }
 
@@ -524,6 +521,7 @@ void generate_route()
 
 void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 {
+	line_list.points.clear();
 
 	start_state = *state_msg;
 	ROS_DEBUG_STREAM( "Start: " << start_state );
@@ -545,7 +543,6 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 	check5 = 0;
 	check6 = 0;
 	check7 = 0;
-	route_length = 0;
 	Network->clear();
 	OpenList->clear();
 	flipped_route_list.poses.clear();
@@ -684,9 +681,16 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
+
+/*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+   ros::console::notifyLoggerLevelsChanged();
+}*/
+
+
+
 	map_sub = 	nh.subscribe<nav_msgs::OccupancyGrid>("/map",10,map_cb);
-	start_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start",10,start_cb);
-	goal_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal",10,goal_cb);
+	start_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_state",10,start_cb);
+	goal_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal_state",10,goal_cb);
 	obstacle_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",10,obstacle_cb);
 
 	map_pub = 	nh.advertise<nav_msgs::OccupancyGrid>("/map_tree_opt",10);

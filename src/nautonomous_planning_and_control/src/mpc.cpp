@@ -87,6 +87,7 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg 
 	std::cout << "Obstacle received" << std::endl;
 	obstacles = *obstacle_msg;
 	obstacle = obstacles.obstacles[0];
+	std::cout << "Obstacle processed" << std::endl;
 }
 
 /* A template for testing of the solver. */
@@ -344,7 +345,7 @@ int main (int argc, char** argv)
 	
 	ros::Subscriber gps_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",10,gps_cb);
 	ros::Subscriber obstacle_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",1,obstacle_cb);
-	ros::Subscriber path_sub = nh.subscribe<nav_msgs::Path>("/Local_planner/route",1,ref_cb);
+	ros::Subscriber path_sub = nh.subscribe<nav_msgs::Path>("/mission_coordinator/route",1,ref_cb);
 	
 	position_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
 	control_horizon_pub = nh_private.advertise<nav_msgs::Path>("control_horizon",10);
