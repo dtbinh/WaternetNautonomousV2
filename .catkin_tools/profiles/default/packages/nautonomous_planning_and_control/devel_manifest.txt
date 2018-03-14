@@ -16,11 +16,20 @@ nautonomous_planning_and_control
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/libSubjectTo.so /home/daley/WaternetNautonomousV2/devel/lib/libSubjectTo.so
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/pkgconfig/nautonomous_planning_and_control.pc /home/daley/WaternetNautonomousV2/devel/lib/pkgconfig/nautonomous_planning_and_control.pc
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/mpc /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/mpc
+<<<<<<< HEAD
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/ExtendedKalmanFilter_sim /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/ExtendedKalmanFilter_sim
+=======
+/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/Combine_imu_gps /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/Combine_imu_gps
+>>>>>>> 830219e8802e992860c5f3b63045841b49e5705c
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/ODEsolver_dynamic /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/ODEsolver_dynamic
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/Visualization /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/Visualization
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/ODEsolver /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/ODEsolver
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/mission_control /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/mission_control
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/ExtendedKalmanFilter /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/ExtendedKalmanFilter
+<<<<<<< HEAD
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/PID /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/PID
+=======
+/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/Visualization /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/Visualization
+/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/mpcc /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/mpcc
+>>>>>>> 830219e8802e992860c5f3b63045841b49e5705c
 /home/daley/WaternetNautonomousV2/devel/.private/nautonomous_planning_and_control/lib/nautonomous_planning_and_control/mission_control_sim /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_planning_and_control/mission_control_sim

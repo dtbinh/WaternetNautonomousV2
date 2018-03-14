@@ -332,7 +332,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
 		marker_pub.publish(Markers);
 	
-		obstacles.Nobstacles = Blobs->size();
+		//obstacles.Nobstacles = Blobs->size();
 		message_pub.publish(obstacles);
 
 		cout << "The number of blobs is: " << Blobs->size() << endl;

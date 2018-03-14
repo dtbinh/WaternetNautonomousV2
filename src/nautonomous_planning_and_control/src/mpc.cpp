@@ -37,9 +37,13 @@ www.acadotoolkit.org
 #include <stdio.h>
 #include <ros/ros.h>
 #include <geometry_msgs/Point.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Path.h>
+#include <nautonomous_planning_and_control/Quaternion_conversion.h>
 
 #include <nautonomous_mpc_msgs/StageVariable.h>
+#include <nautonomous_mpc_msgs/Obstacle.h>
+#include <nautonomous_mpc_msgs/Obstacles.h>
 
 /* Some convenient definitions. */
 #define NX          ACADO_NX  /* Number of differential state variables.  */
@@ -62,14 +66,29 @@ ACADOworkspace acadoWorkspace;
 int acado_initializeSolver(  );
 
 nautonomous_mpc_msgs::StageVariable current_state;
-nav_msgs::Path reference_path;
 nautonomous_mpc_msgs::StageVariable temp_state;
+nautonomous_mpc_msgs::Obstacle obstacle;
+nautonomous_mpc_msgs::Obstacles obstacles;
+geometry_msgs::PoseStamped p;
+nav_msgs::Path reference_path;
+nav_msgs::Path route_list;
 
 ros::Publisher position_pub;
 ros::Publisher action_pub;
+ros::Publisher control_horizon_pub;
+
 
 float KKT_var;
 int Path_point = 0;
+ 
+
+void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg )
+{
+	std::cout << "Obstacle received" << std::endl;
+	obstacles = *obstacle_msg;
+	obstacle = obstacles.obstacles[0];
+	std::cout << "Obstacle processed" << std::endl;
+}
 
 /* A template for testing of the solver. */
 void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
@@ -88,12 +107,21 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	/* Initialize the states and controls. */
 	current_state = *twist_msg;
 
-	if (Path_point ==0 )
+	if (Path_point == 0 )
 	{
 		for (i = 0; i < (N + 1); ++i) 
 		{
-			acadoVariables.x[ (NX * i) + 0 ] = reference_path.poses[Path_point + i].pose.position.x;
-			acadoVariables.x[ (NX * i) + 1 ] = reference_path.poses[Path_point + i].pose.position.y;
+			if ((Path_point + i) < (reference_path.poses.size() - 1))
+			{
+				acadoVariables.x[ (NX * i) + 0 ] = reference_path.poses[Path_point + i].pose.position.x;
+				acadoVariables.x[ (NX * i) + 1 ] = reference_path.poses[Path_point + i].pose.position.y;
+			}
+			else
+			{
+				acadoVariables.x[ (NX * i) + 0 ] = reference_path.poses[reference_path.poses.size() - 1 ].pose.position.x;
+				acadoVariables.x[ (NX * i) + 1 ] = reference_path.poses[reference_path.poses.size() - 1].pose.position.y;
+				
+			}			
 			acadoVariables.x[ (NX * i) + 2 ] = 0.0;
 			acadoVariables.x[ (NX * i) + 3 ] = 0.0;
 			acadoVariables.x[ (NX * i) + 4 ] = 0.0;
@@ -109,11 +137,14 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 			acadoVariables.u[ (NU * i) + 1 ] = 100.0;
 			ROS_DEBUG_STREAM("Initialization of all " << NU << " elements u at [" << i << "] [" <<  acadoVariables.u[ (NU * i) + 0 ] << ", "<<  acadoVariables.u[ (NU * i) + 1 ] << "]" );
 		}
-		for (i = 0; i < N * NOD; ++i) 
+		for (i = 0; i < N ; ++i) 
 		{
-			acadoVariables.od[ i ] = 0.5;
+			acadoVariables.od[ (NOD * i) + 0 ] = obstacle.state.twist.linear.x * cos(obstacle.state.pose.position.z);
+			acadoVariables.od[ (NOD * i) + 1 ] = obstacle.state.twist.linear.x * sin(obstacle.state.pose.position.z);
+			acadoVariables.od[ (NOD * i) + 2 ] = obstacle.state.pose.position.z;
+			acadoVariables.od[ (NOD * i) + 3 ] = 1/obstacle.major_semiaxis;
+			acadoVariables.od[ (NOD * i) + 4 ] = 1/obstacle.minor_semiaxis;
 		}
-	
 	}
 	else
 	{
@@ -131,8 +162,18 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 			ROS_DEBUG_STREAM("Initialization of all " << NX << " elements x at [" << i << "] [" <<  acadoVariables.x[ (NX * i) + 0 ] << ", "<<  acadoVariables.x[ (NX * i) + 1 ] << ", "<<  acadoVariables.x[ (NX * i) + 2 ] << ", "<<  acadoVariables.x[ (NX * i) + 3 ] << ", "<<  acadoVariables.x[ (NX * i) + 4 ] << ", "<<  acadoVariables.x[ (NX * i) + 5 ] << ", "<<  acadoVariables.x[ (NX * i) + 6 ] << ", "<<  acadoVariables.x[ (NX * i) + 7 ] << "]" );
 		}
 
-		acadoVariables.x[ (NX * N) + 0 ] = reference_path.poses[Path_point + N].pose.position.x;
-		acadoVariables.x[ (NX * N) + 1 ] = reference_path.poses[Path_point + N].pose.position.y;
+		if ((Path_point + i) < (reference_path.poses.size() - 1))
+		{
+			acadoVariables.x[ (NX * N) + 0 ] = reference_path.poses[Path_point + N].pose.position.x;
+			acadoVariables.x[ (NX * N) + 1 ] = reference_path.poses[Path_point + N].pose.position.y;
+		}
+		else
+		{
+			acadoVariables.x[ (NX * N) + 0 ] = reference_path.poses[reference_path.poses.size() - 1 ].pose.position.x;
+			acadoVariables.x[ (NX * N) + 1 ] = reference_path.poses[reference_path.poses.size() - 1].pose.position.y;
+		}
+
+
 		acadoVariables.x[ (NX * N) + 2 ] = acadoVariables.x[ (NX * N) + 2 ];
 		acadoVariables.x[ (NX * N) + 3 ] = acadoVariables.x[ (NX * N) + 3 ];
 		acadoVariables.x[ (NX * N) + 4 ] = acadoVariables.x[ (NX * N) + 4 ];
@@ -154,16 +195,29 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 		acadoVariables.u[ NU * (N-1) + 1 ] = 100.0;
 		ROS_DEBUG_STREAM("Initialization of all " << NU << " elements u at [" << i << "] [" <<  acadoVariables.u[ (NU * (N-1)) + 0 ] << ", "<<  acadoVariables.u[ (NU * (N-1)) + 1 ] <<  "]" );
 
-		for (i = 0; i < N * NOD; ++i) 
+		for (i = 0; i < N ; ++i) 
 		{
-			acadoVariables.od[ i ] = 0.5;
+			acadoVariables.od[ (NOD * i) + 0 ] = obstacle.state.twist.linear.x * cos(obstacle.state.pose.position.z);
+			acadoVariables.od[ (NOD * i) + 1 ] = obstacle.state.twist.linear.x * sin(obstacle.state.pose.position.z);
+			acadoVariables.od[ (NOD * i) + 2 ] = obstacle.state.pose.position.z;
+			acadoVariables.od[ (NOD * i) + 3 ] = 1/obstacle.major_semiaxis;
+			acadoVariables.od[ (NOD * i) + 4 ] = 1/obstacle.minor_semiaxis;
 		}
 	}
 	/* Initialize the measurements/reference. */
 	for (i = 0; i < N; ++i) 
 	{
-		acadoVariables.y[ (NY * i) + 0 ] = reference_path.poses[Path_point + i + 1].pose.position.x;
-		acadoVariables.y[ (NY * i) + 1 ] = reference_path.poses[Path_point + i + 1].pose.position.y;
+		if ((Path_point + i) < (reference_path.poses.size() - 1))
+		{
+			acadoVariables.y[ (NY * i) + 0 ] = reference_path.poses[Path_point + i + 1].pose.position.x;
+			acadoVariables.y[ (NY * i) + 1 ] = reference_path.poses[Path_point + i + 1].pose.position.y;
+		}
+		else
+		{
+			acadoVariables.y[ (NY * i) + 0 ] = reference_path.poses[reference_path.poses.size() - 1 ].pose.position.x;
+			acadoVariables.y[ (NY * i) + 1 ] = reference_path.poses[reference_path.poses.size() - 1 ].pose.position.y;
+		}
+
 		acadoVariables.y[ (NY * i) + 2 ] = 0.0;
 		acadoVariables.y[ (NY * i) + 3 ] = 0.0;
 		acadoVariables.y[ (NY * i) + 4 ] = 0.0;
@@ -175,8 +229,17 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 		ROS_DEBUG_STREAM("Initialization of all " << NY << " elements y at [" << i << "] [" <<  acadoVariables.y[ (NY * i) + 0 ] << ", "<<  acadoVariables.y[ (NY * i) + 1 ] << ", "<<  acadoVariables.y[ (NY * i) + 2 ] << ", "<<  acadoVariables.y[ (NY * i) + 3 ] << ", "<<  acadoVariables.y[ (NY * i) + 4 ] << ", "<<  acadoVariables.y[ (NY * i) + 5 ] << ", "<<  acadoVariables.y[ (NY * i) + 6 ] << ", "<<  acadoVariables.y[ (NY * i) + 7 ] << ", " << acadoVariables.y[ (NY * i) + 8 ] << ", "<<  acadoVariables.y[ (NY * i) + 9 ] << ", "<< "]" );
 	}
 
-	acadoVariables.yN[ 0 ] = reference_path.poses[Path_point + N ].pose.position.x;
-	acadoVariables.yN[ 1 ] = reference_path.poses[Path_point + N ].pose.position.y;
+	if ((Path_point + i) < (reference_path.poses.size() - 1))
+	{
+		acadoVariables.yN[ 0 ] = reference_path.poses[Path_point + N ].pose.position.x;
+		acadoVariables.yN[ 1 ] = reference_path.poses[Path_point + N ].pose.position.y;
+	}
+	else
+	{
+		acadoVariables.yN[ 0 ] = reference_path.poses[reference_path.poses.size() - 1 ].pose.position.x;
+		acadoVariables.yN[ 1 ] = reference_path.poses[reference_path.poses.size() - 1 ].pose.position.y;
+	}
+
 	acadoVariables.yN[ 2 ] = 0.0;
 	acadoVariables.yN[ 3 ] = 0.0;
 	acadoVariables.yN[ 4 ] = 0.0;
@@ -193,8 +256,8 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	acadoVariables.x0[ 3 ] = current_state.u;
 	acadoVariables.x0[ 4 ] = current_state.v;
 	acadoVariables.x0[ 5 ] = current_state.omega;
-	acadoVariables.x0[ 6 ] = -10 + 0.5 * Path_point;
-	acadoVariables.x0[ 7 ] = 0;
+	acadoVariables.x0[ 6 ] = obstacle.state.pose.position.x + obstacle.state.twist.linear.x * Path_point * cos(obstacle.state.pose.position.z);
+	acadoVariables.x0[ 7 ] = obstacle.state.pose.position.y + obstacle.state.twist.linear.x * Path_point * sin(obstacle.state.pose.position.z);
 
 	ROS_DEBUG_STREAM("Initialization of all " << NX << " elements X0 [" <<  acadoVariables.x0[ 0 ] << ", "<<  acadoVariables.x0[ 1 ] << ", "<<  acadoVariables.x0[ 2 ] << ", "<<  acadoVariables.x0[ 3 ] << ", "<<  acadoVariables.x0[ 4 ] << ", "<<  acadoVariables.x0[ 5 ] << ", "<<  acadoVariables.x0[ 6 ] << ", "<<  acadoVariables.x0[ 7 ] << "]" );
 
@@ -208,20 +271,10 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	/* Get the time before start of the loop. */
 	acado_tic( &t );
 	
-	/* Make the first step
-	acado_feedbackStep( );*/
-
-	/* Apply the new control immediately to the process, first NU components. 
-
-	if( VERBOSE ) printf("\tReal-Time Iteration %d:  KKT Tolerance = %.3e, Objective = %.3e\n\n", iter, acado_getKKT(), acado_getObjective() );*/
-
-	/* Prepare for the next step. 
-	acado_preparationStep();*/
-
 	/* The "real-time iterations" loop. */
 	for(iter = 0; iter < NUM_STEPS; ++iter)
 	{
-        /* Perform the feedback step. */
+        	/* Perform the feedback step. */
 		acado_feedbackStep( );
 
 		/* Apply the new control immediately to the process, first NU components. */
@@ -259,27 +312,27 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 
 	KKT_var = acado_getKKT();
 
+	for (int i = 1; i <= N; i++)
+	{
+		p.pose.position.x = *(states+(NX*i));
+		p.pose.position.y = *(states+(NX*i)+1);
+		p.pose.orientation = toQuaternion(0.0, 0.0, *(states+(NX*i) + 2));
+		route_list.poses.push_back(p);
+	}
 
-	if (KKT_var < 1e-6)
-	{
-		printf("\n\n Action variables are Tl:   %.3e and Tr: %.3e with KKT: %.3e\n\n", *(actions), *(actions+1), KKT_var);
-		temp_state.T_l = *(actions);
-		temp_state.T_r = *(actions+1); 
-	}
-	else
-	{
-		printf("\n\n Action variables are Tl:   %.3e and Tr: %.3e with KKT: %.3e\n\n", 0, 0, KKT_var);
-		temp_state.T_l = 75;
-		temp_state.T_r = -75;
-	}
+	printf("\n\n Action variables are Tl:   %.3e and Tr: %.3e with KKT: %.3e in %.3g [ms] \n\n ", *(actions), *(actions+1), KKT_var, 1e3 * te / NUM_STEPS);
+	temp_state.T_l = *(actions);
+	temp_state.T_r = *(actions+1); 
 
 	position_pub.publish(temp_state);
+	control_horizon_pub.publish(route_list);
+	route_list.poses.clear();
 }
 
 void ref_cb( const nav_msgs::Path::ConstPtr& reference_msg )
 {
-	ROS_INFO_STREAM("Path received");
 	reference_path = *reference_msg;
+	ROS_INFO_STREAM("Path of length " << reference_path.poses.size() << " received");
 	Path_point = 0;
 }
 
@@ -291,9 +344,16 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh_private("~");
 	
 	ros::Subscriber gps_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",10,gps_cb);
-	ros::Subscriber path_sub = nh.subscribe<nav_msgs::Path>("/A_star_tree_path_finding_opt/route",1,ref_cb);
+	ros::Subscriber obstacle_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",1,obstacle_cb);
+	ros::Subscriber path_sub = nh.subscribe<nav_msgs::Path>("/mission_coordinator/route",1,ref_cb);
 	
 	position_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
+	control_horizon_pub = nh_private.advertise<nav_msgs::Path>("control_horizon",10);
+
+	route_list.header.frame_id = "/map";
+	route_list.header.stamp = ros::Time::now();
+
+	p.pose.orientation.z = 1;
 
 	ros::spin();	
 }
