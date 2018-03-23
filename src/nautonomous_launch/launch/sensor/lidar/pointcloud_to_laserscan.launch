@@ -1,7 +1,8 @@
 <launch>
 
     <arg name="scan_topic" default="scan"/>
-    <arg name="pointcloud_topic" default="/sensor/lidar/point_cloud"/>
+    <!--arg name="pointcloud_topic" default="/sensor/lidar/point_cloud"/-->
+    <arg name="pointcloud_topic" default="/velodyne_points"/>
 
     <arg name="pointcloud_config_file" default="$(find nautonomous_configuration)/config/sensor/pointcloud/pointcloud_to_laserscan.yaml"/>
 
