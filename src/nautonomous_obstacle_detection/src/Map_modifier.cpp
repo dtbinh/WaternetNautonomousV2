@@ -210,7 +210,7 @@ void fit_lines()
 					{
 						dist = fabs((rand_y_2 - rand_y_1) * Edge_point_list->at(k).x - (rand_x_2 - rand_x_1) * Edge_point_list->at(k).y + rand_x_2 * rand_y_1 - rand_y_2 * rand_x_1)/sqrt(pow(rand_y_2 - rand_y_1,2) + pow(rand_x_2 - rand_x_1,2));
 						{				
-						if (dist < 5)
+						if (dist < 2)
 							for (int m = 0; m < Inliers->size(); m++)
 							{
 								dist = sqrt(pow(Edge_point_list->at(Inliers->at(m)).x - Edge_point_list->at(k).x,2) + pow(Edge_point_list->at(Inliers->at(m)).y - Edge_point_list->at(k).y,2));						
