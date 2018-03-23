@@ -15,8 +15,8 @@
         <param name="gps_used" value="true"/>
  
 
-        <remap from="imu_data" to="/imu"/>
-        <remap from="gps" to="/state/odom/utm" />
+        <remap from="imu_data" to="/sensor/imu/imu"/>
+        <remap from="gps" to="/utm" />
     </node>
 
 </launch>

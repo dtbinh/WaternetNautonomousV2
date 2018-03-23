@@ -1,6 +1,6 @@
 <launch>
 
-	<arg name="gps_fix_topic" default="gps_fix"/>
+	<arg name="gps_fix_topic" default="/sensor/gps/fix"/>
 	<arg name="map_center_topic" default="map_center"/>
 
 	<arg name="utm_fix_topic" default="utm_fix"/>
