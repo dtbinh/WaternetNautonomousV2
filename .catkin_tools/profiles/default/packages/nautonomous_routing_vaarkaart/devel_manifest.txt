@@ -1,0 +1,4 @@
+nautonomous_routing_vaarkaart
+/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_routing_vaarkaart/share/nautonomous_routing_vaarkaart/cmake/nautonomous_routing_vaarkaartConfig.cmake /home/daley/WaternetNautonomousV2/devel/share/nautonomous_routing_vaarkaart/cmake/nautonomous_routing_vaarkaartConfig.cmake
+/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_routing_vaarkaart/share/nautonomous_routing_vaarkaart/cmake/nautonomous_routing_vaarkaartConfig-version.cmake /home/daley/WaternetNautonomousV2/devel/share/nautonomous_routing_vaarkaart/cmake/nautonomous_routing_vaarkaartConfig-version.cmake
+/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_routing_vaarkaart/lib/pkgconfig/nautonomous_routing_vaarkaart.pc /home/daley/WaternetNautonomousV2/devel/lib/pkgconfig/nautonomous_routing_vaarkaart.pc

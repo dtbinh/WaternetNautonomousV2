@@ -27,14 +27,14 @@ include_directories(
 
 
 add_executable(Ellipse src/Ellipse.cpp)
-add_executable(map src/map.cpp)
-add_executable(Voxelize src/Voxelize.cpp)
+add_executable(Laserscan src/Laserscan.cpp)
+add_executable(map_modifier src/Map_modifier.cpp)
+#add_executable(Obstacle_tracker src/Obstacle_tracker.cpp)
 
 target_link_libraries(Ellipse ${catkin_LIBRARIES})
+target_link_libraries(Laserscan ${catkin_LIBRARIES})
 target_link_libraries(Ellipse ${OpenCV_LIBRARIES})
-target_link_libraries(map ${catkin_LIBRARIES})
-target_link_libraries(map ${OpenCV_LIBRARIES})
-target_link_libraries(Voxelize ${catkin_LIBRARIES})
-target_link_libraries(Voxelize ${OpenCV_LIBRARIES})
+target_link_libraries(map_modifier ${catkin_LIBRARIES} )
+#target_link_libraries(Obstacle_tracker ${catkin_LIBRARIES} )
 
 
