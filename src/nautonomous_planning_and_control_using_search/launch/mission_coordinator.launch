@@ -16,6 +16,6 @@
   <node name="Obstacle_detection" pkg="nautonomous_obstacle_detection" type="Laserscan" output="log" respawn="true"/>
 
   <!-- Launch mission_control_sim -->
-  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log"/>
+  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="screen"/>
 
 </launch>
