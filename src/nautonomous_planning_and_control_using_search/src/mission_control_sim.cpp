@@ -26,9 +26,11 @@ ros::Publisher	start_pub;
 ros::Publisher	goal_pub;
 ros::Publisher	obstacle_pub;
 ros::Publisher	obstacles_pub;
+ros::Publisher	gazebo_pub;
 
 ros::Subscriber	next_state_sub;
 ros::Subscriber	route_sub;
+ros::Subscriber	obstacles_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable mpc_state;
@@ -104,6 +106,8 @@ void Initialization () // State 1
 	start_state.y = waypoint_y[waypoint_iterator];
 	goal_state.x = waypoint_x[waypoint_iterator + 1];
 	goal_state.y = waypoint_y[waypoint_iterator + 1];
+
+	gazebo_pub.publish(start_state);
 }
 
 void Call_Route_generator()
@@ -128,16 +132,6 @@ void Call_MPC_generator()
 	}
 }
 
-void Call_obstacle_generator()
-{
-	for (int i = 0; i < obstacles.obstacles.size(); i++)
-	{
-		obstacles.obstacles[i].state.pose.position.x += u[i] * cos(start_theta[i]);
-		obstacles.obstacles[i].state.pose.position.y += u[i] * sin(start_theta[i]);
-	}
-	obstacles_pub.publish(obstacles);
-}
-
 void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 {
 	mpc_state = *action_msg;
@@ -150,6 +144,12 @@ void route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 	Full_path = *route_msg;
 	std::cout << "Received route" <<std::endl;
 	path_received = true;
+}
+
+void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
+{
+	obstacles = *obstacle_msg;
+	obstacles_pub.publish(obstacles);
 }
 
 int main(int argc, char **argv)
@@ -191,9 +191,11 @@ int main(int argc, char **argv)
 	goal_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("goal_state",10);
 	obstacle_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Obstacle>("obstacle",10);
 	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
+	gazebo_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("set_gazebo_start",10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
 	route_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/route", 10, route_cb);
+	obstacles_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obstacles", 10, obstacle_cb);
 
 	ros::Rate loop_rate(100);
 
@@ -204,7 +206,7 @@ int main(int argc, char **argv)
 	while (ros::ok())
 	{	
 		Current_loop_time = ros::Time::now().toSec();
-		if (Current_loop_time - Time_of_last_path_call > 10)
+		if (Current_loop_time - Time_of_last_path_call > 2)
 		{
 			Time_of_last_path_call = Current_loop_time;
 			Call_Route_generator();
@@ -213,11 +215,6 @@ int main(int argc, char **argv)
 		{
 			Time_of_last_mpc_call = Current_loop_time;
 			Call_MPC_generator();
-		}
-		else if (Current_loop_time - Time_of_last_obstacle_call > 1)
-		{
-			Time_of_last_obstacle_call = Current_loop_time;
-			Call_obstacle_generator();
 		}
 
 		ros::spinOnce();

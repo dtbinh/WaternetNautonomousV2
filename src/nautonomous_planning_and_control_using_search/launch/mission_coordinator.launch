@@ -4,13 +4,16 @@
   <rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/mpc.yaml"/>
 
   <!-- Launch mission_control_sim -->
-  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control" output="screen"/>
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control" output="log"/>
    
   <!-- Launch mission_control_sim -->
-  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log"/>
+  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log" respawn="true"/>
 
   <!-- Launch mission_control_sim -->
   <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>
+	
+  <!-- Launch obstacle_detection -->
+  <node name="Obstacle_detection" pkg="nautonomous_obstacle_detection" type="Laserscan" output="log" respawn="true"/>
 
   <!-- Launch mission_control_sim -->
   <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log"/>

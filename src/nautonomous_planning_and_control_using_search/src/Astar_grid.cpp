@@ -160,12 +160,13 @@ void smooth_path()
 					obstacle_a = Obstacles.obstacles[k].major_semiaxis;
 					obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
 
-					Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
-					Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
+					Xobst = obstacle_x;// + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
+					Yobst = obstacle_y;// + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
 					Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
 					Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
 
-					if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
+					//if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
+					if((pow(Xcan/(obstacle_a),2) + pow(Ycan/(obstacle_b),2)) < 1)
 					{
 						obstacle_is_blocking = true;
 					}
@@ -256,12 +257,13 @@ void add_new_node()
 		obstacle_a = Obstacles.obstacles[i].major_semiaxis;
 		obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
 
-		Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
-		Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
+		Xobst = obstacle_x;// + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
+		Yobst = obstacle_y;// + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
 		Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
 		Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
 
-		if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
+		//if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
+		if((pow(Xcan/(obstacle_a),2) + pow(Ycan/(obstacle_b),2)) < 1)
 		{
 			obstacle_is_blocking = true;
 			break;
@@ -530,7 +532,14 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 
 	double begin = ros::Time::now().toSec();
 	
-	calculate_route();
+	try
+	{
+		calculate_route();
+	}
+	catch (int error)
+	{
+		ROS_INFO_STREAM( "Route not found, Exception Nr. " << error );
+	}
 
 	double end = ros::Time::now().toSec();	
 	ROS_INFO_STREAM( "Elapsed time is: " << end-begin );

@@ -40,6 +40,7 @@ www.acadotoolkit.org
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Path.h>
 #include <nautonomous_planning_and_control/Quaternion_conversion.h>
+#include <gazebo_msgs/ModelState.h>
 
 #include <nautonomous_mpc_msgs/StageVariable.h>
 #include <nautonomous_mpc_msgs/Obstacle.h>
@@ -67,6 +68,7 @@ int acado_initializeSolver(  );
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable temp_state;
+nautonomous_mpc_msgs::StageVariable gazebo_state;
 nautonomous_mpc_msgs::Obstacle obstacle;
 nautonomous_mpc_msgs::Obstacles obstacles;
 geometry_msgs::PoseStamped p;
@@ -76,6 +78,8 @@ nav_msgs::Path route_list;
 ros::Publisher position_pub;
 ros::Publisher action_pub;
 ros::Publisher control_horizon_pub;
+ros::Publisher gazebo_pub;
+
 
 
 float KKT_var;
@@ -94,9 +98,9 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg 
 void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 {
 
-	if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
-	   ros::console::notifyLoggerLevelsChanged();
-	}
+	//if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+	//   ros::console::notifyLoggerLevelsChanged();
+	//}
 	/* Some temporary variables. */
 	int    i, iter;
 	acado_timer t;
@@ -106,6 +110,11 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 
 	/* Initialize the states and controls. */
 	current_state = *twist_msg;
+
+	while (sqrt(pow(reference_path.poses[Path_point + i].pose.position.x - current_state.x,2) - pow(reference_path.poses[Path_point + i].pose.position.y - current_state.y,2)) < 1)
+	{
+		Path_point++;
+	}
 
 	if (Path_point == 0 )
 	{
@@ -139,9 +148,9 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 		}
 		for (i = 0; i < N ; ++i) 
 		{
-			acadoVariables.od[ (NOD * i) + 0 ] = obstacle.state.twist.linear.x * cos(obstacle.state.pose.position.z);
-			acadoVariables.od[ (NOD * i) + 1 ] = obstacle.state.twist.linear.x * sin(obstacle.state.pose.position.z);
-			acadoVariables.od[ (NOD * i) + 2 ] = obstacle.state.pose.position.z;
+			acadoVariables.od[ (NOD * i) + 0 ] = obstacle.state.twist.linear.x * cos(obstacle.state.pose.orientation.z);
+			acadoVariables.od[ (NOD * i) + 1 ] = obstacle.state.twist.linear.x * sin(obstacle.state.pose.orientation.z);
+			acadoVariables.od[ (NOD * i) + 2 ] = obstacle.state.pose.orientation.z;
 			acadoVariables.od[ (NOD * i) + 3 ] = 1/obstacle.major_semiaxis;
 			acadoVariables.od[ (NOD * i) + 4 ] = 1/obstacle.minor_semiaxis;
 		}
@@ -197,9 +206,9 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 
 		for (i = 0; i < N ; ++i) 
 		{
-			acadoVariables.od[ (NOD * i) + 0 ] = obstacle.state.twist.linear.x * cos(obstacle.state.pose.position.z);
-			acadoVariables.od[ (NOD * i) + 1 ] = obstacle.state.twist.linear.x * sin(obstacle.state.pose.position.z);
-			acadoVariables.od[ (NOD * i) + 2 ] = obstacle.state.pose.position.z;
+			acadoVariables.od[ (NOD * i) + 0 ] = obstacle.state.twist.linear.x * cos(obstacle.state.pose.orientation.z);
+			acadoVariables.od[ (NOD * i) + 1 ] = obstacle.state.twist.linear.x * sin(obstacle.state.pose.orientation.z);
+			acadoVariables.od[ (NOD * i) + 2 ] = obstacle.state.pose.orientation.z;
 			acadoVariables.od[ (NOD * i) + 3 ] = 1/obstacle.major_semiaxis;
 			acadoVariables.od[ (NOD * i) + 4 ] = 1/obstacle.minor_semiaxis;
 		}
@@ -256,12 +265,12 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	acadoVariables.x0[ 3 ] = current_state.u;
 	acadoVariables.x0[ 4 ] = current_state.v;
 	acadoVariables.x0[ 5 ] = current_state.omega;
-	acadoVariables.x0[ 6 ] = obstacle.state.pose.position.x + obstacle.state.twist.linear.x * Path_point * cos(obstacle.state.pose.position.z);
-	acadoVariables.x0[ 7 ] = obstacle.state.pose.position.y + obstacle.state.twist.linear.x * Path_point * sin(obstacle.state.pose.position.z);
+	acadoVariables.x0[ 6 ] = obstacle.state.pose.position.x + obstacle.state.twist.linear.x * Path_point * cos(obstacle.state.pose.orientation.z);
+	acadoVariables.x0[ 7 ] = obstacle.state.pose.position.y + obstacle.state.twist.linear.x * Path_point * sin(obstacle.state.pose.orientation.z);
 
 	ROS_DEBUG_STREAM("Initialization of all " << NX << " elements X0 [" <<  acadoVariables.x0[ 0 ] << ", "<<  acadoVariables.x0[ 1 ] << ", "<<  acadoVariables.x0[ 2 ] << ", "<<  acadoVariables.x0[ 3 ] << ", "<<  acadoVariables.x0[ 4 ] << ", "<<  acadoVariables.x0[ 5 ] << ", "<<  acadoVariables.x0[ 6 ] << ", "<<  acadoVariables.x0[ 7 ] << "]" );
 
-	Path_point++;
+//	Path_point++;
 
 	//if( VERBOSE ) acado_printHeader();
 
@@ -327,6 +336,17 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	position_pub.publish(temp_state);
 	control_horizon_pub.publish(route_list);
 	route_list.poses.clear();
+
+	gazebo_state.T_r = *(actions);
+	gazebo_state.T_l = *(actions+1);  
+	gazebo_state.x = *(states+NX);
+	gazebo_state.y = *(states+NX+1);
+	gazebo_state.theta = *(states+NX+2);
+	gazebo_state.u = *(states+NX+3);
+	gazebo_state.v = *(states+NX+4);
+	gazebo_state.omega = *(states+NX+5);
+
+	gazebo_pub.publish(gazebo_state);
 }
 
 void ref_cb( const nav_msgs::Path::ConstPtr& reference_msg )
@@ -345,10 +365,11 @@ int main (int argc, char** argv)
 	
 	ros::Subscriber gps_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",10,gps_cb);
 	ros::Subscriber obstacle_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",1,obstacle_cb);
-	ros::Subscriber path_sub = nh.subscribe<nav_msgs::Path>("/mission_coordinator/route",1,ref_cb);
+	ros::Subscriber path_sub = nh.subscribe<nav_msgs::Path>("/Local_planner/route",1,ref_cb);
 	
 	position_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
 	control_horizon_pub = nh_private.advertise<nav_msgs::Path>("control_horizon",10);
+	gazebo_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("set_gazebo_control",10);
 
 	route_list.header.frame_id = "/map";
 	route_list.header.stamp = ros::Time::now();
