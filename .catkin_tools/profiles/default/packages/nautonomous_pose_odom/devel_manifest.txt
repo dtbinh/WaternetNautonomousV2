@@ -1,5 +1,0 @@
-nautonomous_pose_odom
-/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_pose_odom/share/nautonomous_pose_odom/cmake/nautonomous_pose_odomConfig.cmake /home/daley/WaternetNautonomousV2/devel/share/nautonomous_pose_odom/cmake/nautonomous_pose_odomConfig.cmake
-/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_pose_odom/share/nautonomous_pose_odom/cmake/nautonomous_pose_odomConfig-version.cmake /home/daley/WaternetNautonomousV2/devel/share/nautonomous_pose_odom/cmake/nautonomous_pose_odomConfig-version.cmake
-/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_pose_odom/lib/pkgconfig/nautonomous_pose_odom.pc /home/daley/WaternetNautonomousV2/devel/lib/pkgconfig/nautonomous_pose_odom.pc
-/home/daley/WaternetNautonomousV2/devel/.private/nautonomous_pose_odom/lib/nautonomous_pose_odom/coordinate_odometry_node /home/daley/WaternetNautonomousV2/devel/lib/nautonomous_pose_odom/coordinate_odometry_node
