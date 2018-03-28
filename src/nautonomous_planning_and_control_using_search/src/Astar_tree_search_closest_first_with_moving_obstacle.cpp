@@ -97,7 +97,6 @@ float new_cost = 0;
 float new_dist = 0;
 
 bool useplot = true;
-bool useHeuristics = false;
 
 float obstacle_x = 0;
 float obstacle_y = 0;
@@ -107,6 +106,11 @@ float obstacle_v = 0;
 float obstacle_w = 0;
 float obstacle_a = 1;
 float obstacle_b = 1;
+
+float Xobst = 0;
+float Yobst = 0;
+float Xcan = 0;
+float Ycan = 0;
 
 void get_minimum_node()
 {
@@ -128,6 +132,12 @@ void add_new_node()
 	PosMatrix(next_node,0) = round(temp_x);
 	PosMatrix(next_node,1) = round(temp_y);
 	
+
+	Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) * (current_node->getCost() + 1);
+	Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) * (current_node->getCost() + 1);
+	Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
+	Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
+
 	if((temp_x < 0) || (temp_x > (map_width*resolution)) || (temp_y < 0) || (temp_y > (map_height*resolution)))
 	{	
 		new_dist = INF;
@@ -136,24 +146,13 @@ void add_new_node()
 	{
 		new_dist = INF;
 	}
-	else if	((pow((obstacle_x + (obstacle_u * cos(obstacle_th) + obstacle_v * sin(obstacle_th)) *  (current_node->getCost() + 1) - temp_x)/Obstacle.major_semiaxis,2) + pow((obstacle_y + (obstacle_u * sin(obstacle_th) - obstacle_v * cos(obstacle_th)) *  (current_node->getCost() + 1)-temp_y)/Obstacle.minor_semiaxis,2)) < 1)
+	else if	((pow(Xcan/(obstacle_a*3),6) + pow(Ycan/(obstacle_b*2),6)) < 1.5)
 	{
 		new_dist = INF;
 	}		
 	else
 	{	
-		if(useHeuristics)
-		{
-			dx = fabs(temp_x - final_node->getX());
-			dy = fabs(temp_y - final_node->getY());
-			h = fmin(dx, dy) * 1.4 + fabs(dx - dy) * 1 ;
-			new_dist = h;
-		}		
-		else
-		{
-			new_dist = sqrt(pow(temp_x - final_node->getX(),2) + pow(temp_y - final_node->getY(),2));
-		}
-
+		new_dist = sqrt(pow(temp_x - final_node->getX(),2) + pow(temp_y - final_node->getY(),2));
 	}
 
 	new_cost = current_node->getCost() + step_size;
@@ -211,17 +210,7 @@ void calculate_route()
 
 	std::cout << "//////////////////START NEW ROUTE//////////////////" <<std::endl;
 
-	if (useHeuristics)
-	{
-		dx = fabs(start_state.x - map_center_x - final_node->getX());
-		dy = fabs(start_state.y - map_center_y - final_node->getY());
-		h = fmin(dx, dy) * 1.4 + fabs(dx - dy) * 1 ;
-		starting_node->initializeNode(start_state.x - map_center_x, start_state.y - map_center_y, start_state.theta, h, 0.0, 0, 0, false);
-	}	
-	else
-	{
-		starting_node->initializeNode(start_state.x - map_center_x, start_state.y - map_center_y, start_state.theta, sqrt(pow(start_state.x - map_center_x - final_node->getX(),2) + pow(start_state.y - map_center_y - final_node->getY(),2)), 0.0, 0, 0, false);
-	}
+	starting_node->initializeNode(start_state.x - map_center_x, start_state.y - map_center_y, start_state.theta, sqrt(pow(start_state.x - map_center_x - final_node->getX(),2) + pow(start_state.y - map_center_y - final_node->getY(),2)), 0.0, 0, 0, false);
 	
 
 	Network->push_back(*starting_node);
@@ -325,12 +314,6 @@ void calculate_route()
 		ROS_DEBUG_STREAM( "Elapsed time of check 6 is: " << check6 );
 
 		ROS_DEBUG_STREAM( "next node is: " << next_node );
-
-		checks++;
-		if (checks > 10000)
-		{
-			break;
-		}
 	}
 
 	std::cout << "Elapsed time of initialization: " << check4 << std::endl;
@@ -343,14 +326,7 @@ void calculate_route()
 		p2.pose.position.x = current_node->getX() + map_center_x;
 		p2.pose.position.y = current_node->getY() + map_center_y;
       		route_list.poses.push_back(p2);
-		
-		//ROS_DEBUG_STREAM( "Node " << current_node->getNode() << " is at [" << current_node->getX() << ", " << current_node->getY() << "] at a theta of " << current_node->getTheta() << " with a cost of " << current_node->getCost() << " and a distTofinish of " << current_node->getDistToFinish() << " and node " << current_node->getPreviousNode() << " before");
-
 		current_node = &Network->at(current_node->getPreviousNode());
-		//p.x = current_node->getX() + map_center_x;
-		//p.y = current_node->getY() + map_center_y;
-      		//route_list.points.push_back(p);
-		//ros::Duration(0.2).sleep();
 	}
 
 	std::cout << "//////////////////Flipping route//////////////////" <<std::endl;
@@ -382,6 +358,32 @@ void generate_route()
 	}
 }
 
+void reinitialize()
+{
+	Network->clear();
+	CostMatrix = MatrixXd::Ones(100000,3) * INF;
+	NodeNrMatrix = MatrixXd::Ones(NodeNrMatrix.rows(),NodeNrMatrix.cols()) * INF;
+	PosMatrix = MatrixX2i::Zero(100000,2);
+	Network->reserve(100000);
+	flipped_route_list.poses.clear();
+	route_list.poses.clear();
+	next_node = 1;
+	current_node_nr = 0;
+	start_node_nr = 0;
+	Nx = 0;
+	Ny = 0;
+	new_cost = 0;
+	new_dist = 0;
+
+	check1 = 0;
+	check2 = 0;
+	check3 = 0;
+	check4 = 0;
+	check5 = 0;
+	check6 = 0;
+	checks = 0;
+}
+
 void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 {
 	double begin = ros::Time::now().toSec();	
@@ -391,6 +393,9 @@ void start_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 	double end = ros::Time::now().toSec();	
 	std::cout << "Elapsed time is: " << end-begin << std::endl;
 	std::cout << "Nodes checked: " << next_node << std::endl;
+
+	reinitialize();
+
 }
 
 void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
@@ -447,7 +452,7 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 
 int main (int argc, char** argv)
 {
-	ros::init (argc, argv,"A_star_tree_path_finding_opt");
+	ros::init (argc, argv,"Obstacle_avoidance_planner");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
@@ -483,6 +488,9 @@ int main (int argc, char** argv)
 	Network->clear();
 	CostMatrix = MatrixXd::Ones(100000,3) * INF;
 	NodeNrMatrix = MatrixXd::Ones(NodeNrMatrix.rows(),NodeNrMatrix.cols()) * INF;
+	PosMatrix = MatrixX2i::Zero(100000,2);
+
+
 	next_node = 1;
 
 	ros::spin();	
