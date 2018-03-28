@@ -29,6 +29,7 @@ nautonomous_mpc_msgs::Obstacles obstacles_set;
 std::vector<nautonomous_mpc_msgs::Obstacle>* available_obstacles = new std::vector<nautonomous_mpc_msgs::Obstacle>();
 std::vector<int>* iterations = new std::vector<int>();
 std::vector<nautonomous_mpc_msgs::Obstacle>* tracked_obstacles = new std::vector<nautonomous_mpc_msgs::Obstacle>();
+std::vector< std::vector<float> > vec(4, std::vector<float>(4));
 
 MatrixXd A(4,4);
 MatrixXd P(4,4);

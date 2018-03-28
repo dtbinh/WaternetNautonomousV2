@@ -16,6 +16,16 @@
   <node name="Obstacle_detection" pkg="nautonomous_obstacle_detection" type="Laserscan" output="log" respawn="true"/>
 
   <!-- Launch mission_control_sim -->
-  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="screen"/>
+  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log" respawn="true"/>
+
+  <!-- Set map to odom transform-->
+  <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" 	args="	0 	0 	0 	0 	0 	0 	1 map 	odom 	50"/>
+
+  <!-- Launch border detection -->
+  <!--node name="Map_modifier" pkg="nautonomous_obstacle_detection" type="map_modifier" output="log" respawn="true"/-->
+
+  <!-- Launch mission_control_sim -->
+  <node name="Gazebo_control" pkg="nautonomous_planning_and_control" type="Gazebo_control" output="log"/>
+
 
 </launch>

@@ -26,11 +26,13 @@ ros::Publisher	start_pub;
 ros::Publisher	goal_pub;
 ros::Publisher	obstacle_pub;
 ros::Publisher	obstacles_pub;
+ros::Publisher	borders_pub;
 ros::Publisher	gazebo_pub;
 
 ros::Subscriber	next_state_sub;
 ros::Subscriber	route_sub;
 ros::Subscriber	obstacles_sub;
+ros::Subscriber	borders_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable mpc_state;
@@ -41,6 +43,7 @@ nautonomous_mpc_msgs::StageVariable temp_state;
 nautonomous_mpc_msgs::Obstacle obstacle;
 nautonomous_mpc_msgs::Obstacles obstacles;
 nautonomous_mpc_msgs::Obstacle closest_obstacle;
+nautonomous_mpc_msgs::Obstacles borders;
 
 nav_msgs::Path Full_path;
 
@@ -61,6 +64,7 @@ int waypoint_iterator = 0;
 
 bool current_state_received = false;
 bool path_received = false;
+bool borders_received = false;
 
 void toQuaternion(double pitch, double roll, double yaw)
 {
@@ -152,6 +156,19 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
 	obstacles_pub.publish(obstacles);
 }
 
+void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
+{
+	borders = *border_msg;
+	borders_pub.publish(border_msg);
+	
+	borders_received = true;
+
+	Initialization();
+
+	ros::Duration(1).sleep();
+
+}
+
 int main(int argc, char **argv)
 {
  	/* Initialize ROS */
@@ -191,30 +208,33 @@ int main(int argc, char **argv)
 	goal_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("goal_state",10);
 	obstacle_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Obstacle>("obstacle",10);
 	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
+	borders_pub =	 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("borders",10);
 	gazebo_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("set_gazebo_start",10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
 	route_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/route", 10, route_cb);
 	obstacles_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obstacles", 10, obstacle_cb);
+	borders_sub =	 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Map_modifier/borders", 10, borders_cb);
 
 	ros::Rate loop_rate(100);
 
 	ros::Duration(1).sleep();
 
-	Initialization();
-
 	while (ros::ok())
 	{	
 		Current_loop_time = ros::Time::now().toSec();
-		if (Current_loop_time - Time_of_last_path_call > 2)
+		if(borders_received)
 		{
-			Time_of_last_path_call = Current_loop_time;
-			Call_Route_generator();
-		}		
-		else if (Current_loop_time - Time_of_last_mpc_call > 1)
-		{
-			Time_of_last_mpc_call = Current_loop_time;
-			Call_MPC_generator();
+			if (Current_loop_time - Time_of_last_path_call > 2)
+			{
+				Time_of_last_path_call = Current_loop_time;
+				Call_Route_generator();
+			}		
+			else if (Current_loop_time - Time_of_last_mpc_call > 1)
+			{
+				Time_of_last_mpc_call = Current_loop_time;
+				Call_MPC_generator();
+			}
 		}
 
 		ros::spinOnce();

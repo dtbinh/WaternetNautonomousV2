@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 
+#include <nav_msgs/OccupancyGrid.h>
 #include <nautonomous_obstacle_detection/PVector.h>
 #include <nautonomous_obstacle_detection/Blob.h>
 #include <nautonomous_obstacle_detection/Eigen/Eigenvalues>
@@ -57,6 +58,13 @@ float Boat_pos_x = 0;
 float Boat_pos_y = 0;
 float Boat_angle = 0;
 
+float map_width;
+float map_height;
+float map_resolution;
+float map_center_x;
+float map_center_y;
+
+nav_msgs::OccupancyGrid grid_map;
 sensor_msgs::Imu Imu;
 sensor_msgs::LaserScan scan;
 
@@ -67,10 +75,14 @@ ros::Publisher Transformed_pcl_pub;
 // Subscribers
 ros::Subscriber pc_sub;
 ros::Subscriber EKF_sub;
+ros::Subscriber map_sub;
 
 visualization_msgs::MarkerArray Markers;
 visualization_msgs::Marker points;
 visualization_msgs::Marker oval;
+
+nautonomous_mpc_msgs::Obstacle obstacle;
+nautonomous_mpc_msgs::Obstacles obstacles;
 
 // Initialization
 float x_pos, y_pos, z_pos, x_pos_origin, y_pos_origin;
@@ -83,6 +95,8 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 	scan = *Scan_msg;
 	Markers.markers.clear();
 	points.points.clear();
+	VoxelFound = false;
+	obstacles.obstacles.clear();
 
 	for (int i = 0; i < gridSize; i++){
 		for (int j = 0; j < gridSize; j++){
@@ -99,7 +113,15 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 			z_pos = 0;
 
 			cout << "Pos: " << x_pos/voxelSize + gridSize/2*voxelSize << ", " << y_pos/voxelSize + gridSize/2*voxelSize << endl;
-			if ((x_pos/voxelSize + gridSize/2*voxelSize) >= 0 && (x_pos/voxelSize + gridSize/2*voxelSize) < gridSize && (y_pos/voxelSize + gridSize/2*voxelSize) >= 0 && (y_pos/voxelSize + gridSize/2*voxelSize < gridSize))
+			if(((x_pos+Boat_pos_x) < -(map_width*map_resolution/2)) || ((x_pos+Boat_pos_x) > (map_width*map_resolution/2)) || ((y_pos+Boat_pos_y) < -(map_height*map_resolution/2)) || ((y_pos+Boat_pos_y) > (map_height*map_resolution/2)))
+			{
+				//Do nothing	
+			}
+			else if((int)grid_map.data[(floor(((y_pos+Boat_pos_y)-map_center_y)/map_resolution)-1) * map_width + floor(((x_pos+Boat_pos_x)-map_center_x)/map_resolution)] > 10)
+			{
+				//Do nothing
+			}
+			else if ((x_pos/voxelSize + gridSize/2*voxelSize) >= 0 && (x_pos/voxelSize + gridSize/2*voxelSize) < gridSize && (y_pos/voxelSize + gridSize/2*voxelSize) >= 0 && (y_pos/voxelSize + gridSize/2*voxelSize < gridSize))
 			{
 				if(!VoxelFound)
 				{
@@ -112,8 +134,6 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 	}
 
 	cout << "Initialized grid" << endl;
-	nautonomous_mpc_msgs::Obstacle obstacle;
-	nautonomous_mpc_msgs::Obstacles obstacles;
 
 	if (VoxelFound)
 	{
@@ -199,7 +219,7 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 					geometry_msgs::Point p;
 					p.x = (Points->at(j).getX() - gridSize/2*voxelSize) * voxelSize + Boat_pos_x;
 					p.y = (Points->at(j).getY() - gridSize/2*voxelSize) * voxelSize + Boat_pos_y;
-					p.z = 0;
+					p.z = 2;
 					PointsMatrix(j,0) = Points->at(j).getX();
 					PointsMatrix(j,1) = Points->at(j).getY();
 					points.points.push_back(p);
@@ -273,7 +293,30 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 	}
 	else
 	{
-		cout << "No voxels were found" << endl;
+		cout << "No voxels were found, publishing ghost obstacles" << endl;
+	
+		obstacle.state.pose.position.x = 100;
+		obstacle.state.pose.position.y = 100;
+		obstacle.state.pose.orientation.z = 0;
+		obstacle.major_semiaxis = 0.1;
+		obstacle.minor_semiaxis = 0.1;
+
+		oval.pose.position.x = 100;
+		oval.pose.position.y = 100;
+		oval.pose.position.z = 1;
+		oval.pose.orientation = toQuaternion(0,0,0);
+		oval.scale.x = 0.1 * 2;
+		oval.scale.y = 0.1 * 2;
+		oval.scale.z = 0.5;
+
+		for (int i = 0; i < 5; i++)
+		{
+			obstacles.obstacles.push_back(obstacle);
+			oval.ns = i + 65;
+			Markers.markers.push_back(oval);
+		}
+		marker_pub.publish(Markers);
+		message_pub.publish(obstacles);
 	}
 }
 
@@ -282,6 +325,20 @@ void odom_cb (const nav_msgs::Odometry::ConstPtr& odom_msg)
 	Boat_pos_x = rint(odom_msg->pose.pose.position.x);
 	Boat_pos_y = rint(odom_msg->pose.pose.position.y);
 	Boat_angle = toEulerAngle(odom_msg->pose.pose.orientation);
+}
+
+void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
+{
+	ROS_DEBUG_STREAM( "map received" );
+	grid_map = *map_msg;
+	
+	map_width = (float)grid_map.info.width;
+	map_height = (float)grid_map.info.height;
+
+	map_resolution = (float)grid_map.info.resolution;
+
+ 	map_center_x = (float)grid_map.info.origin.position.x;
+	map_center_y = (float)grid_map.info.origin.position.y;
 }
 
 
@@ -315,6 +372,7 @@ int main (int argc, char** argv)
 
 	pc_sub = nh.subscribe<sensor_msgs::LaserScan>("/mybot/laser/scan",1,scan_cb);
 	EKF_sub = nh.subscribe<nav_msgs::Odometry>("/odom",1,odom_cb);
+	map_sub = nh.subscribe<nav_msgs::OccupancyGrid>("/map",10,map_cb);
 
 	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",1);

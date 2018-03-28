@@ -8,6 +8,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <nautonomous_mpc_msgs/StageVariable.h>
 #include <nautonomous_mpc_msgs/WaypointList.h>
+#include <nautonomous_mpc_msgs/Obstacle.h>
 #include <nautonomous_mpc_msgs/Obstacles.h>
 #include <nautonomous_obstacle_detection/Eigen/Eigenvalues>
 #include <nautonomous_obstacle_detection/Quaternion_conversion.h>
@@ -30,6 +31,7 @@ ros::Publisher map_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_2_pub;
 ros::Publisher markerarray_pub;
+ros::Publisher border_pub;
 
 nav_msgs::OccupancyGrid map;
 nav_msgs::OccupancyGrid weighted_map;
@@ -72,8 +74,12 @@ geometry_msgs::Point p2;
 visualization_msgs::MarkerArray Markers;
 visualization_msgs::Marker line_list;
 visualization_msgs::Marker rectangle_list;
+
 nav_msgs::Path route_list;
 nav_msgs::Path flipped_route_list;
+
+nautonomous_mpc_msgs::Obstacle obstacle; 
+nautonomous_mpc_msgs::Obstacles obstacles;
 
 std::vector<geometry_msgs::Point>* Edge_point_list = new std::vector<geometry_msgs::Point>();
 std::vector<bool>* Part_of_inliers = new std::vector<bool>();
@@ -489,6 +495,12 @@ void fit_lines()
 				rectangle_list.scale.y = MaxCoeffs(1) - MinCoeffs(1) + resolution;
 				rectangle_list.pose.position.x = Cornerpoints->at(k).x + cos(angle) * (MaxCoeffs(0) + MinCoeffs(0))/2 - sin(angle) * (MaxCoeffs(1) + MinCoeffs(1))/2;
 				rectangle_list.pose.position.y = Cornerpoints->at(k).y + sin(angle) * (MaxCoeffs(0) + MinCoeffs(0))/2 + cos(angle) * (MaxCoeffs(1) + MinCoeffs(1))/2;
+
+				obstacle.state.pose.position.x = rectangle_list.pose.position.x;
+				obstacle.state.pose.position.y = rectangle_list.pose.position.y;
+				obstacle.state.pose.orientation = toQuaternion(0,0,angle);
+				obstacle.major_semiaxis = (MaxCoeffs(0) - MinCoeffs(0) + resolution)/2;
+				obstacle.minor_semiaxis = (MaxCoeffs(1) - MinCoeffs(1) + resolution)/2;
 				
 				minArea = (MaxCoeffs(0) - MinCoeffs(0)) * (MaxCoeffs(1) - MinCoeffs(1));	
 			}
@@ -521,15 +533,17 @@ void fit_lines()
 			}
 		}
 
+		obstacles.obstacles.push_back(obstacle);
+
 		map_pub.publish(weighted_map);
 
 
 		InliersSorted->clear();
 		Cornerpoints->clear();
 		SortedAngles->clear();
-
-		ros::Duration(5).sleep();
 	}
+
+	border_pub.publish(obstacles);
 }
 
 void detect_edges()
@@ -635,6 +649,7 @@ int main (int argc, char** argv)
 	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_2_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker_2", 10);
 	markerarray_pub = 	nh_private.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 10);
+	border_pub =	 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("borders", 10);
 
 	p1.pose.position.z = 1;
 	p1.pose.orientation.w = 1;
