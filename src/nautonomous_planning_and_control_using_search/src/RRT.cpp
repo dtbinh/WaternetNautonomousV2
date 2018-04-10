@@ -492,8 +492,8 @@ int main (int argc, char** argv)
 
 
 	map_sub = 	nh.subscribe<nav_msgs::OccupancyGrid>("/map",10,map_cb);
-	start_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start",10,start_cb);
-	goal_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal",10,goal_cb);
+	start_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_state",10,start_cb);
+	goal_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal_state",10,goal_cb);
 	obstacle_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",10,obstacle_cb);
 
 	map_pub = 	nh.advertise<nav_msgs::OccupancyGrid>("/map_tree_opt",10);

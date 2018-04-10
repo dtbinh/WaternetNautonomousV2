@@ -38,9 +38,9 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
 		std::cout << "Obstacle received" << std::endl;
 		obstacle_marker.scale.x = obstacles.obstacles[i].major_semiaxis * 2;
 		obstacle_marker.scale.y = obstacles.obstacles[i].minor_semiaxis * 2;
-		obstacle_marker.pose.position.x = obstacles.obstacles[i].state.pose.position.x + cos(obstacles.obstacles[i].state.pose.orientation.z) * obstacles.obstacles[i].state.twist.linear.x;
-		obstacle_marker.pose.position.y = obstacles.obstacles[i].state.pose.position.y + sin(obstacles.obstacles[i].state.pose.orientation.z) * obstacles.obstacles[i].state.twist.linear.x;
-		obstacle_marker.pose.orientation = toQuaternion(0.0, 0.0, obstacles.obstacles[i].state.pose.orientation.z);
+		obstacle_marker.pose.position.x = obstacles.obstacles[i].pose.position.x + cos(obstacles.obstacles[i].pose.orientation.z) * obstacles.obstacles[i].twist.linear.x;
+		obstacle_marker.pose.position.y = obstacles.obstacles[i].pose.position.y + sin(obstacles.obstacles[i].pose.orientation.z) * obstacles.obstacles[i].twist.linear.x;
+		obstacle_marker.pose.orientation = toQuaternion(0.0, 0.0, obstacles.obstacles[i].pose.orientation.z);
 		obstacle_marker.ns = 65 + i;
 		obstacles_marker.markers.push_back(obstacle_marker);
 	}

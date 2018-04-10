@@ -152,12 +152,12 @@ void smooth_path()
 				obstacle_is_blocking = false;
 				for (int k = 0; k < Obstacles.obstacles.size(); k++)
 				{
-					obstacle_x = Obstacles.obstacles[k].state.pose.position.x;
-					obstacle_y = Obstacles.obstacles[k].state.pose.position.y;
-					obstacle_th = Obstacles.obstacles[k].state.pose.position.z;
-					obstacle_u = Obstacles.obstacles[k].state.twist.linear.x;
-					obstacle_v = Obstacles.obstacles[k].state.twist.linear.y;
-					obstacle_w = Obstacles.obstacles[k].state.twist.linear.z;
+					obstacle_x = Obstacles.obstacles[k].pose.position.x;
+					obstacle_y = Obstacles.obstacles[k].pose.position.y;
+					obstacle_th = Obstacles.obstacles[k].pose.position.z;
+					obstacle_u = Obstacles.obstacles[k].twist.linear.x;
+					obstacle_v = Obstacles.obstacles[k].twist.linear.y;
+					obstacle_w = Obstacles.obstacles[k].twist.linear.z;
 					obstacle_a = Obstacles.obstacles[k].major_semiaxis;
 					obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
 
@@ -248,12 +248,12 @@ void add_new_node()
 	obstacle_is_blocking = false;
 	for (i = 0; i < Obstacles.obstacles.size(); i++)
 	{
-		obstacle_x = Obstacles.obstacles[i].state.pose.position.x;
-		obstacle_y = Obstacles.obstacles[i].state.pose.position.y;
-		obstacle_th = Obstacles.obstacles[i].state.pose.position.z;
-		obstacle_u = Obstacles.obstacles[i].state.twist.linear.x;
-		obstacle_v = Obstacles.obstacles[i].state.twist.linear.y;
-		obstacle_w = Obstacles.obstacles[i].state.twist.linear.z;
+		obstacle_x = Obstacles.obstacles[i].pose.position.x;
+		obstacle_y = Obstacles.obstacles[i].pose.position.y;
+		obstacle_th = Obstacles.obstacles[i].pose.position.z;
+		obstacle_u = Obstacles.obstacles[i].twist.linear.x;
+		obstacle_v = Obstacles.obstacles[i].twist.linear.y;
+		obstacle_w = Obstacles.obstacles[i].twist.linear.z;
 		obstacle_a = Obstacles.obstacles[i].major_semiaxis;
 		obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
 

@@ -117,14 +117,14 @@ void write_waypoints( const state_type &x , const double t )
 void obstacle_cb( const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg )
 {
 	obstacle = *obstacle_msg;
-	obstacle_x = obstacle.state.pose.position.x;
-	obstacle_y = obstacle.state.pose.position.y;
+	obstacle_x = obstacle.pose.position.x;
+	obstacle_y = obstacle.pose.position.y;
 	obstacle_a = obstacle.major_semiaxis + safety_margin;
 	obstacle_b = obstacle.minor_semiaxis + safety_margin;
-	obstacle_th = obstacle.state.pose.orientation.z;
-	obstacle_u = obstacle.state.twist.linear.x;
-	obstacle_v = obstacle.state.twist.linear.y;
-	obstacle_w = obstacle.state.twist.angular.z;
+	obstacle_th = obstacle.pose.orientation.z;
+	obstacle_u = obstacle.twist.linear.x;
+	obstacle_v = obstacle.twist.linear.y;
+	obstacle_w = obstacle.twist.angular.z;
 }
 
 void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )

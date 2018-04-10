@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   nautonomous_mpc_msgs
   nautonomous_state_msgs
   nautonomous_pose_msgs
+  custom_robot_msgs
 )
 
 find_package(OpenCV REQUIRED)
@@ -29,12 +30,14 @@ include_directories(
 add_executable(Ellipse src/Ellipse.cpp)
 add_executable(Laserscan src/Laserscan.cpp)
 add_executable(map_modifier src/Map_modifier.cpp)
-#add_executable(Obstacle_tracker src/Obstacle_tracker.cpp)
+add_executable(Obstacle_tracker src/Obstacle_tracker.cpp)
+add_executable(TestFile src/TestFile.cpp)
 
 target_link_libraries(Ellipse ${catkin_LIBRARIES})
 target_link_libraries(Laserscan ${catkin_LIBRARIES})
 target_link_libraries(Ellipse ${OpenCV_LIBRARIES})
 target_link_libraries(map_modifier ${catkin_LIBRARIES} )
-#target_link_libraries(Obstacle_tracker ${catkin_LIBRARIES} )
+target_link_libraries(Obstacle_tracker ${catkin_LIBRARIES} )
+target_link_libraries(TestFile ${catkin_LIBRARIES} )
 
 

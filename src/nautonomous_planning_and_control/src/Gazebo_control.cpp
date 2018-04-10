@@ -19,6 +19,8 @@ using namespace std;
 using namespace Eigen;
 using namespace boost::numeric::odeint;
 
+typedef boost::array< double , 6 > state_type;
+
 ros::Subscriber start_sub;
 ros::Subscriber control_sub;
 
@@ -27,15 +29,13 @@ ros::Publisher state_pub;
 double Current_loop_time = 0;
 double Time_of_last_call = 0;
 
-double D_x = 130;
-double D_y = 5280;
-double D_t = 750;
-double m = 250;
-double l = 0.5;
-double I_z = 750;
+const double D_x = 38;
+const double D_y = 5280;
+const double D_t = 104;
+const double m = 200;
+const double l = 0.8;
+const double I_z = 500; 
 
-double x = 0;
-double y = 0;
 double th = 0;
 double u = 0;
 double v = 0;
@@ -50,6 +50,20 @@ gazebo_msgs::ModelState next_state;
 gazebo_msgs::ModelState obstacle_state;
 
 bool start_state_send = false;
+
+void Simulate_motion( const state_type &x , state_type &dxdt , double t )
+{
+	dxdt[0] = x[3] * cos(x[2]);
+	dxdt[1] = x[3] * sin(x[2]);
+	dxdt[2] = - x[4];
+	dxdt[3] = (f1 + f2 - D_x * x[3]) / m;
+	dxdt[4] = (l * (f1 - f2) + - D_t * x[4]) / I_z; 
+}
+
+void write_lorenz( const state_type &x , const double t )
+{
+	cout << t << '\t' << x[0] << '\t' << x[1] << '\t' << x[2] << '\t' << x[3] << '\t' << x[4] << endl;
+}
 
 void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 {
@@ -73,9 +87,12 @@ void start_positioning()
 	next_state.reference_frame = "ground_plane";
 	next_state.pose.orientation.w = 1.0;
 
-	next_state.pose.position.x += 0.1 * (u * cos(th) - v * sin(th));
-	next_state.pose.position.y += 0.1 * (u * sin(th) + v * cos(th));
-	next_state.pose.orientation = toQuaternion(0, 0, th);
+	state_type x = {{ next_state.pose.position.x , next_state.pose.position.y, th, u, w }}; // initial conditions
+    	integrate( Simulate_motion , x , 0.0 , 0.1 , 0.01 , write_lorenz );
+
+	next_state.pose.position.x = x[0];
+	next_state.pose.position.y = x[1];
+	next_state.pose.orientation = toQuaternion(0, 0, x[2]);
 
 	state_pub.publish(next_state);
 	checks++;

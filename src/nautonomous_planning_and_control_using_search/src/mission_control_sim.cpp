@@ -94,12 +94,12 @@ void Initialization () // State 1
 	{
 		obstacle.major_semiaxis = major_semiaxis[i];
 		obstacle.minor_semiaxis = minor_semiaxis[i];
-		obstacle.state.pose.position.x = start_x[i];
-		obstacle.state.pose.position.y = start_y[i];
-		obstacle.state.twist.linear.x = u[i];
-		obstacle.state.twist.linear.y = v[i];
-		obstacle.state.pose.orientation.z = start_theta[i];
-		obstacle.state.twist.angular.z = omega[i];
+		obstacle.pose.position.x = start_x[i];
+		obstacle.pose.position.y = start_y[i];
+		obstacle.twist.linear.x = u[i];
+		obstacle.twist.linear.y = v[i];
+		obstacle.pose.orientation.z = start_theta[i];
+		obstacle.twist.angular.z = omega[i];
 
 		obstacles.obstacles.push_back(obstacle);
 	}
@@ -166,7 +166,6 @@ void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
 	Initialization();
 
 	ros::Duration(1).sleep();
-
 }
 
 int main(int argc, char **argv)

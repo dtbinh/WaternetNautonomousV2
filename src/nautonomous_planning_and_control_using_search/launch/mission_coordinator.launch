@@ -4,7 +4,7 @@
   <rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/mpc.yaml"/>
 
   <!-- Launch mission_control_sim -->
-  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control" output="log"/>
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control" output="screen"/>
    
   <!-- Launch mission_control_sim -->
   <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log" respawn="true"/>

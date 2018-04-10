@@ -710,12 +710,12 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg
 		{
 			for (i = 0; i < Obstacles.obstacles.size(); i++)
 			{
-				obstacle_x = Obstacles.obstacles[i].state.pose.position.x;
-				obstacle_y = Obstacles.obstacles[i].state.pose.position.y;
-				obstacle_th = Obstacles.obstacles[i].state.pose.position.z;
-				obstacle_u = Obstacles.obstacles[i].state.twist.linear.x;
-				obstacle_v = Obstacles.obstacles[i].state.twist.linear.y;
-				obstacle_w = Obstacles.obstacles[i].state.twist.linear.z;
+				obstacle_x = Obstacles.obstacles[i].pose.position.x;
+				obstacle_y = Obstacles.obstacles[i].pose.position.y;
+				obstacle_th = Obstacles.obstacles[i].pose.position.z;
+				obstacle_u = Obstacles.obstacles[i].twist.linear.x;
+				obstacle_v = Obstacles.obstacles[i].twist.linear.y;
+				obstacle_w = Obstacles.obstacles[i].twist.linear.z;
 				obstacle_a = Obstacles.obstacles[i].major_semiaxis;
 				obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
 

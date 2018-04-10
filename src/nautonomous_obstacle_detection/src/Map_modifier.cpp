@@ -496,9 +496,9 @@ void fit_lines()
 				rectangle_list.pose.position.x = Cornerpoints->at(k).x + cos(angle) * (MaxCoeffs(0) + MinCoeffs(0))/2 - sin(angle) * (MaxCoeffs(1) + MinCoeffs(1))/2;
 				rectangle_list.pose.position.y = Cornerpoints->at(k).y + sin(angle) * (MaxCoeffs(0) + MinCoeffs(0))/2 + cos(angle) * (MaxCoeffs(1) + MinCoeffs(1))/2;
 
-				obstacle.state.pose.position.x = rectangle_list.pose.position.x;
-				obstacle.state.pose.position.y = rectangle_list.pose.position.y;
-				obstacle.state.pose.orientation = toQuaternion(0,0,angle);
+				obstacle.pose.position.x = rectangle_list.pose.position.x;
+				obstacle.pose.position.y = rectangle_list.pose.position.y;
+				obstacle.pose.orientation = toQuaternion(0,0,angle);
 				obstacle.major_semiaxis = (MaxCoeffs(0) - MinCoeffs(0) + resolution)/2;
 				obstacle.minor_semiaxis = (MaxCoeffs(1) - MinCoeffs(1) + resolution)/2;
 				

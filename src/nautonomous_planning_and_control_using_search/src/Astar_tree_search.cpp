@@ -506,8 +506,8 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 	{
 		for (float j = -Obstacle.minor_semiaxis; j < Obstacle.minor_semiaxis; j+= resolution)
 		{
-			temp_x = Obstacle.state.pose.position.x + i;
-			temp_y = Obstacle.state.pose.position.y + j;
+			temp_x = Obstacle.pose.position.x + i;
+			temp_y = Obstacle.pose.position.y + j;
 			map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] = 100;
 		}		
 	}

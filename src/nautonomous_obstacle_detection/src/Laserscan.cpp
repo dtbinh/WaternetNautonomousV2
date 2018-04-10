@@ -82,6 +82,7 @@ visualization_msgs::Marker points;
 visualization_msgs::Marker oval;
 
 nautonomous_mpc_msgs::Obstacle obstacle;
+nautonomous_mpc_msgs::Obstacle ghost_obstacle;
 nautonomous_mpc_msgs::Obstacles obstacles;
 
 // Initialization
@@ -200,10 +201,10 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 		// Select 10 closest blobs
 
 		// If Nblobs < 10, then duplicate the smallest blob (10-Nblob) times
-		for (int i = Blobs->size(); i < 6 ;i++)
+		/*for (int i = Blobs->size(); i < 6 ;i++)
 		{
 			Blobs->push_back(Blobs->at(Blobs->size()-1));	
-		}
+		}*/
 
 		cout << "Blobs extended to " << Blobs->size() << endl;
 		for (int i = 0; i < Blobs->size(); i++)
@@ -261,9 +262,9 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 				first_principle_axis = chisvalue * sqrt(largest_eigenvalue);
 				second_principle_axis = chisvalue * sqrt(smallest_eigenvalue);
 			
-				obstacle.state.pose.position.x = AvgX;
-				obstacle.state.pose.position.y = AvgY;
-				obstacle.state.pose.orientation.z = angle;
+				obstacle.pose.position.x = AvgX;
+				obstacle.pose.position.y = AvgY;
+				obstacle.pose.orientation.z = angle;
 				obstacle.major_semiaxis = fmax(first_principle_axis * voxelSize + 2, 2);
 				obstacle.minor_semiaxis = fmax(second_principle_axis * voxelSize + 2, 2);
 
@@ -287,6 +288,11 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 		marker_pub.publish(Markers);
 	
 		//obstacles.Nobstacles = Blobs->size();
+
+		for (int i = obstacles.obstacles.size(); i < 6; i++)
+		{
+			obstacles.obstacles.push_back(ghost_obstacle);
+		}
 		message_pub.publish(obstacles);
 
 		Blobs->clear();
@@ -294,12 +300,6 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 	else
 	{
 		cout << "No voxels were found, publishing ghost obstacles" << endl;
-	
-		obstacle.state.pose.position.x = 100;
-		obstacle.state.pose.position.y = 100;
-		obstacle.state.pose.orientation.z = 0;
-		obstacle.major_semiaxis = 0.1;
-		obstacle.minor_semiaxis = 0.1;
 
 		oval.pose.position.x = 100;
 		oval.pose.position.y = 100;
@@ -311,7 +311,7 @@ void scan_cb (const sensor_msgs::LaserScan::ConstPtr& Scan_msg)
 
 		for (int i = 0; i < 5; i++)
 		{
-			obstacles.obstacles.push_back(obstacle);
+			obstacles.obstacles.push_back(ghost_obstacle);
 			oval.ns = i + 65;
 			Markers.markers.push_back(oval);
 		}
@@ -348,6 +348,12 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
+	ghost_obstacle.pose.position.x = 100;
+	ghost_obstacle.pose.position.y = 100;
+	ghost_obstacle.pose.orientation.z = 0;
+	ghost_obstacle.major_semiaxis = 0.1;
+	ghost_obstacle.minor_semiaxis = 0.1;
+
 	points.header.frame_id = "odom";
 	points.header.stamp = ros::Time::now();
 	points.ns = "points";

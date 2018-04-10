@@ -60,11 +60,11 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 	obstacle_marker.scale.x = obstacle.major_semiaxis * 2;
 	obstacle_marker.scale.y = obstacle.minor_semiaxis * 2;
 
-	obstacle_marker.pose.position.x = obstacle.state.pose.position.x;
-	obstacle_marker.pose.position.y = obstacle.state.pose.position.y;
+	obstacle_marker.pose.position.x = obstacle.pose.position.x;
+	obstacle_marker.pose.position.y = obstacle.pose.position.y;
 	obstacle_marker.pose.position.z = -0.5;
 
-	obstacle_marker.pose.orientation = toQuaternion(obstacle.state.pose.orientation.x, obstacle.state.pose.orientation.y, obstacle.state.pose.orientation.z);
+	obstacle_marker.pose.orientation = toQuaternion(obstacle.pose.orientation.x, obstacle.pose.orientation.y, obstacle.pose.orientation.z);
 	obstacle_marker.ns = ns;
 	ns++;
 
@@ -83,11 +83,11 @@ void obstacles_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg
 		obstacles_marker.scale.x = obstacle.major_semiaxis * 2;
 		obstacles_marker.scale.y = obstacle.minor_semiaxis * 2;
 
-		obstacles_marker.pose.position.x = obstacle.state.pose.position.x;
-		obstacles_marker.pose.position.y = obstacle.state.pose.position.y;
+		obstacles_marker.pose.position.x = obstacle.pose.position.x;
+		obstacles_marker.pose.position.y = obstacle.pose.position.y;
 		obstacles_marker.pose.position.z = -1.0;
 
-		obstacles_marker.pose.orientation = toQuaternion(obstacle.state.pose.orientation.x, obstacle.state.pose.orientation.y, obstacle.state.pose.orientation.z);
+		obstacles_marker.pose.orientation = toQuaternion(obstacle.pose.orientation.x, obstacle.pose.orientation.y, obstacle.pose.orientation.z);
 		obstacles_marker.ns = ns;
 		ns++;
 

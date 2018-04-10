@@ -110,9 +110,9 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg 
 void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 {
 
-	if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+	/*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
 	   ros::console::notifyLoggerLevelsChanged();
-	}
+	}*/
 	/* Some temporary variables. */
 	int    i = 0;
 	int    iter = 0;
@@ -127,10 +127,10 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	Distances->clear();
 	for (int j = 0; j < borders.obstacles.size(); j++)
 	{
-		float dist_cp_1 = sqrt(pow(current_state.x-borders.obstacles[j].state.pose.position.x + borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)) + borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].state.pose.position.y + borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)) - borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2));
-		float dist_cp_2 = sqrt(pow(current_state.x-borders.obstacles[j].state.pose.position.x + borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)) - borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].state.pose.position.y + borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)) + borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2));
-		float dist_cp_3 = sqrt(pow(current_state.x-borders.obstacles[j].state.pose.position.x - borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)) + borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].state.pose.position.y - borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)) - borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2));
-		float dist_cp_4 = sqrt(pow(current_state.x-borders.obstacles[j].state.pose.position.x - borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)) - borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].state.pose.position.y - borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].state.pose.orientation)) + borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].state.pose.orientation)),2));
+		float dist_cp_1 = sqrt(pow(current_state.x-borders.obstacles[j].pose.position.x + borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)) + borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].pose.position.y + borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)) - borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)),2));
+		float dist_cp_2 = sqrt(pow(current_state.x-borders.obstacles[j].pose.position.x + borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)) - borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].pose.position.y + borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)) + borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)),2));
+		float dist_cp_3 = sqrt(pow(current_state.x-borders.obstacles[j].pose.position.x - borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)) + borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].pose.position.y - borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)) - borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)),2));
+		float dist_cp_4 = sqrt(pow(current_state.x-borders.obstacles[j].pose.position.x - borders.obstacles[j].major_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)) - borders.obstacles[j].minor_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)),2) + pow(current_state.y-borders.obstacles[j].pose.position.y - borders.obstacles[j].major_semiaxis * sin(toEulerAngle(borders.obstacles[j].pose.orientation)) + borders.obstacles[j].minor_semiaxis * cos(toEulerAngle(borders.obstacles[j].pose.orientation)),2));
 		Distances->push_back(fmin(fmin(fmin(dist_cp_1,dist_cp_2),dist_cp_3),dist_cp_4));
 		ROS_DEBUG_STREAM("Distance to border: " << Distances->at(i));
 	}
@@ -153,27 +153,30 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	ROS_DEBUG_STREAM("Closest borders: " << borders_sorted_by_distance);
 
 	Distances->clear();
-	for (int j = 0; j < obstacles.obstacles.size(); j++)
+	if (obstacles.obstacles.size() > 0)
 	{
-		float dist = sqrt(pow(current_state.x-obstacles.obstacles[j].state.pose.position.x,2) + pow(current_state.y-obstacles.obstacles[j].state.pose.position.y,2));
-		Distances->push_back(dist);
-		ROS_DEBUG_STREAM("Distance to border: " << Distances->at(i));
-	}
-	obstacles_sorted_by_distance.obstacles.clear();
-	for (int j = 0; j < 5; j++)
-	{	
-		float minimum = Distances->at(0);
-		float it = 0;
-		for (int k = 1; k < Distances->size(); k++)
+		for (int j = 0; j < obstacles.obstacles.size(); j++)
 		{
-			if (Distances->at(k) < minimum)
-			{
-				minimum = Distances->at(k);
-				it = k;
-			}
+			float dist = sqrt(pow(current_state.x-obstacles.obstacles[j].pose.position.x,2) + pow(current_state.y-obstacles.obstacles[j].pose.position.y,2));
+			Distances->push_back(dist);
+			ROS_DEBUG_STREAM("Distance to border: " << Distances->at(i));
 		}
-		obstacles_sorted_by_distance.obstacles.push_back(obstacles.obstacles[it]);
-		Distances->at(it) = 1000000;
+		obstacles_sorted_by_distance.obstacles.clear();
+		for (int j = 0; j < 5; j++)
+		{	
+			float minimum = Distances->at(0);
+			float it = 0;
+			for (int k = 1; k < Distances->size(); k++)
+			{
+				if (Distances->at(k) < minimum)
+				{
+					minimum = Distances->at(k);
+					it = k;
+				}
+			}
+			obstacles_sorted_by_distance.obstacles.push_back(obstacles.obstacles[it]);
+			Distances->at(it) = 1000000;
+		}
 	}
 
 	ROS_DEBUG_STREAM("Closest obstacles: " << obstacles_sorted_by_distance);
@@ -193,14 +196,14 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 
 		for (i = 0; i < (N + 1); ++i) 
 		{
-			if ((Path_point + i) < (reference_path.poses.size() - 1))
+			if ((Path_point + i) < (reference_path.poses.size()))
 			{
 				acadoVariables.x[ (NX * i) + 0 ] = reference_path.poses[Path_point + i].pose.position.x;
 				acadoVariables.x[ (NX * i) + 1 ] = reference_path.poses[Path_point + i].pose.position.y;
 			}
 			else
 			{
-				acadoVariables.x[ (NX * i) + 0 ] = reference_path.poses[reference_path.poses.size() - 1 ].pose.position.x;
+				acadoVariables.x[ (NX * i) + 0 ] = reference_path.poses[reference_path.poses.size() - 1].pose.position.x;
 				acadoVariables.x[ (NX * i) + 1 ] = reference_path.poses[reference_path.poses.size() - 1].pose.position.y;
 				
 			}			
@@ -219,23 +222,38 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 		}
 		for (i = 0; i < N ; ++i) 
 		{
-			for (int j = 0; j < 5; j++)
-			{	
-				acadoVariables.od[ (NOD * i) + (5 * j) + 0 ] = obstacles_sorted_by_distance.obstacles[j].state.pose.position.x + obstacles_sorted_by_distance.obstacles[j].state.twist.linear.x * cos(obstacle.state.pose.orientation.z) * i * dt;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] = obstacles_sorted_by_distance.obstacles[j].state.pose.position.y + obstacles_sorted_by_distance.obstacles[j].state.twist.linear.x * sin(obstacle.state.pose.orientation.z) * i * dt;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].state.pose.orientation);
-				acadoVariables.od[ (NOD * i) + (5 * j) + 3 ] = 1/obstacles_sorted_by_distance.obstacles[j].major_semiaxis;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] = 1/obstacles_sorted_by_distance.obstacles[j].minor_semiaxis;
-				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
-			}
-			for (int j = 0; j < 5; j++)
+			if (obstacles_sorted_by_distance.obstacles.size() < 4)
 			{
-				acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] = borders_sorted_by_distance.obstacles[j].state.pose.position.x;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] = borders_sorted_by_distance.obstacles[j].state.pose.position.y;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].state.pose.orientation);
-				acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] = 1/borders_sorted_by_distance.obstacles[j].major_semiaxis;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] = 1/borders_sorted_by_distance.obstacles[j].minor_semiaxis;
-				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
+				ROS_FATAL_STREAM("Not enough obstacles registered");
+			}
+			else
+			{
+				for (int j = 0; j < 5; j++)
+				{	
+					acadoVariables.od[ (NOD * i) + (5 * j) + 0 ] = obstacles_sorted_by_distance.obstacles[j].pose.position.x + obstacles_sorted_by_distance.obstacles[j].twist.linear.x * cos(obstacle.pose.orientation.z) * i * dt;
+					acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] = obstacles_sorted_by_distance.obstacles[j].pose.position.y + obstacles_sorted_by_distance.obstacles[j].twist.linear.x * sin(obstacle.pose.orientation.z) * i * dt;
+					acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].pose.orientation);
+					acadoVariables.od[ (NOD * i) + (5 * j) + 3 ] = 1/obstacles_sorted_by_distance.obstacles[j].major_semiaxis;
+					acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] = 1/obstacles_sorted_by_distance.obstacles[j].minor_semiaxis;
+					ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
+				}
+			}
+
+			if (obstacles_sorted_by_distance.obstacles.size() < 4)
+			{
+				ROS_FATAL_STREAM("Not enough borders registered");
+			}
+			else
+			{
+				for (int j = 0; j < 5; j++)
+				{
+					acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] = borders_sorted_by_distance.obstacles[j].pose.position.x;
+					acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] = borders_sorted_by_distance.obstacles[j].pose.position.y;
+					acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].pose.orientation);
+					acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] = 1/borders_sorted_by_distance.obstacles[j].major_semiaxis;
+					acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] = 1/borders_sorted_by_distance.obstacles[j].minor_semiaxis;
+					ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
+				}
 			}
 		}
 		Path_point++;
@@ -257,10 +275,10 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 			ROS_DEBUG_STREAM("Initialization of all " << NX << " elements x at [" << i << "] [" <<  acadoVariables.x[ (NX * i) + 0 ] << ", "<<  acadoVariables.x[ (NX * i) + 1 ] << ", "<<  acadoVariables.x[ (NX * i) + 2 ] << ", "<<  acadoVariables.x[ (NX * i) + 3 ] << ", "<<  acadoVariables.x[ (NX * i) + 4 ] << ", "<<  acadoVariables.x[ (NX * i) + 5 ] << "]" );
 		}
 
-		if ((Path_point + i) < (reference_path.poses.size() - 1))
+		if ((Path_point + i) < (reference_path.poses.size()))
 		{
-			acadoVariables.x[ (NX * N) + 0 ] = reference_path.poses[Path_point + N].pose.position.x;
-			acadoVariables.x[ (NX * N) + 1 ] = reference_path.poses[Path_point + N].pose.position.y;
+			acadoVariables.x[ (NX * N) + 0 ] = reference_path.poses[Path_point + i].pose.position.x;
+			acadoVariables.x[ (NX * N) + 1 ] = reference_path.poses[Path_point + i].pose.position.y;
 		}
 		else
 		{
@@ -292,18 +310,18 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 		{
 			for (int j = 0; j < 5; j++)
 			{
-				acadoVariables.od[ (NOD * i) + (5 * j) + 0 ] = obstacles_sorted_by_distance.obstacles[j].state.pose.position.x + obstacles_sorted_by_distance.obstacles[j].state.twist.linear.x * cos(obstacle.state.pose.orientation.z) * i * dt;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] = obstacles_sorted_by_distance.obstacles[j].state.pose.position.y + obstacles_sorted_by_distance.obstacles[j].state.twist.linear.x * sin(obstacle.state.pose.orientation.z) * i * dt;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].state.pose.orientation);
+				acadoVariables.od[ (NOD * i) + (5 * j) + 0 ] = obstacles_sorted_by_distance.obstacles[j].pose.position.x + obstacles_sorted_by_distance.obstacles[j].twist.linear.x * cos(obstacle.pose.orientation.z) * i * dt;
+				acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] = obstacles_sorted_by_distance.obstacles[j].pose.position.y + obstacles_sorted_by_distance.obstacles[j].twist.linear.x * sin(obstacle.pose.orientation.z) * i * dt;
+				acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].pose.orientation);
 				acadoVariables.od[ (NOD * i) + (5 * j) + 3 ] = 1/obstacles_sorted_by_distance.obstacles[j].major_semiaxis;
 				acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] = 1/obstacles_sorted_by_distance.obstacles[j].minor_semiaxis;
 				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
 			}
 			for (int j = 0; j < 5; j++)
 			{
-				acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] = borders_sorted_by_distance.obstacles[j].state.pose.position.x;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] = borders_sorted_by_distance.obstacles[j].state.pose.position.y;
-				acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].state.pose.orientation);
+				acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] = borders_sorted_by_distance.obstacles[j].pose.position.x;
+				acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] = borders_sorted_by_distance.obstacles[j].pose.position.y;
+				acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].pose.orientation);
 				acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] = 1/borders_sorted_by_distance.obstacles[j].major_semiaxis;
 				acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] = 1/borders_sorted_by_distance.obstacles[j].minor_semiaxis;
 				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
@@ -395,8 +413,8 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	if( !VERBOSE )
 	printf("\n\n Average time of one real-time iteration:   %.3g microseconds\n\n", 1e6 * te / NUM_STEPS);
 
-	acado_printDifferentialVariables();
-	acado_printControlVariables();
+	//acado_printDifferentialVariables();
+	//acado_printControlVariables();
 
 	double* states;
 	double* actions;

@@ -313,12 +313,12 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 				oval.ns = i + 65;
 
 				
-				obstacle.state.pose.position.x = AvgX * voxelSize;
-				obstacle.state.pose.position.y = AvgY * voxelSize;
-				obstacle.state.pose.position.z = 0;
-				obstacle.state.pose.orientation.x = 0;
-				obstacle.state.pose.orientation.y = 0;
-				obstacle.state.pose.orientation.z = angle;
+				obstacle.pose.position.x = AvgX * voxelSize;
+				obstacle.pose.position.y = AvgY * voxelSize;
+				obstacle.pose.position.z = 0;
+				obstacle.pose.orientation.x = 0;
+				obstacle.pose.orientation.y = 0;
+				obstacle.pose.orientation.z = angle;
 				obstacle.major_semiaxis = first_principle_axis * voxelSize;
 				obstacle.minor_semiaxis = second_principle_axis * voxelSize;
 

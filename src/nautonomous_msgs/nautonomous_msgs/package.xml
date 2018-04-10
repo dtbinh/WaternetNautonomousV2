@@ -7,14 +7,15 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <run_depend>nautonomous_state_msgs</run_depend>
   <run_depend>nautonomous_logging_msgs</run_depend>
   <run_depend>nautonomous_map_msgs</run_depend>
   <run_depend>nautonomous_mission_msgs</run_depend>
   <run_depend>nautonomous_pose_msgs</run_depend>
   <run_depend>nautonomous_webserver_msgs</run_depend>
   <run_depend>nautonomous_routing_msgs</run_depend>
-  <run_depend>nautonomous_state_msgs</run_depend>
   <run_depend>nautonomous_mpc_msgs</run_depend>
+
 
   <export>
     <metapackage/>

@@ -436,12 +436,12 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacle::ConstPtr& obstacle_msg)
 
 	std::cout << "Obstacle received" << std::endl;
 	
-	obstacle_x = Obstacle.state.pose.position.x - map_center_x;
-	obstacle_y = Obstacle.state.pose.position.y - map_center_y;
-	obstacle_th = Obstacle.state.pose.position.z;
-	obstacle_u = Obstacle.state.twist.linear.x;
-	obstacle_v = Obstacle.state.twist.linear.y;
-	obstacle_w = Obstacle.state.twist.linear.z;
+	obstacle_x = Obstacle.pose.position.x - map_center_x;
+	obstacle_y = Obstacle.pose.position.y - map_center_y;
+	obstacle_th = Obstacle.pose.position.z;
+	obstacle_u = Obstacle.twist.linear.x;
+	obstacle_v = Obstacle.twist.linear.y;
+	obstacle_w = Obstacle.twist.linear.z;
 	obstacle_a = Obstacle.major_semiaxis;
 	obstacle_b = Obstacle.minor_semiaxis;
 

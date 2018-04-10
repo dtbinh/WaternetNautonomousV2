@@ -2,7 +2,7 @@
 
 for i in {0..15}
 do
-a=`echo "0.1 * $i" | bc`
+a=`echo "0.1 * $i + 0.01 * $(( ( RANDOM % 10 ) - 5) " | bc`
 b=`echo "0.0" | bc`
 c=`echo "0.0" | bc`
 d=`echo "0.1 * $i + 10.0" | bc`
@@ -55,5 +55,5 @@ rostopic pub --once /Obstacle_detection/obstacles nautonomous_mpc_msgs/Obstacles
   major_semiaxis: 1
   minor_semiaxis: 1" &
 
-sleep 1
+sleep 0.2
 done

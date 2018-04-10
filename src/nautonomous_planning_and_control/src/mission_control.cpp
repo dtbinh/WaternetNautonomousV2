@@ -156,10 +156,10 @@ void Determine_closest_blocking_obstacle() // State 3
 			temp_x= current_state.x + i * cos(theta);
 			temp_y= current_state.y + i * sin(theta);
 
-			ellipse_x1 = obstacle.state.pose.position.x - temp_x;
-			ellipse_x2 = obstacle.state.pose.position.y - temp_y;
+			ellipse_x1 = obstacle.pose.position.x - temp_x;
+			ellipse_x2 = obstacle.pose.position.y - temp_y;
 
-			ellipse_value = pow((cos(obstacle.state.pose.orientation.z) * ellipse_x1 + sin(obstacle.state.pose.orientation.z) * ellipse_x2)/obstacle.major_semiaxis,2) + pow((-sin(obstacle.state.pose.orientation.z) * ellipse_x1 + cos(obstacle.state.pose.orientation.z) * ellipse_x2)/obstacle.minor_semiaxis,2);
+			ellipse_value = pow((cos(obstacle.pose.orientation.z) * ellipse_x1 + sin(obstacle.pose.orientation.z) * ellipse_x2)/obstacle.major_semiaxis,2) + pow((-sin(obstacle.pose.orientation.z) * ellipse_x1 + cos(obstacle.pose.orientation.z) * ellipse_x2)/obstacle.minor_semiaxis,2);
 
 			std::cout << "Ellipse value: " << ellipse_value << std::endl;
 			if (ellipse_value < 1)
@@ -217,10 +217,10 @@ int Determine_length_of_route() // State 6
 			temp_x= Temp_route.waypoints[i].x + j * cos(theta);
 			temp_y= Temp_route.waypoints[i].y + j * sin(theta);
  			
-			ellipse_x1 = closest_obstacle.state.pose.position.x - temp_x;
-			ellipse_x2 = closest_obstacle.state.pose.position.y - temp_y;
+			ellipse_x1 = closest_obstacle.pose.position.x - temp_x;
+			ellipse_x2 = closest_obstacle.pose.position.y - temp_y;
 
-			ellipse_value = pow((cos(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + sin(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/(closest_obstacle.major_semiaxis+safety_margin),2) + pow((-sin(closest_obstacle.state.pose.orientation.z) * ellipse_x1 + cos(closest_obstacle.state.pose.orientation.z) * ellipse_x2)/(closest_obstacle.minor_semiaxis+safety_margin),2);
+			ellipse_value = pow((cos(closest_obstacle.pose.orientation.z) * ellipse_x1 + sin(closest_obstacle.pose.orientation.z) * ellipse_x2)/(closest_obstacle.major_semiaxis+safety_margin),2) + pow((-sin(closest_obstacle.pose.orientation.z) * ellipse_x1 + cos(closest_obstacle.pose.orientation.z) * ellipse_x2)/(closest_obstacle.minor_semiaxis+safety_margin),2);
 
 			if (ellipse_value < 1)
 			{
