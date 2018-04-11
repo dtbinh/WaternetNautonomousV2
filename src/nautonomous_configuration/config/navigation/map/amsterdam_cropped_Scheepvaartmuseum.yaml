@@ -1,0 +1,6 @@
+free_thresh: 0.196
+image: amsterdam_cropped_Scheepvaartmuseum.png
+negate: 0
+occupied_thresh: 0.65
+origin: [630183.72, 5803875.45, 0.0051087355381715695]
+resolution: 0.5

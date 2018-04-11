@@ -1,0 +1,6 @@
+free_thresh: 0.196
+image: amsterdam_cropped_Lijnbaansgracht.png
+negate: 0
+occupied_thresh: 0.65
+origin: [628428.46, 5802800.59, -0.20658781805584525]
+resolution: 0.5
