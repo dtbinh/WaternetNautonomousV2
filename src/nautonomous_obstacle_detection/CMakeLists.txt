@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   nautonomous_mpc_msgs
   nautonomous_state_msgs
   nautonomous_pose_msgs
-  custom_robot_msgs
 )
 
 find_package(OpenCV REQUIRED)
