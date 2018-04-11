@@ -54,7 +54,7 @@
 	<arg name="sensor_group" default="true"/>
 	<arg name="gps_group" default="true"/>
 	<arg name="imu_group" default="true"/>
-	<arg name="camera_group" default="false"/>
+	<arg name="camera_group" default="true"/>
 	<arg name="lidar_group" default="true"/>
 	
 	<group ns="sensor" if="$(arg sensor_group)">
@@ -71,7 +71,7 @@
 		
 		<!-- Camera -->
 		<group ns="camera" if="$(arg camera_group)">
-
+			<include file="$(find zed_wrapper)/launch/display.launch"/>
 		</group>
 
 		<!-- LiDAR -->

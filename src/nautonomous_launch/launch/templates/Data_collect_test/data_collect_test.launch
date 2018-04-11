@@ -1,0 +1,62 @@
+<launch>
+
+	<!-- DryDock uses the following groups
+			
+		State
+			location
+			odom
+			pose
+			tf			
+
+
+		And does not use
+
+		Sensors
+			GPS
+			IMU
+			LIDAR	
+
+		Actuation
+			actuation
+			propulsion
+			lighting
+			conveyor
+
+		Navigation
+			map
+			map_cropper
+			map_server
+			costmap
+			planner
+			coordinator
+			routing
+			coordinator_simulate
+
+		Webserver
+	-->
+
+	
+
+	<include file="$(find nautonomous_launch)/launch/templates/nautonomous_template.launch">
+		<!-- Navigation -->
+		<arg name="navigation_group"  			value="true"/>
+		<arg name="routing_group"  			value="false"/>
+		<arg name="costmap_group"  			value="false"/>
+		<arg name="coordinator_group"  			value="false"/>
+		<arg name="pose_group"  			value="true"/>
+		<arg name="planner_group"  			value="false"/>
+
+		<!-- Sensors -->
+		<arg name="sensor_group"  			value="true"/>
+		<arg name="gps_group"	  			value="false"/>
+		<arg name="imu_group"	  			value="false"/>
+
+		<arg name="webserver_group" 			value="false"/>
+		<arg name="coordinate_simulate_group" 		value="false"/>
+		<arg name="operation_name_param"  		value="coenhaven"/>
+		<arg name="negate_image_param" 			value="false"/>
+		<arg name="actuation_group"			value="false"/>
+		<arg name="cmd_vel_topic"			value="mission_coordinator/cmd_vel"/>
+	</include>
+
+</launch>
