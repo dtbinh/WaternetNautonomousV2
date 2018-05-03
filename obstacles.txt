@@ -1,0 +1,144 @@
+obstacles: 
+  - 
+    pose: 
+      position: 
+        x: 100.0
+        y: 100.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+    twist: 
+      linear: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      angular: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    major_semiaxis: 0.1
+    minor_semiaxis: 0.1
+    ns: 0
+---
+obstacles: 
+  - 
+    pose: 
+      position: 
+        x: 100.0
+        y: 100.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+    twist: 
+      linear: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      angular: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    major_semiaxis: 0.1
+    minor_semiaxis: 0.1
+    ns: 0
+  - 
+    pose: 
+      position: 
+        x: 100.0
+        y: 100.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+    twist: 
+      linear: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      angular: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    major_semiaxis: 0.1
+    minor_semiaxis: 0.1
+    ns: 0
+---
+obstacles: 
+  - 
+    pose: 
+      position: 
+        x: 100.0
+        y: 100.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+    twist: 
+      linear: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      angular: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    major_semiaxis: 0.1
+    minor_semiaxis: 0.1
+    ns: 0
+  - 
+    pose: 
+      position: 
+        x: 100.0
+        y: 100.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+    twist: 
+      linear: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      angular: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    major_semiaxis: 0.1
+    minor_semiaxis: 0.1
+    ns: 0
+  - 
+    pose: 
+      position: 
+        x: 100.0
+        y: 100.0
+        z: 0.0
+      orientation: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+        w: 0.0
+    twist: 
+      linear: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+      angular: 
+        x: 0.0
+        y: 0.0
+        z: 0.0
+    major_semiaxis: 0.1
+    minor_semiaxis: 0.1
+    ns: 0
+---

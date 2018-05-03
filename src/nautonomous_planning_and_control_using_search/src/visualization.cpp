@@ -36,11 +36,11 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
 	for (int i = 0; i < obstacles.obstacles.size(); i++)
 	{
 		std::cout << "Obstacle received" << std::endl;
-		obstacle_marker.scale.x = obstacles.obstacles[i].major_semiaxis * 2;
-		obstacle_marker.scale.y = obstacles.obstacles[i].minor_semiaxis * 2;
+		obstacle_marker.scale.x = obstacles.obstacles[i].major_semiaxis;
+		obstacle_marker.scale.y = obstacles.obstacles[i].minor_semiaxis;
 		obstacle_marker.pose.position.x = obstacles.obstacles[i].pose.position.x + cos(obstacles.obstacles[i].pose.orientation.z) * obstacles.obstacles[i].twist.linear.x;
 		obstacle_marker.pose.position.y = obstacles.obstacles[i].pose.position.y + sin(obstacles.obstacles[i].pose.orientation.z) * obstacles.obstacles[i].twist.linear.x;
-		obstacle_marker.pose.orientation = toQuaternion(0.0, 0.0, obstacles.obstacles[i].pose.orientation.z);
+		obstacle_marker.pose.orientation = obstacles.obstacles[i].pose.orientation;
 		obstacle_marker.ns = 65 + i;
 		obstacles_marker.markers.push_back(obstacle_marker);
 	}
@@ -71,10 +71,10 @@ int main(int argc, char **argv)
 	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",1,obstacle_cb);
 	position_sub = 		nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",1,position_cb);
 
-	position_marker.header.frame_id = "/map";
+	position_marker.header.frame_id = "/occupancy_grid";
 	position_marker.header.stamp = ros::Time::now();
 
-	obstacle_marker.header.frame_id = "/map";
+	obstacle_marker.header.frame_id = "/occupancy_grid";
 	obstacle_marker.header.stamp = ros::Time::now();
 	
 	obstacle_marker.action = visualization_msgs::Marker::ADD;

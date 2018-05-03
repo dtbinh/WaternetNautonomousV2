@@ -1,0 +1,29 @@
+mission_coordinator:
+  waypoints_x: [   27.4,   27.4] #[m]
+  waypoints_y: [ -152.8, -152.8] #[m]
+
+  waypoint_error:
+    maximum_accepted_waypoint_error: 5
+    minimum_waypoint_error: 1
+    decrease_waypoint_error: 1
+
+  obstacles:
+    start_x:        [100] #[m]
+    start_y:        [100] #[m]
+    start_theta:    [0.0] #[rad]
+    u:              [0.0] #[m/s]
+    v:              [0] #[m/s]
+    omega:          [0] #[rad/s]
+    major_semiaxis: [0.1] #[m]
+    minor_semiaxis: [0.1] #[m]
+
+  reference:
+    velocity: 3.0
+
+  number_of_fuzzy_waypoints: 0
+  use_fuzzy: false
+  use_PID: false
+  safety_margin: 3.0
+  frame_id: '/my_frame'
+  verbose: true
+

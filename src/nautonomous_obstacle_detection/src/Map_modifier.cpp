@@ -59,8 +59,11 @@ float best_y_2;
 
 float dist;
 
-int weighted_map_border = 10;
+int weighted_map_border = 7;
+int number_of_borders = 30;
+int max_line_dist = 5;
 
+int occupied_point_list = 0;
 int checks_ransac = 1000;
 
 float map_weight;
@@ -189,15 +192,21 @@ void fit_lines()
 		}
 	}
 	map_pub.publish(weighted_map);
-	for (int l = 0; l < 20; l++)
+	for (int l = 0; l < number_of_borders; l++)
 	{
+		ROS_INFO_STREAM("Points handled: " << occupied_point_list << "/" << Edge_point_list->size() );
+		if((Edge_point_list->size()-occupied_point_list) < 100)
+		{
+			l = number_of_borders;
+			break;
+		}
 		for (int k = 0; k < weighted_map.data.size(); k++)
 		{
 			weighted_map.data[k] = 0;
 		}
 		for (int j = 0; j < checks_ransac; j++)
 		{
-			std::cout << "Check " << j << "/" << checks_ransac << std::endl;
+			ROS_DEBUG_STREAM("Check " << j << "/" << checks_ransac );
 			rand_1 = floor(static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * Edge_point_list->size());
 			rand_x_1 = Edge_point_list->at(rand_1).x;
 			rand_y_1 = Edge_point_list->at(rand_1).y;
@@ -216,7 +225,7 @@ void fit_lines()
 					{
 						dist = fabs((rand_y_2 - rand_y_1) * Edge_point_list->at(k).x - (rand_x_2 - rand_x_1) * Edge_point_list->at(k).y + rand_x_2 * rand_y_1 - rand_y_2 * rand_x_1)/sqrt(pow(rand_y_2 - rand_y_1,2) + pow(rand_x_2 - rand_x_1,2));
 						{				
-						if (dist < 2)
+						if (dist < max_line_dist)
 							for (int m = 0; m < Inliers->size(); m++)
 							{
 								dist = sqrt(pow(Edge_point_list->at(Inliers->at(m)).x - Edge_point_list->at(k).x,2) + pow(Edge_point_list->at(Inliers->at(m)).y - Edge_point_list->at(k).y,2));						
@@ -237,7 +246,7 @@ void fit_lines()
 				{
 					BestInliers->push_back(Inliers->at(k));
 				}
-				std::cout << "Best inliers size: " << BestInliers->size() << std::endl;
+				ROS_DEBUG_STREAM("Best inliers size: " << BestInliers->size() );
 			}
 			Inliers->clear();
 			for (int k = 0; k < Part_of_inliers->size(); k++)
@@ -246,93 +255,8 @@ void fit_lines()
 			}
 		}
 
-		std::cout << "Best set found" << std::endl;
-		/*for (int k = 0; k < BestInliers->size()-1; k++)
-		{
-			p.x = Edge_point_list->at(BestInliers->at(k)).x * resolution + map_center_x;
-			p.y = Edge_point_list->at(BestInliers->at(k)).y * resolution + map_center_y;
-			weighted_map.data[Edge_point_list->at(BestInliers->at(k)).y * map_width + Edge_point_list->at(BestInliers->at(k)).x] = 100;
-			line_list.points.push_back(p);
-			p.x = Edge_point_list->at(BestInliers->at(k+1)).x * resolution + map_center_x;
-			p.y = Edge_point_list->at(BestInliers->at(k+1)).y * resolution + map_center_y;
-			line_list.points.push_back(p);
-		}*/
-
-		/*pmax.x = Edge_point_list->at(BestInliers->at(0)).x * resolution + map_center_x;
-		pmax.y = Edge_point_list->at(BestInliers->at(0)).y * resolution + map_center_y;
-		pmin.x = Edge_point_list->at(BestInliers->at(0)).x * resolution + map_center_x;
-		pmin.y = Edge_point_list->at(BestInliers->at(0)).y * resolution + map_center_y;
-		for (int k = 1; k < BestInliers->size(); k++)
-		{
-			if (Edge_point_list->at(BestInliers->at(k)).x * resolution + map_center_x > pmax.x)
-			{
-				pmax.x = Edge_point_list->at(BestInliers->at(k)).x * resolution + map_center_x;
-				pmax.y = Edge_point_list->at(BestInliers->at(k)).y * resolution + map_center_y;
-			}
-			else if (Edge_point_list->at(BestInliers->at(k)).x * resolution + map_center_x < pmin.x)
-			{
-				pmin.x = Edge_point_list->at(BestInliers->at(k)).x * resolution + map_center_x;
-				pmin.y = Edge_point_list->at(BestInliers->at(k)).y * resolution + map_center_y;
-			}
-			weighted_map.data[Edge_point_list->at(BestInliers->at(k)).y * map_width + Edge_point_list->at(BestInliers->at(k)).x] = 100;	
-		}
-
-		line_list.points.push_back(pmax);
-		line_list.points.push_back(pmin);*/
-
-		/*MatrixXd PointsMatrix = MatrixXd::Zero(BestInliers->size(),2);
-		std::cout << "Edge list size: " << BestInliers->size() << std::endl;
-		for (int k = 0; k < BestInliers->size(); k++)
-		{
-			PointsMatrix(k,0) = Edge_point_list->at(BestInliers->at(k)).x * resolution + map_center_x;
-			PointsMatrix(k,1) = Edge_point_list->at(BestInliers->at(k)).y * resolution + map_center_y;
-			weighted_map.data[Edge_point_list->at(BestInliers->at(k)).y * map_width + Edge_point_list->at(BestInliers->at(k)).x] = 100;
-		}
-
-		// Use eigenvalue decomposition for the oval markers
-
-		MatrixXd centered = PointsMatrix.rowwise() - PointsMatrix.colwise().mean();
-		MatrixXd cov = (centered.adjoint() * centered)/ double(PointsMatrix.rows() -1);
-	
-		EigenSolver<MatrixXd> eigensolver(cov);
-		MatrixXcd Eigenvalues = eigensolver.eigenvalues().asDiagonal();
-		MatrixXcd Eigenvectors = eigensolver.eigenvectors();
-
-		MatrixXd RealEigenvalues = Eigenvalues.real();
-		MatrixXd RealEigenvectors = Eigenvectors.real();
-
-		std::ptrdiff_t a,b,c,d;
-		float smallest_eigenvalue = RealEigenvalues.diagonal().minCoeff(&a,&b);
-		float largest_eigenvalue = RealEigenvalues.maxCoeff(&c,&d);
-
-		VectorXd smallest_eigenvector = RealEigenvectors.col(a);
-		VectorXd largest_eigenvector =  RealEigenvectors.col(c);
-
-		float angle = atan2((double)largest_eigenvector(1,0), (double)largest_eigenvector(0,0));
-		if (angle < 0)
-		{
-			angle += 6.28;
-		}
-
-		float chisvalue = 3.5;
-		float AvgX = PointsMatrix.col(0).mean();
-		float AvgY = PointsMatrix.col(1).mean();
-
-		float first_principle_axis = chisvalue * sqrt(largest_eigenvalue);
-		float second_principle_axis = chisvalue * sqrt(smallest_eigenvalue);
-
-		rectangle_list.pose.position.x = AvgX;
-		rectangle_list.pose.position.y = AvgY;
-		rectangle_list.pose.orientation = toQuaternion(0,0,angle);
-		rectangle_list.scale.x = first_principle_axis;
-		rectangle_list.scale.y = second_principle_axis;
-		rectangle_list.scale.z = 1;
-		rectangle_list.ns = Markers.markers.size();
-
-		Markers.markers.push_back(rectangle_list);
-
-		markerarray_pub.publish(Markers);*/
-
+		ROS_DEBUG_STREAM("Best set found" );
+		
 		float minpoint_x = Edge_point_list->at(BestInliers->at(0)).x * resolution + map_center_x;
 		float minpoint_y = Edge_point_list->at(BestInliers->at(0)).y * resolution + map_center_y;
 
@@ -350,7 +274,7 @@ void fit_lines()
 			}
 		}
 
-		std::cout << "Minpoint: (" << minpoint_x << ", " << minpoint_y << ")" << std::endl;
+		ROS_DEBUG_STREAM("Minpoint: (" << minpoint_x << ", " << minpoint_y << ")" );
 
 		p.x = Edge_point_list->at(BestInliers->at(0)).x * resolution + map_center_x;
 		p.y = Edge_point_list->at(BestInliers->at(0)).y * resolution + map_center_y;
@@ -392,7 +316,7 @@ void fit_lines()
 		marker_pub.publish(line_list);
 
 
-		std::cout << "Angles sorted" << std::endl;
+		ROS_DEBUG_STREAM("Angles sorted" );
 		Cornerpoints->push_back(InliersSorted->at(0));
 		Cornerpoints->push_back(InliersSorted->at(1));
 		Cornerpoints->push_back(InliersSorted->at(2));
@@ -401,11 +325,11 @@ void fit_lines()
 			p.x = InliersSorted->at(k).x;
 			p.y = InliersSorted->at(k).y;
 
-			//std::cout << "Compare points (" << Cornerpoints->at(Cornerpoints->size()-2).x << ", " << Cornerpoints->at(Cornerpoints->size()-2).y << "), (" << Cornerpoints->at(Cornerpoints->size()-1).x << ", " << Cornerpoints->at(Cornerpoints->size()-1).y << "), (" << p.x << ", " << p.y << ")" << std::endl;
+			//ROS_DEBUG_STREAM("Compare points (" << Cornerpoints->at(Cornerpoints->size()-2).x << ", " << Cornerpoints->at(Cornerpoints->size()-2).y << "), (" << Cornerpoints->at(Cornerpoints->size()-1).x << ", " << Cornerpoints->at(Cornerpoints->size()-1).y << "), (" << p.x << ", " << p.y << ")" );
 			float angle_1 = atan2(Cornerpoints->at(Cornerpoints->size()-2).y - Cornerpoints->at(Cornerpoints->size()-1).y, Cornerpoints->at(Cornerpoints->size()-2).x - Cornerpoints->at(Cornerpoints->size()-1).x);
-			//std::cout << "Angle 1 : " << angle_1 << std::endl;
+			//ROS_DEBUG_STREAM("Angle 1 : " << angle_1 );
 			float angle_2 = atan2(p.y - Cornerpoints->at(Cornerpoints->size()-1).y, p.x - Cornerpoints->at(Cornerpoints->size()-1).x);
-			//std::cout << "Angle 2 : " << angle_2 << std::endl;
+			//ROS_DEBUG_STREAM("Angle 2 : " << angle_2 );
 
 			if (angle_1 < 0)
 			{
@@ -418,16 +342,16 @@ void fit_lines()
 			}
 
 			angle = angle_1 - angle_2;
-			std::cout << "Angle : " << angle << std::endl;
+			ROS_DEBUG_STREAM("Angle : " << angle );
 			while (!(((angle > 0) && (angle < (PI+0.0000001))) || (angle < -(PI-0.0000001))))
 			{
-				std::cout << "Remove point" << std::endl;
+				ROS_DEBUG_STREAM("Remove point" );
 				Cornerpoints->erase(Cornerpoints->begin() + Cornerpoints->size() - 1);
-				std::cout << "Compare points (" << Cornerpoints->at(Cornerpoints->size()-2).x << ", " << Cornerpoints->at(Cornerpoints->size()-2).y << "), (" << Cornerpoints->at(Cornerpoints->size()-1).x << ", " << Cornerpoints->at(Cornerpoints->size()-1).y << "), (" << p.x << ", " << p.y << ")" << std::endl;
+				ROS_DEBUG_STREAM("Compare points (" << Cornerpoints->at(Cornerpoints->size()-2).x << ", " << Cornerpoints->at(Cornerpoints->size()-2).y << "), (" << Cornerpoints->at(Cornerpoints->size()-1).x << ", " << Cornerpoints->at(Cornerpoints->size()-1).y << "), (" << p.x << ", " << p.y << ")" );
 				float angle_1 = atan2(Cornerpoints->at(Cornerpoints->size()-2).y - Cornerpoints->at(Cornerpoints->size()-1).y, Cornerpoints->at(Cornerpoints->size()-2).x - Cornerpoints->at(Cornerpoints->size()-1).x);
-				std::cout << "Angle 1 : " << angle_1 << std::endl;
+				ROS_DEBUG_STREAM("Angle 1 : " << angle_1 );
 				float angle_2 = atan2(p.y - Cornerpoints->at(Cornerpoints->size()-1).y, p.x - Cornerpoints->at(Cornerpoints->size()-1).x);
-				std::cout << "Angle 2 : " << angle_2 << std::endl;
+				ROS_DEBUG_STREAM("Angle 2 : " << angle_2 );
 
 				if (angle_1 < 0)
 				{
@@ -440,7 +364,7 @@ void fit_lines()
 				}
 
 				angle = angle_1 - angle_2;
-				std::cout << "Angle : " << angle << std::endl;
+				ROS_DEBUG_STREAM("Angle : " << angle );
 			}
 			Cornerpoints->push_back(p);
 		}
@@ -457,7 +381,7 @@ void fit_lines()
 
 		marker_2_pub.publish(line_list);
 
-		std::cout << "Fill pointmatrix" << std::endl;
+		ROS_DEBUG_STREAM("Fill pointmatrix" );
 		MatrixXd PointsMatrix = MatrixXd::Zero(4,Cornerpoints->size());
 		for (int k = 0; k < Cornerpoints->size(); k++)
 		{
@@ -467,7 +391,7 @@ void fit_lines()
 			PointsMatrix(3,k) = 1;
 		}
 
-		std::cout << "Get minimum area" << std::endl;
+		ROS_DEBUG_STREAM("Get minimum area" );
 		MatrixXd TransformedPointsMatrix = MatrixXd::Zero(Cornerpoints->size(),4);
 		MatrixXd TransformationMatrix = MatrixXd::Zero(4,4);
 		float minArea = 1e6;
@@ -512,11 +436,12 @@ void fit_lines()
 		Markers.markers.push_back(rectangle_list);
 		markerarray_pub.publish(Markers);
 	
-		std::cout << "MinArea is : " << minArea << std::endl;
+		ROS_DEBUG_STREAM("MinArea is : " << minArea );
 
 		for (int k = 0; k < BestInliers->size(); k++)
 		{
 			Part_of_obstacles->at(BestInliers->at(k)) = true;
+			occupied_point_list++;
 		}		
 		
 		BestInliers->clear();
@@ -654,7 +579,7 @@ int main (int argc, char** argv)
 	p1.pose.position.z = 1;
 	p1.pose.orientation.w = 1;
 
-	line_list.header.frame_id = "/map";
+	line_list.header.frame_id = "/occupancy_grid";
 	line_list.header.stamp = ros::Time::now();
 	line_list.ns = "points_and_lines";
 	line_list.action = visualization_msgs::Marker::ADD;
@@ -666,7 +591,7 @@ int main (int argc, char** argv)
 	line_list.color.r = 1.0;
 	line_list.color.a = 1.0;
 
-	rectangle_list.header.frame_id = "/map";
+	rectangle_list.header.frame_id = "/occupancy_grid";
 	rectangle_list.header.stamp = ros::Time::now();
 	rectangle_list.action = visualization_msgs::Marker::ADD;
 

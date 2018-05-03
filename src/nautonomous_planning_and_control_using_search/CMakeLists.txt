@@ -5,6 +5,7 @@ find_package(catkin REQUIRED
 roscpp
 nautonomous_mpc_msgs
 nautonomous_state_msgs
+tf
 )
 
 catkin_package(
@@ -31,6 +32,7 @@ add_executable(rrt_planner src/RRT.cpp)
 
 add_executable(visualization src/visualization.cpp)
 add_executable(mission_control src/mission_control_sim.cpp)
+add_executable(mission_control_slam src/mission_control_slam.cpp)
 #add_executable(EKF src/ExtendedKalmanFilter_sim.cpp)
 
 
@@ -48,4 +50,5 @@ target_link_libraries(rrt_planner ${catkin_LIBRARIES} )
 
 target_link_libraries(visualization ${catkin_LIBRARIES} )
 target_link_libraries(mission_control ${catkin_LIBRARIES} )
+target_link_libraries(mission_control_slam ${catkin_LIBRARIES} )
 #target_link_libraries(EKF ${catkin_LIBRARIES} )
