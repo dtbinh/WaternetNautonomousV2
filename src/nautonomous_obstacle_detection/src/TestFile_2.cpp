@@ -46,7 +46,7 @@ int main (int argc, char** argv)
 
 	obstacles.obstacles.push_back(obstacle);
 
-	ros::Duration(1).sleep();
+	ros::Duration(5).sleep();
 
 	while (ros::ok())
 	{	

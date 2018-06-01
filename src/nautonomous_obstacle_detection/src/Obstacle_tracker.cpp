@@ -23,7 +23,7 @@ ros::Publisher message_pub;
 bool previous_obstacles_received = false;
 bool obstacle_is_new = false;
 
-double dt = 1;
+double dt = 0.1;
 int obst_dist = 5;
 
 double x_est, y_est, th_est, v_est;

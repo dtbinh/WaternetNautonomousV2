@@ -119,7 +119,7 @@ void Initialization () // State 1
 
 //	obstacles.Nobstacles = start_x.size();
 
-	for (int i = 0; i < obstacles.obstacles.size(); i++)
+	for (int i = 0; i < start_x.size(); i++)
 	{
 		obstacle.major_semiaxis = major_semiaxis[i];
 		obstacle.minor_semiaxis = minor_semiaxis[i];

@@ -1,6 +1,7 @@
 mission_coordinator:
-  waypoints_x: [   27.4,   27.4] #[m]
-  waypoints_y: [ -152.8, -152.8] #[m]
+  waypoints_x: [ -49.3, -51.5, -53.4,   39.8] #[m]
+  waypoints_y: [ 191.8, 65.8,  36.9, -160.2] #[m]
+  bridges: [0, 0, 1, 0]
 
   waypoint_error:
     maximum_accepted_waypoint_error: 5

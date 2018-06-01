@@ -63,7 +63,7 @@ float first_principle_axis = -1;
 float second_principle_axis = -1;
 double angle = -1;
 float theta = 0;
-float const voxelSize = 2;
+float const voxelSize = 0.5;
 int const gridSize = 500; // In number of squares (gridSize(m)/voxelSize)
 int const pointTreshold = 4;
 int const origin_x = 628604;
@@ -89,6 +89,7 @@ Matrix4f transformation1 = Eigen::Matrix4f::Identity();
 Matrix4f transformation2 = Eigen::Matrix4f::Identity();
 tf::StampedTransform transform_lidar_grid;
 
+nautonomous_mpc_msgs::Obstacle ghost_obstacle;
 
 // Publishers
 ros::Publisher marker_pub;
@@ -156,7 +157,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 			y_pos_to_map = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
 			ROS_DEBUG_STREAM("Point: (" << x_pos << ", " << y_pos << ") on the map is (" << x_pos_to_map << ", " << y_pos_to_map << ") mapped to (" << x_pos_to_map-map_center_x << ", " << y_pos_to_map-map_center_y<< ")" );
 			ROS_DEBUG_STREAM("Map value is: " << (int)grid_map.data[(floor((y_pos_to_map-map_center_y)/resolution)-1) * map_width + floor((x_pos_to_map-map_center_x)/resolution)] );
-			if ((int)weighted_map.data[(floor((y_pos_to_map-map_center_y)/resolution)-1) * map_width + floor((x_pos_to_map-map_center_x)/resolution)] < 50)
+			if ((int)weighted_map.data[(floor((y_pos_to_map-map_center_y)/resolution)-1) * map_width + floor((x_pos_to_map-map_center_x)/resolution)] < 99)
 			{
 				ROS_DEBUG_STREAM("Map is not occupied");
 				temp_2_cloud->push_back(transformed_cloud->points[i]);
@@ -287,14 +288,6 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 			j = 0;			
 			i++;
 		}
-
-		// Select 10 closest blobs
-
-		// If Nblobs < 10, then duplicate the smallest blob (10-Nblob) times
-		for (int i = Blobs->size(); i < 26 ;i++)
-		{
-			Blobs->push_back(Blobs->at(Blobs->size()-1));	
-		}
 	
 		ROS_DEBUG_STREAM( "Blobs expended to: " << Blobs->size() ); 
 
@@ -368,8 +361,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 				obstacle.pose.position.y = -(AvgX * voxelSize - transform_lidar_grid.getOrigin().x()) * sin(tf::getYaw(transform_lidar_grid.getRotation())) + (AvgY * voxelSize - transform_lidar_grid.getOrigin().y()) * cos(tf::getYaw(transform_lidar_grid.getRotation()));
 				obstacle.pose.position.z = 0;
 				obstacle.pose.orientation = toQuaternion(0,0,angle - tf::getYaw(transform_lidar_grid.getRotation()));
-				obstacle.major_semiaxis = first_principle_axis * voxelSize;
-				obstacle.minor_semiaxis = second_principle_axis * voxelSize;
+				obstacle.major_semiaxis = fmax(first_principle_axis * voxelSize * 2,voxelSize);
+				obstacle.minor_semiaxis = fmax(second_principle_axis * voxelSize * 2,voxelSize);
 
 				ROS_DEBUG_STREAM( "Marker is FPA: " << first_principle_axis << " SPA: " << second_principle_axis << " angle: " << angle << " X: " << AvgX << " Y: " << AvgY ); 
 				Markers.markers.push_back(oval);
@@ -380,11 +373,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		Markers.markers.push_back(points);
 
 		marker_pub.publish(Markers);
-	
-		//obstacles.Nobstacles = Blobs->size();
-		message_pub.publish(obstacles);
 
-		ROS_DEBUG_STREAM( "The number of blobs is: " << Blobs->size() ); 
+		ROS_INFO_STREAM( "The number of blobs is: " << Blobs->size() ); 
 
 		Blobs->clear();
 	}
@@ -392,6 +382,13 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	{
 		ROS_DEBUG_STREAM( "No voxels were found" ); 
 	}
+	
+	while (obstacles.obstacles.size() < 10)
+	{
+		obstacles.obstacles.push_back(ghost_obstacle);
+	}
+
+	message_pub.publish(obstacles);
 }
 
 void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
@@ -420,76 +417,7 @@ void make_weighted_map()
 	{
 		for (int j = 0; j < map_height; j++)
 		{
-			if ((int)grid_map.data[j * map_width + i] > 90)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-			else if ((int)grid_map.data[j * map_width + i] < 0)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-		}
-	}
-
-	for (int i = 0; i < map_width; i++)
-	{
-		for (int j = 1; j < map_height-1; j++)
-		{
-			for (int k = -weighted_map_border; k <= weighted_map_border ; k++)
-			{
-				if (k == -weighted_map_border)
-				{	
-					map_weight = grid_map.data[(j+k) * map_width + i];
-				}
-				else
-				{
-					map_weight += grid_map.data[(j+k) * map_width + i];
-				}
-			}
-			temp_map.data[j * map_width + i] = (int)(map_weight / (2 * weighted_map_border + 1));
-		}
-	}
-		
-
-	for (int i = 1; i < map_width-1; i++)
-	{
-		for (int j = 0; j < map_height; j++)
-		{
-			for ( int k = -weighted_map_border; k <= weighted_map_border; k++)
-			{
-				if ( k == -weighted_map_border)
-				{
-					map_weight = temp_map.data[j * map_width + i + k];
-				}
-				else
-				{
-					map_weight += temp_map.data[j * map_width + i + k];
-				}
-			}
-			weighted_map.data[j * map_width + i] = (int)(map_weight / (2 * weighted_map_border + 1));
-		}
-	}
-
-	for (int i = 0; i < map_width; i++)
-	{
-		for (int j = 0; j < map_height; j++)
-		{
-			if ((int)grid_map.data[j * map_width + i] > 0)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-			else if ((int)grid_map.data[j * map_width + i] < 0)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-		}
-	}
-	
-	for (int i = 0; i < map_width; i++)
-	{
-		for (int j = 0; j < map_height; j++)
-		{
-			if ((int)weighted_map.data[j * map_width + i] > 10)
+			if ((int)grid_map.data[j * map_width + i] > 99)
 			{
 				weighted_map.data[j * map_width + i] = 100;
 			}
@@ -545,6 +473,13 @@ int main (int argc, char** argv)
 	listener    = new tf::TransformListener();
 
 	ros::Rate loop_rate(100);
+
+	ghost_obstacle.pose.position.x = 1000;
+	ghost_obstacle.pose.position.y = 1000;
+	ghost_obstacle.pose.position.z = 0;
+	ghost_obstacle.pose.orientation = toQuaternion(0,0,0);
+	ghost_obstacle.major_semiaxis = 0.1;
+	ghost_obstacle.minor_semiaxis = 0.1;
 
 	ros::Duration(1).sleep();
 

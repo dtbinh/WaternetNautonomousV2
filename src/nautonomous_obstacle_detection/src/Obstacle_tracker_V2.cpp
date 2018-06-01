@@ -24,6 +24,10 @@ int obst_dist = 5;
 double x_est, y_est, th_est, v_est;
 double x_upd, y_upd, th_upd, v_upd;
 
+double start_time=0;
+double timed = 0;
+int calls = 0;
+
 nautonomous_mpc_msgs::Obstacles obstacles_set;
 nautonomous_mpc_msgs::Obstacles obstacles_publish;
 nautonomous_mpc_msgs::Obstacle ghost_obstacle;
@@ -35,6 +39,7 @@ std::vector<VectorXd>* obstacle_states = new std::vector<VectorXd>();
 
 VectorXd Update_state( VectorXd current_state, VectorXd measured_pos)
 {
+	start_time = ros::Time::now().toSec();
 	VectorXd estimated_state(4);
 	VectorXd lon_lat_pos(2);
 	VectorXd lon_lat_meas(2);
@@ -65,12 +70,12 @@ VectorXd Update_state( VectorXd current_state, VectorXd measured_pos)
 	ROS_DEBUG_STREAM("pos_error: " << pos_error);
 
 	K = MatrixXd::Zero(4,2);
-	K(0,0) = 0.5 * cos(current_state(2));
-	K(0,1) = -0.5 * sin(current_state(2));
-	K(1,0) = 0.5 * sin(current_state(2));	
-	K(1,1) = 0.5 * cos(current_state(2));
-	K(2,1) = 0.3;
-	K(3,0) = 0.5;
+	K(0,0) = 0.1 * cos(current_state(2));
+	K(0,1) = -0.1 * sin(current_state(2));
+	K(1,0) = 0.1 * sin(current_state(2));	
+	K(1,1) = 0.1 * cos(current_state(2));
+	K(2,1) = 0.1;
+	K(3,0) = 0.1;
 
 	updated_state(0) = estimated_state(0) + K(0,0) * pos_error(0) + K(0,1) * pos_error(1);
 	updated_state(1) = estimated_state(1) + K(1,0) * pos_error(0) + K(1,1) * pos_error(1);
@@ -79,6 +84,10 @@ VectorXd Update_state( VectorXd current_state, VectorXd measured_pos)
 
 	ROS_DEBUG_STREAM("updated_state: " << updated_state);
 
+	timed += ros::Time::now().toSec() - start_time;
+	calls++;
+	
+	ROS_INFO_STREAM("Elapsed time per iteration: " << timed / calls );
 	return updated_state;
 }
 
@@ -89,7 +98,12 @@ float dist( nautonomous_mpc_msgs::Obstacle obstacle1, nautonomous_mpc_msgs::Obst
 
 float angle( nautonomous_mpc_msgs::Obstacle obstacle1, nautonomous_mpc_msgs::Obstacle obstacle2)
 {
-	return atan2(obstacle2.pose.position.y - obstacle1.pose.position.y, obstacle2.pose.position.x - obstacle1.pose.position.x);
+	double return_angle = atan2(obstacle2.pose.position.y - obstacle1.pose.position.y, obstacle2.pose.position.x - obstacle1.pose.position.x);
+	while (return_angle < 0)
+	{
+		return_angle += 6.28;
+	}
+	return return_angle;
 }
 
 void obstacle_cb ( const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
@@ -173,10 +187,11 @@ void obstacle_cb ( const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg
 						{
 							available_obstacles->at(j).twist.linear.x = (available_obstacles->at(j).twist.linear.x * (iterations->at(j)-1) + dist(obstacles_set.obstacles.at(i), available_obstacles->at(j)) / dt ) / (iterations->at(j));
 							available_obstacles->at(j).pose.orientation.z = (available_obstacles->at(j).pose.orientation.z * (iterations->at(j)-1) + angle(available_obstacles->at(j), obstacles_set.obstacles.at(i))) / (iterations->at(j));
+							ROS_INFO_STREAM("Angle at iteration " << iterations->at(j) << " is : " << angle(available_obstacles->at(j), obstacles_set.obstacles.at(i)));
 							iterations->at(j)++;
 							available_obstacles->at(j).pose.position.x = obstacles_set.obstacles.at(i).pose.position.x;
 							available_obstacles->at(j).pose.position.y = obstacles_set.obstacles.at(i).pose.position.y;
-							ROS_DEBUG_STREAM("Estimated available obstacle position is: (" << available_obstacles->at(j).pose.position.x << ", " << available_obstacles->at(j).pose.position.y << ") at a velocity of: " << available_obstacles->at(j).twist.linear.x << " with an angle of: " << available_obstacles->at(j).pose.orientation.z);
+							ROS_INFO_STREAM("Estimated available obstacle position is: (" << available_obstacles->at(j).pose.position.x << ", " << available_obstacles->at(j).pose.position.y << ") at a velocity of: " << available_obstacles->at(j).twist.linear.x << " with an angle of: " << available_obstacles->at(j).pose.orientation.z);
 						}
 						else if (iterations->at(j) == 10)
 						{

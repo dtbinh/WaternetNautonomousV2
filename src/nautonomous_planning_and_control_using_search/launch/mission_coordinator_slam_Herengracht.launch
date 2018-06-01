@@ -4,10 +4,10 @@
   <rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/slam_Herengracht.yaml"/>
 
   <!-- Launch mission_control_sim -->
-  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control_slam" output="log"/>
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control_slam" output="screen" respawn="true"/>
    
   <!-- Launch mission_control_sim -->
-  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="screen" respawn="true"/>
+  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log" respawn="true"/>
 
   <!-- Launch mission_control_sim -->
   <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>

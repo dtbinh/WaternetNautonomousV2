@@ -60,7 +60,7 @@ float current_x;
 float current_y;
 
 float step_size = 1;
-int weighted_map_border = 10;
+int weighted_map_border = 5;
 
 float cost_c;
 float cost_i;
@@ -246,7 +246,7 @@ void add_new_node()
 	ROS_DEBUG_STREAM( "new_node_nr: " << new_node_nr );
 
 	obstacle_is_blocking = false;
-	for (i = 0; i < Obstacles.obstacles.size(); i++)
+	/*for (i = 0; i < Obstacles.obstacles.size(); i++)
 	{
 		obstacle_x = Obstacles.obstacles[i].pose.position.x;
 		obstacle_y = Obstacles.obstacles[i].pose.position.y;
@@ -268,7 +268,7 @@ void add_new_node()
 			obstacle_is_blocking = true;
 			break;
 		}
-	}
+	}*/
 
 	if (useplot)
 	{
@@ -588,7 +588,7 @@ void make_weighted_map()
 			}
 			else if ((int)map.data[j * map_width + i] < 0)
 			{
-				weighted_map.data[j * map_width + i] = 100;
+				weighted_map.data[j * map_width + i] = 50;
 			}
 		}
 	}
@@ -602,11 +602,11 @@ void make_weighted_map()
 			{
 				if (k == -weighted_map_border)
 				{	
-					map_weight = map.data[(j+k) * map_width + i];
+					map_weight = weighted_map.data[(j+k) * map_width + i];
 				}
 				else
 				{
-					map_weight += map.data[(j+k) * map_width + i];
+					map_weight += weighted_map.data[(j+k) * map_width + i];
 				}
 			}
 			temp_map.data[j * map_width + i] = (int)(map_weight / (2 * weighted_map_border + 1));
@@ -639,10 +639,6 @@ void make_weighted_map()
 		for (int j = 0; j < map_height; j++)
 		{
 			if ((int)map.data[j * map_width + i] > 0)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-			else if ((int)map.data[j * map_width + i] < 0)
 			{
 				weighted_map.data[j * map_width + i] = 100;
 			}
@@ -694,7 +690,7 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh_private("~");
 
 
-        /*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+       /* if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
    		ros::console::notifyLoggerLevelsChanged();
         }*/
 

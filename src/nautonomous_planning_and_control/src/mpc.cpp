@@ -70,6 +70,7 @@ nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable temp_state;
 nautonomous_mpc_msgs::StageVariable gazebo_state;
 nautonomous_mpc_msgs::Obstacle obstacle;
+nautonomous_mpc_msgs::Obstacle ghost_obstacle;
 nautonomous_mpc_msgs::Obstacles obstacles;
 nautonomous_mpc_msgs::Obstacles obstacles_sorted_by_distance;
 nautonomous_mpc_msgs::Obstacle border;
@@ -102,6 +103,11 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg 
 {
 	std::cout << obstacle_msg->obstacles.size() << " Obstacles received" << std::endl;
 	obstacles = *obstacle_msg;
+	while (obstacles.obstacles.size() < 4)
+	{
+		obstacles.obstacles.push_back(ghost_obstacle);
+		std::cout << "Added ghost obstacle" << std::endl;
+	}
 	obstacles_sorted_by_distance = obstacles;
 	std::cout << "Obstacles processed" << std::endl;
 }
@@ -110,9 +116,9 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg 
 void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 {
 
-	/*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+	if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
 	   ros::console::notifyLoggerLevelsChanged();
-	}*/
+	}
 	/* Some temporary variables. */
 	int    i = 0;
 	int    iter = 0;
@@ -481,10 +487,17 @@ int main (int argc, char** argv)
 	control_horizon_pub = nh_private.advertise<nav_msgs::Path>("control_horizon",10);
 	gazebo_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("set_gazebo_control",10);
 
-	route_list.header.frame_id = "/map";
+	route_list.header.frame_id = "/occupancy_grid";
 	route_list.header.stamp = ros::Time::now();
 
 	p.pose.orientation.z = 1;
+
+	ghost_obstacle.pose.position.x = 1000;
+	ghost_obstacle.pose.position.y = 1000;
+	ghost_obstacle.pose.position.z = 0;
+	ghost_obstacle.pose.orientation = toQuaternion(0,0,0);
+	ghost_obstacle.major_semiaxis = 0.1;
+	ghost_obstacle.minor_semiaxis = 0.1;
 
 	ros::spin();	
 }

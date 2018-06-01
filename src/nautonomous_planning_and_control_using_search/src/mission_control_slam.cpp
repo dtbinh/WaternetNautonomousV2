@@ -61,6 +61,7 @@ std::vector<double> start_x, start_y, start_theta, u, v, omega, major_semiaxis, 
 
 std::vector<float> waypoint_x;
 std::vector<float> waypoint_y;
+std::vector<float> bridges;
 
 double Current_loop_time;
 double Time_of_last_path_call;
@@ -98,10 +99,24 @@ void Initialization () // State 1
 
 	start_state.x = waypoint_x[waypoint_iterator];
 	start_state.y = waypoint_y[waypoint_iterator];
-	goal_state.x = waypoint_x[waypoint_iterator + 1];
-	goal_state.y = waypoint_y[waypoint_iterator + 1];
+	goal_state.x = waypoint_x[waypoint_iterator+1];
+	goal_state.y = waypoint_y[waypoint_iterator+1];
+
+	ROS_INFO_STREAM("Start state set to (" << current_state.x << ", " << current_state.y << ")" );
+	ROS_INFO_STREAM("Goal state set to (" << goal_state.x << ", " << goal_state.y << ")" );
 
 	gazebo_pub.publish(start_state);
+}
+
+void Check_if_goal_is_close()
+{
+	if ((sqrt(pow(current_state.x - goal_state.x,2) + pow(current_state.y - goal_state.y,2)) < 5) && borders_received)
+	{
+		waypoint_iterator++;
+		goal_state.x = waypoint_x[waypoint_iterator+1];
+		goal_state.y = waypoint_y[waypoint_iterator+1];
+		ROS_INFO_STREAM("Set waypoint to: " << waypoint_iterator);
+	}
 }
 
 void Call_Route_generator()
@@ -111,6 +126,7 @@ void Call_Route_generator()
 	if(current_state_received)
 	{
 		start_pub.publish(current_state);
+		ROS_INFO_STREAM("Call planner");
 	}
 	else
 	{
@@ -123,6 +139,7 @@ void Call_MPC_generator()
 	if(path_received)
 	{
 		current_state_pub.publish(current_state);
+		ROS_INFO_STREAM("Call mpc");
 	}
 }
 
@@ -133,6 +150,8 @@ void pose_cb(const geometry_msgs::PoseStamped::ConstPtr& pose_msg)
 	current_state.y = -(pose_state.pose.position.x - transform_world_grid.getOrigin().x()) * sin(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.position.y - transform_world_grid.getOrigin().y()) * cos(tf::getYaw(transform_world_grid.getRotation()));
 	current_state.theta = toEulerAngle(pose_state.pose.orientation);
 	current_state_received = true;
+
+	Check_if_goal_is_close();
 }
 
 void route_cb(const nav_msgs::Path::ConstPtr& route_msg)
@@ -144,7 +163,6 @@ void route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 
 void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
 {
-	ROS_INFO_STREAM("Transform angle: " << -1 * tf::getYaw(transform_lidar_grid.getRotation()));
 	obstacles.obstacles.clear();
 	for (int i = 0; i < obstacle_msg->obstacles.size(); i++)
 	{
@@ -154,8 +172,6 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
 		obstacle.pose.position.x = obstacle_msg->obstacles.at(i).pose.position.x;
 		obstacle.pose.position.y = obstacle_msg->obstacles.at(i).pose.position.y;
 		obstacle.pose.orientation = obstacle_msg->obstacles.at(i).pose.orientation;
-		ROS_INFO_STREAM("Obstacle angle ("<< i << "): " << toEulerAngle(obstacle_msg->obstacles.at(i).pose.orientation));
-		ROS_INFO_STREAM("Grid angle ("<< i << "): " << toEulerAngle(obstacle_msg->obstacles.at(i).pose.orientation) - tf::getYaw(transform_lidar_grid.getRotation()));
 		obstacle.minor_semiaxis = obstacle_msg->obstacles.at(i).minor_semiaxis;
 		obstacle.major_semiaxis = obstacle_msg->obstacles.at(i).major_semiaxis;
 		obstacles.obstacles.push_back(obstacle);
@@ -170,9 +186,9 @@ void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
 	ROS_INFO_STREAM("Borders received");
 	borders_pub.publish(border_msg);
 	
-	borders_received = true;
-
 	Initialization();
+
+	borders_received = true;
 
 	ros::Duration(1).sleep();
 }
@@ -184,8 +200,15 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
+
+	if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		
+	{
+   		ros::console::notifyLoggerLevelsChanged();
+        }
+
 	ROS_INFO_STREAM("Startup started");
-//	ros::Duration(5).sleep();
+
+
 
 	tf::TransformListener listener;
 
@@ -198,6 +221,8 @@ int main(int argc, char **argv)
 	ROS_ASSERT(waypoint_x.size() != 0);
 	nh_private.getParam("waypoints_y", waypoint_y);
 	ROS_ASSERT(waypoint_x.size() == waypoint_y.size());
+	nh_private.getParam("bridges", bridges);
+	ROS_ASSERT(waypoint_x.size() == bridges.size());
 
 	nh_private.getParam("obstacles/start_x", start_x);
 	ROS_ASSERT(start_x.size() != 0);
@@ -239,16 +264,21 @@ int main(int argc, char **argv)
 
 	while (ros::ok())
 	{	
-		listener.lookupTransform("/world", "/occupancy_grid", ros::Time(0), transform_world_grid);
+		listener.lookupTransform("/map", "/occupancy_grid", ros::Time(0), transform_world_grid);
 		listener.lookupTransform("/lidar_link", "/occupancy_grid", ros::Time(0), transform_lidar_grid);
 
 		Current_loop_time = ros::Time::now().toSec();
-		if(borders_received)
+		if(borders_received && current_state_received)
 		{
 			if (Current_loop_time - Time_of_last_path_call > 2)
 			{
 				Time_of_last_path_call = Current_loop_time;
 				Call_Route_generator();
+			}
+			if (Current_loop_time - Time_of_last_mpc_call > 1)
+			{
+				Time_of_last_mpc_call = Current_loop_time;
+				Call_MPC_generator();
 			}		
 		}
 

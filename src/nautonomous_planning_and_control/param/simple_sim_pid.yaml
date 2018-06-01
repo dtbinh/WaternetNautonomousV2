@@ -21,7 +21,7 @@ mission_coordinator:
     velocity: 3.0
 
   number_of_fuzzy_waypoints: 5
-  use_fuzzy: true
+  use_fuzzy: false
   use_PID: true
   safety_margin: 3.0
   frame_id: '/my_frame'
@@ -45,7 +45,7 @@ PID:
   min_uf: 0
   
   fuzzy:
-    use_fuzzy: true
+    use_fuzzy: false
     number_of_fuzzy_waypoints: 5
     fuzzy_min_distance: 2
     fuzzy_max_distance: 10

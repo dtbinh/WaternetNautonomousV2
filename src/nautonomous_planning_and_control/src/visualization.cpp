@@ -218,6 +218,7 @@ int main(int argc, char **argv)
 	route_marker.scale.z = 0.2;
 	route_marker.color.b = 0.0;
 	route_marker.color.g = 0.0;
+	route_marker.color.r = 1.0;
 	route_marker.color.a = 1.0;
 
 	ros::spin();
