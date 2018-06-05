@@ -1,0 +1,6 @@
+free_thresh: 0.196
+image: amsterdam_cropped_Prodock.png
+negate: 0
+occupied_thresh: 0.65
+origin: [623606.6, 5806202.8, 0.0]
+resolution: 0.5
