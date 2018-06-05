@@ -50,6 +50,7 @@
 		<arg name="sensor_group"  			value="true"/>
 		<arg name="gps_group"	  			value="false"/>
 		<arg name="imu_group"	  			value="false"/>
+		<arg name="camera_group"  			value="false"/>
 
 		<arg name="webserver_group" 			value="false"/>
 		<arg name="coordinate_simulate_group" 		value="false"/>

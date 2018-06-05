@@ -62,6 +62,7 @@ float dist;
 int weighted_map_border = 10;
 
 int checks_ransac = 1000;
+int different_lines = 1;
 
 float map_weight;
 
@@ -189,7 +190,7 @@ void fit_lines()
 		}
 	}
 	map_pub.publish(weighted_map);
-	for (int l = 0; l < 20; l++)
+	for (int l = 0; l < different_lines; l++)
 	{
 		for (int k = 0; k < weighted_map.data.size(); k++)
 		{
@@ -369,6 +370,7 @@ void fit_lines()
 			for (int m = 0; m < InliersSorted->size(); m++)
 			{
 				if ((angle < SortedAngles->at(m)) || ((angle == SortedAngles->at(m)) && (p.x < InliersSorted->at(m).x)))
+				//if ((p.y < InliersSorted->at(m).y) || ((p.y == InliersSorted->at(m).y) && (p.x < InliersSorted->at(m).x)))
 				{
 					InliersSorted->insert(InliersSorted->begin() + m,p);
 					SortedAngles->insert(SortedAngles->begin() + m,angle);
@@ -381,12 +383,14 @@ void fit_lines()
 				InliersSorted->push_back(p);
 				SortedAngles->push_back(angle);
 			}
-		}
+		}		
+
 
 		for (int k = 0; k < InliersSorted->size()-1; k++)
 		{
 			line_list.points.push_back(InliersSorted->at(k));
 			line_list.points.push_back(InliersSorted->at(k+1));
+			std::cout << "InliersSorted element " << k << " is " << InliersSorted->at(k) << std::endl;
 		}
 
 		marker_pub.publish(line_list);
@@ -419,7 +423,7 @@ void fit_lines()
 
 			angle = angle_1 - angle_2;
 			std::cout << "Angle : " << angle << std::endl;
-			while (!(((angle > 0) && (angle < (PI+0.0000001))) || (angle < -(PI-0.0000001))))
+			while (!(((angle > 0.0000001) && (angle < (PI+0.0000001))) || (angle < -(PI-0.0000001))))
 			{
 				std::cout << "Remove point" << std::endl;
 				Cornerpoints->erase(Cornerpoints->begin() + Cornerpoints->size() - 1);
