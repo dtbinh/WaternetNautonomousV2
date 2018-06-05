@@ -57,7 +57,7 @@ www.acadotoolkit.org
 
 #define N           ACADO_N   /* Number of intervals in the horizon. */
 
-#define NUM_STEPS   10        /* Number of real-time iterations. */
+#define NUM_STEPS   100        /* Number of real-time iterations. */
 #define VERBOSE     1         /* Show iterations: 1, silent: 0.  */
 
 /* Global variables used by the solver. */
@@ -241,7 +241,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 					acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].pose.orientation);
 					acadoVariables.od[ (NOD * i) + (5 * j) + 3 ] = 1/obstacles_sorted_by_distance.obstacles[j].major_semiaxis;
 					acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] = 1/obstacles_sorted_by_distance.obstacles[j].minor_semiaxis;
-					ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
+					//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
 				}
 			}
 
@@ -258,7 +258,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 					acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].pose.orientation);
 					acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] = 1/borders_sorted_by_distance.obstacles[j].major_semiaxis;
 					acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] = 1/borders_sorted_by_distance.obstacles[j].minor_semiaxis;
-					ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
+					//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
 				}
 			}
 		}
@@ -321,7 +321,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 				acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].pose.orientation);
 				acadoVariables.od[ (NOD * i) + (5 * j) + 3 ] = 1/obstacles_sorted_by_distance.obstacles[j].major_semiaxis;
 				acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] = 1/obstacles_sorted_by_distance.obstacles[j].minor_semiaxis;
-				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
+				//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
 			}
 			for (int j = 0; j < 5; j++)
 			{
@@ -330,7 +330,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 				acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].pose.orientation);
 				acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] = 1/borders_sorted_by_distance.obstacles[j].major_semiaxis;
 				acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] = 1/borders_sorted_by_distance.obstacles[j].minor_semiaxis;
-				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
+				//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
 			}
 		}
 	}
@@ -349,7 +349,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 		}
 
 		acadoVariables.y[ (NY * i) + 2 ] = 0.0;
-		acadoVariables.y[ (NY * i) + 3 ] = 0.0;
+		acadoVariables.y[ (NY * i) + 3 ] = 1.0;
 		acadoVariables.y[ (NY * i) + 4 ] = 0.0;
 		acadoVariables.y[ (NY * i) + 5 ] = 0.0;
 		acadoVariables.y[ (NY * i) + 6 ] = 0.0;
@@ -403,7 +403,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 
 		/* Apply the new control immediately to the process, first NU components. */
 
-		if( VERBOSE ) printf("\tReal-Time Iteration %d:  KKT Tolerance = %.3e, Objective = %.3e\n\n", iter, acado_getKKT(), acado_getObjective() );
+		//if( VERBOSE ) printf("\tReal-Time Iteration %d:  KKT Tolerance = %.3e, Objective = %.3e\n\n", iter, acado_getKKT(), acado_getObjective() );
 
 		/* Prepare for the next step. */
 		acado_preparationStep();

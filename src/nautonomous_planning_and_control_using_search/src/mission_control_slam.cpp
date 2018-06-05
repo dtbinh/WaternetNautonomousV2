@@ -17,6 +17,7 @@
 float temp_x;
 float temp_y;
 float ellipse_value;
+float angle_offset;
 
 double ellipse_x1;
 double ellipse_x2;
@@ -148,7 +149,7 @@ void pose_cb(const geometry_msgs::PoseStamped::ConstPtr& pose_msg)
 	pose_state = *pose_msg;	
 	current_state.x = (pose_state.pose.position.x - transform_world_grid.getOrigin().x()) * cos(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.position.y - transform_world_grid.getOrigin().y()) * sin(tf::getYaw(transform_world_grid.getRotation()));
 	current_state.y = -(pose_state.pose.position.x - transform_world_grid.getOrigin().x()) * sin(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.position.y - transform_world_grid.getOrigin().y()) * cos(tf::getYaw(transform_world_grid.getRotation()));
-	current_state.theta = toEulerAngle(pose_state.pose.orientation);
+	current_state.theta = toEulerAngle(pose_state.pose.orientation) + angle_offset;
 	current_state_received = true;
 
 	Check_if_goal_is_close();
@@ -216,6 +217,7 @@ int main(int argc, char **argv)
 
 	nh_private.getParam("reference/velocity", ref_velocity);
 	nh_private.getParam("safety_margin", safety_margin);
+	nh_private.getParam("angle_offset", angle_offset);
 
 	nh_private.getParam("waypoints_x", waypoint_x);
 	ROS_ASSERT(waypoint_x.size() != 0);

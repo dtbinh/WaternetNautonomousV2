@@ -15,6 +15,9 @@
   <!-- Launch obstacle_detection -->
   <node name="Obstacle_detection" pkg="nautonomous_obstacle_detection" type="Ellipse" output="log" respawn="true"/>
 
+  <!-- Launch obstacle_detection -->
+  <node name="Obstacle_tracking" pkg="nautonomous_obstacle_detection" type="Obstacle_tracker_V3" output="log" respawn="true"/>
+
   <!-- Set map to odom transform-->
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" 	args="	0 	0 	0 	0 	0 	0 	1 map 	odom 	50"/>
 

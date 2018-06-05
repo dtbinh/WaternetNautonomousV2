@@ -279,9 +279,9 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
-        /*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
+        if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
 	   ros::console::notifyLoggerLevelsChanged();
-        }*/
+        }
 
 	ghost_obstacle.major_semiaxis = 0.1;
 	ghost_obstacle.minor_semiaxis = 0.1;

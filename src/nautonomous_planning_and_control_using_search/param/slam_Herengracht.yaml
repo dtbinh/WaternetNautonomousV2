@@ -26,5 +26,6 @@ mission_coordinator:
   use_PID: false
   safety_margin: 3.0
   frame_id: '/my_frame'
+  angle_offset: -1.5
   verbose: true
 

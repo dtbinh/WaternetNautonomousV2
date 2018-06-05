@@ -64,8 +64,8 @@ float second_principle_axis = -1;
 double angle = -1;
 float theta = 0;
 float const voxelSize = 0.5;
-int const gridSize = 500; // In number of squares (gridSize(m)/voxelSize)
-int const pointTreshold = 4;
+int const gridSize = 1000; // In number of squares (gridSize(m)/voxelSize)
+int const pointTreshold = 1;
 int const origin_x = 628604;
 int const origin_y = 5802730;
 int Boat_pos_x = 0;
@@ -211,7 +211,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	Boat.pose.position.x = BoatLengthOffset;
 	Boat.pose.position.y = BoatWidthOffset;
 	
-	Markers.markers.push_back(Boat);
+	//Markers.markers.push_back(Boat);
 
 	nautonomous_mpc_msgs::Obstacle obstacle;
 	nautonomous_mpc_msgs::Obstacles obstacles;
