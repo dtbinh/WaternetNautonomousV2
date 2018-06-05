@@ -60,11 +60,13 @@ float current_x;
 float current_y;
 
 float step_size = 1;
-int weighted_map_border = 10;
+int weighted_map_border = 5;
 
 float cost_c;
 float cost_i;
 
+int Nx = 0;
+int Ny = 0;
 float map_width = 0;
 float map_height = 0;
 float map_center_x = 0;
@@ -96,8 +98,7 @@ int next_node = 1;
 int current_node_nr = 0;
 int new_node_nr = 0;
 int start_node_nr = 0;
-int Nx = 0;
-int Ny = 0;
+
 float new_cost = 0;
 float new_dist;
 float map_weight;
@@ -245,7 +246,7 @@ void add_new_node()
 	ROS_DEBUG_STREAM( "new_node_nr: " << new_node_nr );
 
 	obstacle_is_blocking = false;
-	for (i = 0; i < Obstacles.obstacles.size(); i++)
+	/*for (i = 0; i < Obstacles.obstacles.size(); i++)
 	{
 		obstacle_x = Obstacles.obstacles[i].pose.position.x;
 		obstacle_y = Obstacles.obstacles[i].pose.position.y;
@@ -267,7 +268,7 @@ void add_new_node()
 			obstacle_is_blocking = true;
 			break;
 		}
-	}
+	}*/
 
 	if (useplot)
 	{
@@ -576,6 +577,7 @@ void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 void make_weighted_map()
 {
 	weighted_map = map;
+	ROS_DEBUG_STREAM("Make weighted map binary");
 	for (i = 0; i < map_width; i++)
 	{
 		for (int j = 0; j < map_height; j++)
@@ -586,32 +588,33 @@ void make_weighted_map()
 			}
 			else if ((int)map.data[j * map_width + i] < 0)
 			{
-				weighted_map.data[j * map_width + i] = 100;
+				weighted_map.data[j * map_width + i] = 50;
 			}
 		}
 	}
 
+	ROS_DEBUG_STREAM("Calculate vertical weights");
 	for (i = 0; i < map_width; i++)
 	{
-		for (int j = 1; j < map_height-1; j++)
+		for (int j = weighted_map_border; j < map_height-weighted_map_border; j++)
 		{
 			for (int k = -weighted_map_border; k <= weighted_map_border ; k++)
 			{
 				if (k == -weighted_map_border)
 				{	
-					map_weight = map.data[(j+k) * map_width + i];
+					map_weight = weighted_map.data[(j+k) * map_width + i];
 				}
 				else
 				{
-					map_weight += map.data[(j+k) * map_width + i];
+					map_weight += weighted_map.data[(j+k) * map_width + i];
 				}
 			}
 			temp_map.data[j * map_width + i] = (int)(map_weight / (2 * weighted_map_border + 1));
 		}
 	}
 		
-
-	for (i = 1; i < map_width-1; i++)
+	ROS_DEBUG_STREAM("Calculate horizontal weights");
+	for (i = weighted_map_border; i < map_width-weighted_map_border; i++)
 	{
 		for (int j = 0; j < map_height; j++)
 		{
@@ -630,15 +633,12 @@ void make_weighted_map()
 		}
 	}
 
+	ROS_DEBUG_STREAM("Make ");
 	for (i = 0; i < map_width; i++)
 	{
 		for (int j = 0; j < map_height; j++)
 		{
 			if ((int)map.data[j * map_width + i] > 0)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-			else if ((int)map.data[j * map_width + i] < 0)
 			{
 				weighted_map.data[j * map_width + i] = 100;
 			}
@@ -690,9 +690,9 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh_private("~");
 
 
-/*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
-   ros::console::notifyLoggerLevelsChanged();
-}*/
+       /* if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
+   		ros::console::notifyLoggerLevelsChanged();
+        }*/
 
 
 
@@ -701,7 +701,7 @@ int main (int argc, char** argv)
 	goal_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal_state",10,goal_cb);
 	obstacle_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",10,obstacle_cb);
 
-	map_pub = 	nh.advertise<nav_msgs::OccupancyGrid>("/map_tree_opt",10);
+	map_pub = 	nh.advertise<nav_msgs::OccupancyGrid>("map_tree_opt",10);
 	marker_pub = 	nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_2_pub = 	nh_private.advertise<nav_msgs::Path>("non_smooth_route", 10);
 	marker_3_pub = 	nh_private.advertise<nav_msgs::Path>("route", 10);
@@ -712,7 +712,7 @@ int main (int argc, char** argv)
 	p1.pose.position.z = 0;
 	p1.pose.orientation.w = 1;
 
-	line_list.header.frame_id = "/map";
+	line_list.header.frame_id = "/occupancy_grid";
 	line_list.header.stamp = ros::Time::now();
 	line_list.ns = "points_and_lines";
 	line_list.action = visualization_msgs::Marker::ADD;
@@ -724,10 +724,10 @@ int main (int argc, char** argv)
 	line_list.color.r = 1.0;
 	line_list.color.a = 1.0;
 
-	route_list.header.frame_id = "/map";
+	route_list.header.frame_id = "/occupancy_grid";
 	route_list.header.stamp = ros::Time::now();
 
-	flipped_route_list.header.frame_id = "/map";
+	flipped_route_list.header.frame_id = "/occupancy_grid";
 	flipped_route_list.header.stamp = ros::Time::now();
 
 	Network->clear();

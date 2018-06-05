@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load default parameters -->
+  <rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/slam_Herengracht.yaml"/>
+
+  <!-- Launch mission_control_sim -->
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control_slam" output="screen" respawn="true"/>
+   
+  <!-- Launch mission_control_sim -->
+  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log" respawn="true"/>
+
+  <!-- Launch mission_control_sim -->
+  <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>
+	
+  <!-- Launch obstacle_detection -->
+  <node name="Obstacle_detection" pkg="nautonomous_obstacle_detection" type="Ellipse" output="log" respawn="true"/>
+
+  <!-- Launch obstacle_detection -->
+  <node name="Obstacle_tracking" pkg="nautonomous_obstacle_detection" type="Obstacle_tracker_V3" output="log" respawn="true"/>
+
+  <!-- Set map to odom transform-->
+  <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" 	args="	0 	0 	0 	0 	0 	0 	1 map 	odom 	50"/>
+
+  <!-- Launch border detection -->
+  <!--node name="Map_modifier" pkg="nautonomous_obstacle_detection" type="map_modifier" output="log" respawn="true"/-->
+
+</launch>

@@ -23,7 +23,7 @@ ros::Publisher message_pub;
 bool previous_obstacles_received = false;
 bool obstacle_is_new = false;
 
-double dt = 1;
+double dt = 0.1;
 int obst_dist = 5;
 
 double x_est, y_est, th_est, v_est;
@@ -279,17 +279,16 @@ void obstacle_cb ( const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg
 
 int main (int argc, char** argv)
 {
-
-	if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
-	   ros::console::notifyLoggerLevelsChanged();
-	}
-
 //	Q(2,2) = 0.0001;
 //	Q(3,3) = 0.0001;
 
 	ros::init (argc, argv,"Obstacle_tracking");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
+
+        if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+           ros::console::notifyLoggerLevelsChanged();
+        }
 
 	message_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obstacles",1,obstacle_cb);
 	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);

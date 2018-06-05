@@ -92,7 +92,7 @@ bool load_map(nautonomous_map_msgs::Load::Request &request, nautonomous_map_msgs
     MapMode mode = TRINARY;
     std::string frame_id;
     ros::NodeHandle private_nh("~");
-    private_nh.param("frame_id", frame_id, std::string("map"));
+    private_nh.param("frame_id", frame_id, std::string("occupancy_grid"));
 
     std::ifstream fin(config_name.c_str());
     if (fin.fail()) {

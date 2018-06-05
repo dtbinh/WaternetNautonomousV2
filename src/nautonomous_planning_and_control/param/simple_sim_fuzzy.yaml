@@ -1,5 +1,5 @@
 mission_coordinator:
-  waypoints_x: [ 40.0, 0.0] #[m]
+  waypoints_x: [ 40.0, 40.0] #[m]
   waypoints_y: [  0.0, 0.0] #[m]
 
   waypoint_error:
