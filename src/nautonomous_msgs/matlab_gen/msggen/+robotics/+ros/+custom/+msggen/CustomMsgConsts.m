@@ -30,8 +30,15 @@ classdef CustomMsgConsts
         nautonomous_mission_msgs_MissionPlanResult = 'nautonomous_mission_msgs/MissionPlanResult'
         nautonomous_mission_msgs_MissionStatus = 'nautonomous_mission_msgs/MissionStatus'
         nautonomous_mission_msgs_OperationPlan = 'nautonomous_mission_msgs/OperationPlan'
+        nautonomous_mpc_msgs_CostsCC = 'nautonomous_mpc_msgs/CostsCC'
+        nautonomous_mpc_msgs_CostsWN = 'nautonomous_mpc_msgs/CostsWN'
         nautonomous_mpc_msgs_Obstacle = 'nautonomous_mpc_msgs/Obstacle'
         nautonomous_mpc_msgs_Obstacles = 'nautonomous_mpc_msgs/Obstacles'
+        nautonomous_mpc_msgs_Output = 'nautonomous_mpc_msgs/Output'
+        nautonomous_mpc_msgs_Route = 'nautonomous_mpc_msgs/Route'
+        nautonomous_mpc_msgs_StageVariable = 'nautonomous_mpc_msgs/StageVariable'
+        nautonomous_mpc_msgs_Waypoint = 'nautonomous_mpc_msgs/Waypoint'
+        nautonomous_mpc_msgs_WaypointList = 'nautonomous_mpc_msgs/WaypointList'
         nautonomous_pose_msgs_PointWithCovarianceStamped = 'nautonomous_pose_msgs/PointWithCovarianceStamped'
         nautonomous_routing_msgs_Route = 'nautonomous_routing_msgs/Route'
         nautonomous_routing_msgs_RouteRequest = 'nautonomous_routing_msgs/RouteRequest'
@@ -53,7 +60,7 @@ classdef CustomMsgConsts
             
             persistent msgList
             if isempty(msgList)
-                msgList = cell(33, 1);
+                msgList = cell(40, 1);
                 msgList{1} = 'nautonomous_authentication_msgs/AuthenticationRequest';
                 msgList{2} = 'nautonomous_authentication_msgs/AuthenticationResponse';
                 msgList{3} = 'nautonomous_authentication_msgs/EncryptionRequest';
@@ -74,19 +81,26 @@ classdef CustomMsgConsts
                 msgList{18} = 'nautonomous_mission_msgs/MissionPlanResult';
                 msgList{19} = 'nautonomous_mission_msgs/MissionStatus';
                 msgList{20} = 'nautonomous_mission_msgs/OperationPlan';
-                msgList{21} = 'nautonomous_mpc_msgs/Obstacle';
-                msgList{22} = 'nautonomous_mpc_msgs/Obstacles';
-                msgList{23} = 'nautonomous_pose_msgs/PointWithCovarianceStamped';
-                msgList{24} = 'nautonomous_routing_msgs/RouteRequest';
-                msgList{25} = 'nautonomous_routing_msgs/RouteResponse';
-                msgList{26} = 'nautonomous_state_msgs/Boat';
-                msgList{27} = 'nautonomous_state_msgs/BoatCommand';
-                msgList{28} = 'nautonomous_state_msgs/BoatParam';
-                msgList{29} = 'nautonomous_state_msgs/BoatState';
-                msgList{30} = 'nautonomous_state_msgs/Border';
-                msgList{31} = 'nautonomous_state_msgs/Borders';
-                msgList{32} = 'nautonomous_state_msgs/State';
-                msgList{33} = 'nautonomous_webserver_msgs/NautonomousAuthentication';
+                msgList{21} = 'nautonomous_mpc_msgs/CostsCC';
+                msgList{22} = 'nautonomous_mpc_msgs/CostsWN';
+                msgList{23} = 'nautonomous_mpc_msgs/Obstacle';
+                msgList{24} = 'nautonomous_mpc_msgs/Obstacles';
+                msgList{25} = 'nautonomous_mpc_msgs/Output';
+                msgList{26} = 'nautonomous_mpc_msgs/Route';
+                msgList{27} = 'nautonomous_mpc_msgs/StageVariable';
+                msgList{28} = 'nautonomous_mpc_msgs/Waypoint';
+                msgList{29} = 'nautonomous_mpc_msgs/WaypointList';
+                msgList{30} = 'nautonomous_pose_msgs/PointWithCovarianceStamped';
+                msgList{31} = 'nautonomous_routing_msgs/RouteRequest';
+                msgList{32} = 'nautonomous_routing_msgs/RouteResponse';
+                msgList{33} = 'nautonomous_state_msgs/Boat';
+                msgList{34} = 'nautonomous_state_msgs/BoatCommand';
+                msgList{35} = 'nautonomous_state_msgs/BoatParam';
+                msgList{36} = 'nautonomous_state_msgs/BoatState';
+                msgList{37} = 'nautonomous_state_msgs/Border';
+                msgList{38} = 'nautonomous_state_msgs/Borders';
+                msgList{39} = 'nautonomous_state_msgs/State';
+                msgList{40} = 'nautonomous_webserver_msgs/NautonomousAuthentication';
             end
             
             messageList = msgList;

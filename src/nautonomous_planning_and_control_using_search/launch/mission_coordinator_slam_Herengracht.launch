@@ -9,19 +9,25 @@
   <!-- Launch mission_control_sim -->
   <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log" respawn="true"/>
 
+  <!-- Launch mpc -->
+  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log" respawn="true"/>
+
   <!-- Launch mission_control_sim -->
   <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>
 	
   <!-- Launch obstacle_detection -->
   <node name="Obstacle_detection" pkg="nautonomous_obstacle_detection" type="Ellipse" output="log" respawn="true"/>
 
-  <!-- Launch obstacle_detection -->
+  <!-- Launch obstacle_tracking -->
   <node name="Obstacle_tracking" pkg="nautonomous_obstacle_detection" type="Obstacle_tracker_V3" output="log" respawn="true"/>
+
+  <!-- Launch EKF -->
+  <node name="Ekf" pkg="nautonomous_planning_and_control" type="ExtendedKalmanFilter_slam" output="log" respawn="true"/>
+
+  <!-- Launch map_server -->
+  <include file="$(find nautonomous_map_server)/launch/nautonomous_map_server.launch" > </include>
 
   <!-- Set map to odom transform-->
   <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" 	args="	0 	0 	0 	0 	0 	0 	1 map 	odom 	50"/>
-
-  <!-- Launch border detection -->
-  <!--node name="Map_modifier" pkg="nautonomous_obstacle_detection" type="map_modifier" output="log" respawn="true"/-->
 
 </launch>

@@ -1,36 +1,3 @@
-/*
- *    This file was auto-generated using the ACADO Toolkit.
- *    
- *    While ACADO Toolkit is free software released under the terms of
- *    the GNU Lesser General Public License (LGPL), the generated code
- *    as such remains the property of the user who used ACADO Toolkit
- *    to generate this code. In particular, user dependent data of the code
- *    do not inherit the GNU LGPL license. On the other hand, parts of the
- *    generated code that are a direct copy of source code from the
- *    ACADO Toolkit or the software tools it is based on, remain, as derived
- *    work, automatically covered by the LGPL license.
- *    
- *    ACADO Toolkit is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *    
- */
-
-
-
-/*
-
-IMPORTANT: This file should serve as a starting point to develop the user
-code for the OCP solver. The code below is for illustration purposes. Most
-likely you will not get good results if you execute this code without any
-modification(s).
-
-Please read the examples in order to understand how to write user code how
-to run the OCP solver. You can find more info on the website:
-www.acadotoolkit.org
-
-*/
-
 #include "acado_common.h"
 #include "acado_auxiliary_functions.h"
 
@@ -81,6 +48,8 @@ geometry_msgs::PoseStamped p;
 nav_msgs::Path reference_path;
 nav_msgs::Path route_list;
 
+geometry_msgs::Twist action;
+
 ros::Publisher position_pub;
 ros::Publisher action_pub;
 ros::Publisher control_horizon_pub;
@@ -115,10 +84,6 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg 
 /* A template for testing of the solver. */
 void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 {
-
-	if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
-	   ros::console::notifyLoggerLevelsChanged();
-	}
 	/* Some temporary variables. */
 	int    i = 0;
 	int    iter = 0;
@@ -241,7 +206,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 					acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].pose.orientation);
 					acadoVariables.od[ (NOD * i) + (5 * j) + 3 ] = 1/obstacles_sorted_by_distance.obstacles[j].major_semiaxis;
 					acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] = 1/obstacles_sorted_by_distance.obstacles[j].minor_semiaxis;
-					//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
+					ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
 				}
 			}
 
@@ -258,7 +223,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 					acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].pose.orientation);
 					acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] = 1/borders_sorted_by_distance.obstacles[j].major_semiaxis;
 					acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] = 1/borders_sorted_by_distance.obstacles[j].minor_semiaxis;
-					//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
+					ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
 				}
 			}
 		}
@@ -321,7 +286,7 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 				acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] = toEulerAngle(obstacles_sorted_by_distance.obstacles[j].pose.orientation);
 				acadoVariables.od[ (NOD * i) + (5 * j) + 3 ] = 1/obstacles_sorted_by_distance.obstacles[j].major_semiaxis;
 				acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] = 1/obstacles_sorted_by_distance.obstacles[j].minor_semiaxis;
-				//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
+				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) +  (5 * j) + 0 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 1 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 2 ] << ", "<<  acadoVariables.od[ (NOD * i) +  (5 * j) + 3 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 4 ] << "]" );
 			}
 			for (int j = 0; j < 5; j++)
 			{
@@ -330,10 +295,11 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 				acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] = toEulerAngle(borders_sorted_by_distance.obstacles[j].pose.orientation);
 				acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] = 1/borders_sorted_by_distance.obstacles[j].major_semiaxis;
 				acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] = 1/borders_sorted_by_distance.obstacles[j].minor_semiaxis;
-				//ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
+				ROS_DEBUG_STREAM("Initialization of all " << NOD << " elements nod at [" << i << ", " << j << "] [" <<  acadoVariables.od[ (NOD * i) + (5 * j) + 25 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 26 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 27 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 28 ] << ", "<<  acadoVariables.od[ (NOD * i) + (5 * j) + 29 ] << "]" );
 			}
 		}
 	}
+
 	/* Initialize the measurements/reference. */
 	for (i = 0; i < N; ++i) 
 	{
@@ -419,8 +385,8 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	if( !VERBOSE )
 	printf("\n\n Average time of one real-time iteration:   %.3g microseconds\n\n", 1e6 * te / NUM_STEPS);
 
-	//acado_printDifferentialVariables();
-	//acado_printControlVariables();
+	acado_printDifferentialVariables();
+	acado_printControlVariables();
 
 	double* states;
 	double* actions;
@@ -462,6 +428,11 @@ void gps_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& twist_msg )
 	gazebo_state.omega = *(states+NX+5);
 
 	gazebo_pub.publish(gazebo_state);
+
+	action.linear.x = *(actions) + *(actions+1);
+	action.angular.z = *(actions) - *(actions+1);
+
+	action_pub.publish(action);
 }
 
 void ref_cb( const nav_msgs::Path::ConstPtr& reference_msg )
@@ -471,6 +442,17 @@ void ref_cb( const nav_msgs::Path::ConstPtr& reference_msg )
 	Path_point = 0;
 }
 
+void Initialize()
+{
+	ghost_obstacle.pose.position.x = 1000;
+	ghost_obstacle.pose.position.y = 1000;
+	ghost_obstacle.pose.position.z = 0;
+	ghost_obstacle.pose.orientation = toQuaternion(0,0,0);
+	ghost_obstacle.major_semiaxis = 0.1;
+	ghost_obstacle.minor_semiaxis = 0.1;
+
+	borders.obstacles.push_back(ghost_obstacle);
+}
 
 int main (int argc, char** argv)
 {
@@ -478,6 +460,12 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
+	Initialize();
+
+	/*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) {
+	   ros::console::notifyLoggerLevelsChanged();
+	}*/
+
 	ros::Subscriber gps_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",10,gps_cb);
 	ros::Subscriber obstacle_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",1,obstacle_cb);
 	ros::Subscriber border_sub = nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Map_modifier/borders",1,border_cb);
@@ -486,18 +474,12 @@ int main (int argc, char** argv)
 	position_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
 	control_horizon_pub = nh_private.advertise<nav_msgs::Path>("control_horizon",10);
 	gazebo_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("set_gazebo_control",10);
+	action_pub = nh_private.advertise<geometry_msgs::Twist>("/cmd_vel",10);
 
 	route_list.header.frame_id = "/occupancy_grid";
 	route_list.header.stamp = ros::Time::now();
 
 	p.pose.orientation.z = 1;
-
-	ghost_obstacle.pose.position.x = 1000;
-	ghost_obstacle.pose.position.y = 1000;
-	ghost_obstacle.pose.position.z = 0;
-	ghost_obstacle.pose.orientation = toQuaternion(0,0,0);
-	ghost_obstacle.major_semiaxis = 0.1;
-	ghost_obstacle.minor_semiaxis = 0.1;
 
 	ros::spin();	
 }

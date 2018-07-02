@@ -150,7 +150,7 @@ void smooth_path()
 				temp_y = current_y + sin(temp_theta) * 0.2 * j;
 
 				obstacle_is_blocking = false;
-				for (int k = 0; k < Obstacles.obstacles.size(); k++)
+				/*for (int k = 0; k < Obstacles.obstacles.size(); k++)
 				{
 					obstacle_x = Obstacles.obstacles[k].pose.position.x;
 					obstacle_y = Obstacles.obstacles[k].pose.position.y;
@@ -171,7 +171,7 @@ void smooth_path()
 					{
 						obstacle_is_blocking = true;
 					}
-				}
+				}*/
 				if ((int)weighted_map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] > 10)
 				{
 					tile_is_occupied = true;
