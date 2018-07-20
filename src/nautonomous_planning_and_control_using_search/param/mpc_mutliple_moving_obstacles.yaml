@@ -1,7 +1,7 @@
 mission_coordinator:
-  waypoints_x: [ -49.3, -51.5, -53.4,   39.8] #[m]
-  waypoints_y: [ 191.8, 65.8,  36.9, -160.2] #[m]
-  bridges: [0, 0, 1, 0]
+  waypoints_x: [ -30, 30] #[m]
+  waypoints_y: [ 20, 20] #[m]
+  bridges: [0, 0]
 
   waypoint_error:
     maximum_accepted_waypoint_error: 5
@@ -9,14 +9,14 @@ mission_coordinator:
     decrease_waypoint_error: 1
 
   obstacles:
-    start_x:        [100] #[m]
-    start_y:        [100] #[m]
-    start_theta:    [0.0] #[rad]
-    u:              [0.0] #[m/s]
-    v:              [0] #[m/s]
-    omega:          [0] #[rad/s]
-    major_semiaxis: [0.1] #[m]
-    minor_semiaxis: [0.1] #[m]
+    start_x:        [-7, 12] #[m]
+    start_y:        [10, 40] #[m]
+    start_theta:    [1.57, -1.57] #[rad]
+    u:              [0.5, 0.5] #[m/s]
+    v:              [0, 0] #[m/s]
+    omega:          [0, 0] #[rad/s]
+    major_semiaxis: [5, 5] #[m]
+    minor_semiaxis: [5, 5] #[m]
 
   reference:
     velocity: 3.0
@@ -32,5 +32,5 @@ mission_coordinator:
 Local_planner:
   step_size: 1
   weighted_map_border: 5
-  use_obstacles: false
+  use_obstacles: true
   use_extended_obstacles: false

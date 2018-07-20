@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load default parameters -->
+  <rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/gazebo.yaml"/>
+
+  <!-- Launch mission_control_sim -->
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control_gazebo" output="screen" respawn="true"/>
+   
+  <!-- Launch mission_control_sim -->
+  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log" respawn="true"/>
+
+  <!-- Launch mpc -->
+  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log" respawn="true"/>
+
+  <!-- Launch mission_control_sim -->
+  <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>
+	
+  <!-- Launch obstacle_detection -->
+  <node name="Obstacle_detection" pkg="nautonomous_obstacle_detection" type="Laserscan" output="log" respawn="true"/>
+
+  <!-- Launch EKF -->
+  <node name="Ekf" pkg="nautonomous_planning_and_control" type="ExtendedKalmanFilter_sim" output="log" respawn="true"/>
+
+  <!-- Gazebo control -->
+  <node name="Gazebo_control" pkg="nautonomous_planning_and_control" type="Gazebo_control" output="log" respawn="true"/>
+
+  <!-- Launch map_server -->
+  <include file="$(find nautonomous_map_server)/launch/nautonomous_map_server.launch" > </include>
+
+
+
+</launch>

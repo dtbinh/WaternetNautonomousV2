@@ -1,5 +1,5 @@
 mission_coordinator:
-  waypoints_x: [ 40.0, 40.0] #[m]
+  waypoints_x: [ 60.0, 60.0] #[m]
   waypoints_y: [  0.0, 0.0] #[m]
 
   waypoint_error:
@@ -8,14 +8,14 @@ mission_coordinator:
     decrease_waypoint_error: 1
 
   obstacles:
-    start_x:        [20] #[m]
+    start_x:        [30] #[m]
     start_y:        [0] #[m]
     start_theta:    [0] #[rad]
     u:              [0] #[m/s]
     v:              [0] #[m/s]
     omega:          [0] #[rad/s]
-    major_semiaxis: [3] #[m]
-    minor_semiaxis: [3] #[m]
+    major_semiaxis: [5] #[m]
+    minor_semiaxis: [5] #[m]
 
   reference:
     velocity: 3.0
@@ -23,15 +23,15 @@ mission_coordinator:
   number_of_fuzzy_waypoints: 5
   use_fuzzy: true
   use_PID: true
-  safety_margin: 3.0
+  safety_margin: 0
   frame_id: '/my_frame'
   verbose: true
 
 Route_generator:
-  k_max:         1.0 #
+  k_max:         0.5 #
   gamma_max:     1.0 #
   final_time:    10 #
-  safety_margin: 3.0
+  safety_margin: 0
 
 PID:
   max_theta_error:           0.75

@@ -133,13 +133,6 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	pcl::fromPCLPointCloud2(*cloud, *temp_cloud);
 
 	*transformed_cloud = *temp_cloud;
-	for (int i = 0; i < transformed_cloud->size(); i++)
-	{
-		transformed_cloud->points[i].x = (temp_cloud->points[i].x - transform_lidar_grid.getOrigin().x()) * cos(tf::getYaw(transform_lidar_grid.getRotation())) + (temp_cloud->points[i].y - transform_lidar_grid.getOrigin().y()) * sin(tf::getYaw(transform_lidar_grid.getRotation()));
-		transformed_cloud->points[i].y = -(temp_cloud->points[i].x - transform_lidar_grid.getOrigin().x()) * sin(tf::getYaw(transform_lidar_grid.getRotation())) + (temp_cloud->points[i].y - transform_lidar_grid.getOrigin().y()) * cos(tf::getYaw(transform_lidar_grid.getRotation()));
-	}
-
-	transformed_cloud->header.frame_id = "occupancy_grid";
 
 	*temp_2_cloud = *transformed_cloud;
 	temp_2_cloud->points.clear();
@@ -151,19 +144,14 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		y_pos = rint(temp_cloud->points[i].y/voxelSize)*voxelSize;
 		z_pos = rint(temp_cloud->points[i].z/voxelSize)*voxelSize;
 
-                if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < -0.5) && (z_pos > -3)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
+		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 0) && (z_pos > -3)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
 		{
 			x_pos_to_map = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize;
 			y_pos_to_map = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
-			ROS_DEBUG_STREAM("Point: (" << x_pos << ", " << y_pos << ") on the map is (" << x_pos_to_map << ", " << y_pos_to_map << ") mapped to (" << x_pos_to_map-map_center_x << ", " << y_pos_to_map-map_center_y<< ")" );
-			ROS_DEBUG_STREAM("Map value is: " << (int)grid_map.data[(floor((y_pos_to_map-map_center_y)/resolution)-1) * map_width + floor((x_pos_to_map-map_center_x)/resolution)] );
-			if ((int)weighted_map.data[(floor((y_pos_to_map-map_center_y)/resolution)-1) * map_width + floor((x_pos_to_map-map_center_x)/resolution)] < 99)
-			{
-				ROS_DEBUG_STREAM("Map is not occupied");
-				temp_2_cloud->push_back(transformed_cloud->points[i]);
-				grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
-				VoxelFound = true;
-			}
+
+                        temp_2_cloud->push_back(transformed_cloud->points[i]);
+                        grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] = grid[(int)((x_pos+(gridSize*voxelSize)/2)/voxelSize)][(int)((y_pos+(gridSize*voxelSize)/2)/voxelSize)] + 1;
+                        VoxelFound = true;
 		}
 	}
 
@@ -185,7 +173,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
 	visualization_msgs::MarkerArray Markers;
 	visualization_msgs::Marker oval;
-	oval.header.frame_id = "occupancy_grid";
+        oval.header.frame_id = "lidar_link";
 	oval.header.stamp = ros::Time::now();
 	oval.ns = "ovals";
 	oval.action = visualization_msgs::Marker::ADD;
@@ -410,60 +398,19 @@ void EKF_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& ekf_msg)
 	transformation2(1,1) = cos(ekf_msg->theta);*/
 }
 
-void make_weighted_map()
-{
-	weighted_map = grid_map;
-	for (int i = 0; i < map_width; i++)
-	{
-		for (int j = 0; j < map_height; j++)
-		{
-			if ((int)grid_map.data[j * map_width + i] > 99)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-		}
-	}
-
-	ROS_INFO_STREAM("Weighted map published");
-
-	
-	map_pub.publish(weighted_map);
-}
-
-void map_cb (const nav_msgs::OccupancyGrid::ConstPtr& map_msg)
-{
-	ROS_DEBUG_STREAM( "map received" );
-	grid_map = *map_msg;
-	temp_map = grid_map;
-	
-	ROS_DEBUG_STREAM( "Data length is: " << grid_map.data.size() );
-	map_width = (float)grid_map.info.width;
-	map_height = (float)grid_map.info.height;
- 
-	map_center_x = (float)grid_map.info.origin.position.x;
-	map_center_y = (float)grid_map.info.origin.position.y;
-
-	resolution = (float)grid_map.info.resolution;
-	ROS_DEBUG_STREAM( "Map center: " << map_center_x << ", " << map_center_y );
-	ROS_DEBUG_STREAM( "Map size: " << map_width << " x " << map_height );
-
-	make_weighted_map();
-}
-
 int main (int argc, char** argv)
 {
 	ros::init (argc, argv,"Obstacle_detection");
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
-	/*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
+        if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
 	   ros::console::notifyLoggerLevelsChanged();
-	}*/
+        }
 
 
 	pc_sub = nh.subscribe<sensor_msgs::PointCloud2>("/velodyne_points",1,cloud_cb);
 	EKF_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",1,EKF_cb);
-	map_sub = nh.subscribe<nav_msgs::OccupancyGrid>("/map",10,map_cb);
 
 	message_pub = nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",1);
 	marker_pub = nh_private.advertise<visualization_msgs::MarkerArray>("markers",10);
@@ -471,10 +418,6 @@ int main (int argc, char** argv)
 	map_pub = 	nh_private.advertise<nav_msgs::OccupancyGrid>("map_tree_opt",10);
 
 	ROS_DEBUG_STREAM("Messages setup, waiting for tf");
-
-	listener    = new tf::TransformListener();
-
-	ROS_DEBUG_STREAM("Tf found");
 
 	ros::Rate loop_rate(100);
 
@@ -487,20 +430,10 @@ int main (int argc, char** argv)
 	ghost_obstacle.major_semiaxis = 0.1;
 	ghost_obstacle.minor_semiaxis = 0.1;
 
-	ROS_DEBUG_STREAM("Ghost obstacle set");
-
-	ros::Duration(1).sleep();
-
 	ROS_INFO_STREAM("Build worked");
-	while (ros::ok())
-	{	
-		ROS_DEBUG_STREAM("Lookup transform");
-		listener->lookupTransform("/lidar_link", "/occupancy_grid", ros::Time(0), transform_lidar_grid);
-		ROS_DEBUG_STREAM("Transform found");
 
-		ros::spinOnce();
-		loop_rate.sleep();
-	}
-	ROS_DEBUG_STREAM("ROS ended");
+        ros::spin();
+
+        ROS_INFO_STREAM("ROS ended");
 	return 0;
 }

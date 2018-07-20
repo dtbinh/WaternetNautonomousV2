@@ -28,6 +28,7 @@ VectorXd NodeNrMatrix(4000000);
 ros::Subscriber map_sub;
 
 ros::Publisher map_pub;
+ros::Publisher map_2_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_2_pub;
 ros::Publisher markerarray_pub;
@@ -61,7 +62,7 @@ float dist;
 
 int weighted_map_border = 7;
 int number_of_borders = 30;
-int max_line_dist = 5;
+int max_line_dist = 10;
 
 int occupied_point_list = 0;
 int checks_ransac = 1000;
@@ -528,6 +529,7 @@ void detect_edges()
 		}
 	}
 
+	map_2_pub.publish(weighted_map);
 
 	for (i = 0; i < map_width; i++)
 	{
@@ -568,9 +570,14 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
+        if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
+                   ros::console::notifyLoggerLevelsChanged();
+        }
+
 	map_sub = 		nh.subscribe<nav_msgs::OccupancyGrid>("/map",10,map_cb);
 
-	map_pub = 		nh.advertise<nav_msgs::OccupancyGrid>("/map_tree_opt",10);
+	map_pub = 		nh.advertise<nav_msgs::OccupancyGrid>("/edge_map",10);
+	map_2_pub = 		nh.advertise<nav_msgs::OccupancyGrid>("/blur_map",10);
 	marker_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_2_pub = 		nh_private.advertise<visualization_msgs::Marker>("visualization_marker_2", 10);
 	markerarray_pub = 	nh_private.advertise<visualization_msgs::MarkerArray>("visualization_marker_array", 10);
@@ -587,7 +594,7 @@ int main (int argc, char** argv)
 
 	line_list.id = 0;
 	line_list.type = visualization_msgs::Marker::LINE_LIST;
-	line_list.scale.x = 0.02;
+        line_list.scale.x = 0.2;
 	line_list.color.r = 1.0;
 	line_list.color.a = 1.0;
 

@@ -10,6 +10,7 @@
 #include "geometry_msgs/Point.h"
 #include "nav_msgs/Path.h"
 #include <std_msgs/Float64.h>
+#include <nautonomous_planning_and_control_using_search/Quaternion_conversion.h>
 
 float temp_x;
 float temp_y;
@@ -66,22 +67,6 @@ bool current_state_received = false;
 bool path_received = false;
 bool borders_received = false;
 
-void toQuaternion(double pitch, double roll, double yaw)
-{
-        // Abbreviations for the various angular functions
-	double cy = cos(yaw * 0.5);
-	double sy = sin(yaw * 0.5);
-	double cr = cos(roll * 0.5);
-	double sr = sin(roll * 0.5);
-	double cp = cos(pitch * 0.5);
-	double sp = sin(pitch * 0.5);
-
-	q.w = cy * cr * cp + sy * sr * sp;
-	q.x = cy * sr * cp - sy * cr * sp;
-	q.y = cy * cr * sp + sy * sr * cp;
-	q.z = sy * cr * cp - cy * sr * sp;
-}
-
 
 void Initialization () // State 1
 {
@@ -98,7 +83,7 @@ void Initialization () // State 1
 		obstacle.pose.position.y = start_y[i];
 		obstacle.twist.linear.x = u[i];
 		obstacle.twist.linear.y = v[i];
-		obstacle.pose.orientation.z = start_theta[i];
+                obstacle.pose.orientation = toQuaternion(0, 0, start_theta[i]);
 		obstacle.twist.angular.z = omega[i];
 
 		obstacles.obstacles.push_back(obstacle);
@@ -110,14 +95,13 @@ void Initialization () // State 1
 	start_state.y = waypoint_y[waypoint_iterator];
 	goal_state.x = waypoint_x[waypoint_iterator + 1];
 	goal_state.y = waypoint_y[waypoint_iterator + 1];
-
-	gazebo_pub.publish(start_state);
 }
 
 void Call_Route_generator()
 {
 	goal_pub.publish(goal_state);
 	ros::Duration(0.01).sleep();
+
 	if(current_state_received)
 	{
 		start_pub.publish(current_state);
@@ -133,6 +117,13 @@ void Call_MPC_generator()
 	if(path_received)
 	{
 		current_state_pub.publish(current_state);
+                for (int i = 0; i < start_x.size(); i++)
+                {
+                        obstacles.obstacles[i].pose.position.x += u[i] * cos(start_theta[i]);
+                        obstacles.obstacles[i].pose.position.y += u[i] * sin(start_theta[i]);
+                }
+
+                obstacles_pub.publish(obstacles);
 	}
 }
 
@@ -150,20 +141,12 @@ void route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 	path_received = true;
 }
 
-void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
-{
-	obstacles = *obstacle_msg;
-	obstacles_pub.publish(obstacles);
-}
-
 void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
 {
 	borders = *border_msg;
 	borders_pub.publish(border_msg);
 	
 	borders_received = true;
-
-	Initialization();
 
 	ros::Duration(1).sleep();
 }
@@ -175,7 +158,7 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
-	ros::Duration(5).sleep();
+	ros::Duration(1).sleep();
 
 	nh_private.getParam("reference/velocity", ref_velocity);
 	nh_private.getParam("safety_margin", safety_margin);
@@ -208,23 +191,23 @@ int main(int argc, char **argv)
 	obstacle_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Obstacle>("obstacle",10);
 	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
 	borders_pub =	 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("borders",10);
-	gazebo_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("set_gazebo_start",10);
 
 	next_state_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",10, action_cb);
 	route_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/route", 10, route_cb);
-	obstacles_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obstacles", 10, obstacle_cb);
 	borders_sub =	 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Map_modifier/borders", 10, borders_cb);
 
 	ros::Rate loop_rate(100);
 
 	ros::Duration(1).sleep();
 
+	Initialization ();
+
 	while (ros::ok())
 	{	
 		Current_loop_time = ros::Time::now().toSec();
 		if(borders_received)
 		{
-			if (Current_loop_time - Time_of_last_path_call > 2)
+			if (Current_loop_time - Time_of_last_path_call > 20)
 			{
 				Time_of_last_path_call = Current_loop_time;
 				Call_Route_generator();
