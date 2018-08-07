@@ -19,7 +19,7 @@ for i = 2:1000
     try
         tracked_data(i) = receive(obstacle_track_sub,1);
         detect_data(i) = obstacle_detect_sub.LatestMessage;
-        true_data(i) = obstacle_true_sub.LatestMessage;
+       true_data(i) = obstacle_true_sub.LatestMessage;
     catch
         break
     end

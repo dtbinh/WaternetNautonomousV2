@@ -56,8 +56,8 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
                 Aobst = obstacles.obstacles[i].major_semiaxis;
                 Bobst = obstacles.obstacles[i].minor_semiaxis;
 
-                obstacle_marker.scale.x = Aobst*2;
-                obstacle_marker.scale.y = Bobst*2;
+                obstacle_marker.scale.x = Aobst;
+                obstacle_marker.scale.y = Bobst;
                 obstacle_marker.pose.position.x = Xobst;
                 obstacle_marker.pose.position.y = Yobst;
                 obstacle_marker.pose.orientation = toQuaternion(0, 0, THobst);
@@ -110,8 +110,8 @@ void route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 {
 	route = *route_msg;
 	route_marker.points.clear();
-	route_marker.color.b = 1.0;
-	route_marker.color.g = 0.0;
+        route_marker.color.b = 1.0;
+        route_marker.color.g = 0.0;
 	route_marker.color.r = 0.0;
 	route_marker.color.a = 1.0;
 	for (int i = 0; i < route.poses.size(); i++)
@@ -129,8 +129,8 @@ void non_smooth_route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 {
 	route = *route_msg;
 	route_marker.points.clear();
-	route_marker.color.b = 0.0;
-	route_marker.color.g = 1.0;
+        route_marker.color.b = 0.0;
+        route_marker.color.g = 1.0;
 	route_marker.color.r = 0.0;
 	route_marker.color.a = 1.0;
 	for (int i = 0; i < route.poses.size(); i++)
@@ -188,7 +188,7 @@ int main(int argc, char **argv)
 	obstacle_marker.type = visualization_msgs::Marker::CYLINDER;
 
 	obstacle_marker.scale.z = 0.5;
-	obstacle_marker.color.r = 1.0;
+        obstacle_marker.color.r = 0.0;
 	obstacle_marker.color.b = 1.0;
 	obstacle_marker.color.a = 1.0;
 

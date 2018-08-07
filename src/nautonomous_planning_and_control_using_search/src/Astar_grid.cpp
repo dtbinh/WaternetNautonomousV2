@@ -750,9 +750,9 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh_private("~");
 
 
-        if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
+        /*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
    		ros::console::notifyLoggerLevelsChanged();
-        }
+        }*/
 
         nh_private.getParam("step_size", step_size);
         nh_private.getParam("weighted_map_border", weighted_map_border);

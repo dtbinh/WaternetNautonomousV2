@@ -291,7 +291,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 					geometry_msgs::Point p;
 					p.x = Points->at(j).getX() * voxelSize - (gridSize * voxelSize)/2;
 					p.y = Points->at(j).getY() * voxelSize - (gridSize * voxelSize)/2;
-					p.z = 0;
+                                        p.z = 1;
 					ROS_DEBUG_STREAM( "Blob: " << i << " Point: (" << p.x << "," << p.y << ")" ); 
 					PointsMatrix(j,0) = Points->at(j).getX();
 					PointsMatrix(j,1) = Points->at(j).getY();
@@ -353,7 +353,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 				obstacle.minor_semiaxis = fmax(second_principle_axis * voxelSize * 2,voxelSize);
 
 				ROS_DEBUG_STREAM( "Marker is FPA: " << first_principle_axis << " SPA: " << second_principle_axis << " angle: " << angle << " X: " << AvgX << " Y: " << AvgY ); 
-				Markers.markers.push_back(oval);
+                                Markers.markers.push_back(oval);
 				obstacles.obstacles.push_back(obstacle);
 			}
 		}
