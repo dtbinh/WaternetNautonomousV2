@@ -145,6 +145,10 @@ void pose_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg)
 void route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 {
 	Full_path = *route_msg;
+
+	waypoint_iterator_2 = 1;
+        waypoint.stage.x = Full_path.poses[waypoint_iterator_2].pose.position.x;
+        waypoint.stage.y = Full_path.poses[waypoint_iterator_2].pose.position.y;
 	std::cout << "Received route" <<std::endl;
 	path_received = true;
 }
