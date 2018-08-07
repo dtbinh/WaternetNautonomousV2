@@ -38,6 +38,8 @@
 		<arg name="sensor_group"  			value="true"/>
 		<arg name="actuation_group"			value="true"/>
 
+		<arg name="camera_group"  			value="false"/>
+		<arg name="lidar_group"  			value="false"/>
 		<arg name="map_cropper_group"  			value="false"/>
 		<arg name="routing_group"  			value="false"/>
 		<arg name="costmap_group"  			value="false"/>
