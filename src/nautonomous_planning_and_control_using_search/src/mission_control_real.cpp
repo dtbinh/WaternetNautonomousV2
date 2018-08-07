@@ -32,11 +32,13 @@ ros::Publisher	ref_pub;
 ros::Publisher	obstacle_pub;
 ros::Publisher	obstacles_pub;
 ros::Publisher	borders_pub;
+ros::Publisher	action_pub;
 
 ros::Subscriber	next_state_sub;
 ros::Subscriber	route_sub;
 ros::Subscriber	obstacles_sub;
 ros::Subscriber	borders_sub;
+ros::Subscriber	action_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable start_state;
@@ -186,6 +188,13 @@ void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
 	ros::Duration(1).sleep();
 }
 
+void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
+{
+	action.linear.x = action_msg->T_l;
+	action.angular.z = action_msg->T_r;
+	action_pub.publish(action);
+}
+
 int main(int argc, char **argv)
 {
  	/* Initialize ROS */
@@ -212,11 +221,13 @@ int main(int argc, char **argv)
 	obstacle_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Obstacle>("obstacle",10);
 	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
 	borders_pub =	 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("borders",10);
+	action_pub =	 	nh_private.advertise<geometry_msgs::Twist>("/cmd_vel",10);
 
         next_state_sub = 	nh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/state/pose/robot_pose_ekf/odom_combined",10, pose_cb);
 	route_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/route", 10, route_cb);
 	obstacles_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obstacles", 10, obstacle_cb);
 	borders_sub =	 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Map_modifier/borders", 10, borders_cb);
+	action_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state", 10, action_cb);
 
 	ros::Rate loop_rate(100);
 
