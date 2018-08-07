@@ -37,18 +37,18 @@
 		<arg name="navigation_group"  			value="true"/>
 		<arg name="sensor_group"  			value="true"/>
 		<arg name="actuation_group"			value="true"/>
+		<arg name="pose_group"  			value="true"/>
 
 		<arg name="camera_group"  			value="false"/>
 		<arg name="lidar_group"  			value="false"/>
 		<arg name="map_cropper_group"  			value="false"/>
 		<arg name="routing_group"  			value="false"/>
 		<arg name="costmap_group"  			value="false"/>
-		<arg name="coordinator_group"  			value="false"/>
-		<arg name="pose_group"  			value="false"/>
+		<arg name="coordinator_group"  			value="false"/>		
 		<arg name="planner_group"  			value="false"/>
 		<arg name="webserver_group" 			value="false"/>
 		<arg name="coordinate_simulate_group" 		value="false"/>
-		<arg name="operation_name_param"  		value="coenhaven"/>
+		<arg name="operation_name_param"  		value="Prodock_inverted"/>
 		<arg name="negate_image_param" 			value="false"/>
 
 		<arg name="cmd_vel_topic"			value="mission_coordinator/cmd_vel"/>
