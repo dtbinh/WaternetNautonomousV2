@@ -117,7 +117,7 @@ void Call_PID_generator()
 {    
 	if(path_received)
         {
-                if (sqrt(pow(current_state.x - waypoint.stage.x,2) + pow(current_state.y - waypoint.stage.y,2)) < 5)
+                while (sqrt(pow(current_state.x - waypoint.stage.x,2) + pow(current_state.y - waypoint.stage.y,2)) < 5)
                 {
                     waypoint_iterator_2++;
                     waypoint.stage.x = Full_path.poses[waypoint_iterator_2].pose.position.x;
@@ -125,7 +125,7 @@ void Call_PID_generator()
                 }
                 ref_pub.publish(waypoint);
 		current_state_pub.publish(current_state);
-		ROS_INFO_STREAM("Call mpc");
+                ROS_INFO_STREAM("Call pid");
 	}
 }
 

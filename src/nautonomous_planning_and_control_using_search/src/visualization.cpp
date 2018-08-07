@@ -6,6 +6,7 @@
 #include <geometry_msgs/Point.h>
 #include <nautonomous_mpc_msgs/Obstacles.h>
 #include <nautonomous_mpc_msgs/StageVariable.h>
+#include <nautonomous_mpc_msgs/Waypoint.h>
 #include <nav_msgs/Path.h>
 #include <nautonomous_planning_and_control_using_search/Quaternion_conversion.h>
 #include <geometry_msgs/PoseStamped.h>
@@ -22,6 +23,7 @@ ros::Subscriber position_sub;
 ros::Subscriber route_sub;
 ros::Subscriber route2_sub;
 ros::Subscriber goal_sub;
+ros::Subscriber ref_sub;
 
 nautonomous_mpc_msgs::Obstacles obstacles;
 nav_msgs::Path route;
@@ -144,6 +146,19 @@ void non_smooth_route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 	}
 }
 
+void ref_cb(const nautonomous_mpc_msgs::Waypoint::ConstPtr& ref_msg)
+{
+        std::cout << "Pos found" << std::endl;
+
+        goal_marker.scale.x = 5;
+        goal_marker.scale.y = 5;
+        goal_marker.pose.position.x = ref_msg->stage.x;
+        goal_marker.pose.position.y = ref_msg->stage.y;
+        goal_marker.ns = "Goal";
+
+        marker_pub_5.publish(goal_marker);
+}
+
 int main(int argc, char **argv)
 {
  	/* Initialize ROS */
@@ -161,6 +176,7 @@ int main(int argc, char **argv)
 	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",1,obstacle_cb);
 	position_sub = 		nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/MPC/next_state",1,position_cb);
         goal_sub = 		nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal_state",1,goal_cb);
+        ref_sub = 		nh.subscribe<nautonomous_mpc_msgs::Waypoint>("/mission_coordinator/reference_state",1,ref_cb);
         route_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/non_smooth_route",1,non_smooth_route_cb);
 	route2_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/route",1,route_cb);
 
