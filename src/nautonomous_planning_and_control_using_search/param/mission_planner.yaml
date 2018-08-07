@@ -1,0 +1,23 @@
+Local_planner:
+  step_size: 5
+  weighted_map_border: 10
+  use_obstacles: true
+  use_extended_obstacles: false
+
+PID:
+  max_theta_error:           0.75
+  parallel_error_gain:       0.25
+  perpendicular_error_gain:  3
+  velocity_error_gain:       5
+
+  max_ut: 1
+  max_uf: 1
+  min_ut: -1
+  min_uf: -1
+  
+  fuzzy:
+    use_fuzzy: false
+    number_of_fuzzy_waypoints: 5
+    fuzzy_min_distance: 2
+    fuzzy_max_distance: 10
+    fuzzy_cut_distance: 5

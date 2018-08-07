@@ -28,6 +28,7 @@ double safety_margin;
 ros::Publisher	current_state_pub;
 ros::Publisher	start_pub;
 ros::Publisher	goal_pub;
+ros::Publisher	ref_pub;
 ros::Publisher	obstacle_pub;
 ros::Publisher	obstacles_pub;
 ros::Publisher	borders_pub;
@@ -46,6 +47,8 @@ nautonomous_mpc_msgs::Obstacle obstacle;
 nautonomous_mpc_msgs::Obstacles obstacles;
 nautonomous_mpc_msgs::Obstacle closest_obstacle;
 nautonomous_mpc_msgs::Obstacles borders;
+
+nautonomous_mpc_msgs::Waypoint waypoint;
 
 geometry_msgs::PoseWithCovarianceStamped pose_state;
 
@@ -72,6 +75,7 @@ double Time_of_last_obstacle_call;
 double const_angle_diff = 0.5;
 
 int waypoint_iterator = 0;
+int waypoint_iterator_2 = 0;
 
 bool current_state_received = false;
 bool path_received = false;
@@ -107,10 +111,17 @@ void Call_Route_generator()
 	}
 }
 
-void Call_MPC_generator()
+void Call_PID_generator()
 {    
 	if(path_received)
-	{
+        {
+                if (sqrt(pow(current_state.x - waypoint.stage.x,2) + pow(current_state.y - waypoint.stage.y,2)) < 5)
+                {
+                    waypoint_iterator_2++;
+                    waypoint.stage.x = Full_path.poses[waypoint_iterator_2].pose.position.x;
+                    waypoint.stage.y = Full_path.poses[waypoint_iterator_2].pose.position.y;
+                }
+                ref_pub.publish(waypoint);
 		current_state_pub.publish(current_state);
 		ROS_INFO_STREAM("Call mpc");
 	}
@@ -193,6 +204,7 @@ int main(int argc, char **argv)
 	current_state_pub = 	nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("current_state",10);
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_state",10);
 	goal_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("goal_state",10);
+        ref_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Waypoint>("reference_state",10);
 	obstacle_pub = 		nh_private.advertise<nautonomous_mpc_msgs::Obstacle>("obstacle",10);
 	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
 	borders_pub =	 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("borders",10);
@@ -216,7 +228,7 @@ int main(int argc, char **argv)
 		Current_loop_time = ros::Time::now().toSec();
 		if(borders_received && current_state_received)
 		{
-			if (Current_loop_time - Time_of_last_path_call > 2)
+                        if (Current_loop_time - Time_of_last_path_call > 20)
 			{
 				Time_of_last_path_call = Current_loop_time;
 				Call_Route_generator();
@@ -224,7 +236,7 @@ int main(int argc, char **argv)
 			if (Current_loop_time - Time_of_last_mpc_call > 1)
 			{
 				Time_of_last_mpc_call = Current_loop_time;
-				Call_MPC_generator();
+                                Call_PID_generator();
 			}		
 		}
 

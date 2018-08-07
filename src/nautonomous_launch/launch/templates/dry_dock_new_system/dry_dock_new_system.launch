@@ -56,5 +56,8 @@
 
 	<node name="rviz_visualizer" pkg="rviz" type="rviz" />
 
+  	<!-- Launch mission_control_sim -->
+  	<node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="screen" respawn="true"/>
+
 
 </launch>
