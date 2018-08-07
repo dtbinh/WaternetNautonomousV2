@@ -12,7 +12,7 @@ classdef Obstacle < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        MD5Checksum = 'f6e837948ca4773410cda0f7f6913dbb' % The MD5 Checksum of the message definition
+        MD5Checksum = '4a1ccb13cfad8ae77aa473555e3614e8' % The MD5 Checksum of the message definition
     end
     
     properties (Access = protected)
@@ -29,6 +29,7 @@ classdef Obstacle < robotics.ros.Message
         Twist
         MajorSemiaxis
         MinorSemiaxis
+        Ns
     end
     
     properties (Access = protected)
@@ -36,8 +37,8 @@ classdef Obstacle < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        PropertyList = {'MajorSemiaxis', 'MinorSemiaxis', 'Pose', 'Twist'} % List of non-constant message properties
-        ROSPropertyList = {'major_semiaxis', 'minor_semiaxis', 'pose', 'twist'} % List of non-constant ROS message properties
+        PropertyList = {'MajorSemiaxis', 'MinorSemiaxis', 'Ns', 'Pose', 'Twist'} % List of non-constant message properties
+        ROSPropertyList = {'major_semiaxis', 'minor_semiaxis', 'ns', 'pose', 'twist'} % List of non-constant ROS message properties
     end
     
     methods
@@ -149,6 +150,18 @@ classdef Obstacle < robotics.ros.Message
             
             obj.JavaMessage.setMinorSemiaxis(minorsemiaxis);
         end
+        
+        function ns = get.Ns(obj)
+            %get.Ns Get the value for property Ns
+            ns = int16(obj.JavaMessage.getNs);
+        end
+        
+        function set.Ns(obj, ns)
+            %set.Ns Set the value for property Ns
+            validateattributes(ns, {'numeric'}, {'nonempty', 'scalar'}, 'Obstacle', 'Ns');
+            
+            obj.JavaMessage.setNs(ns);
+        end
     end
     
     methods (Access = protected)
@@ -173,6 +186,7 @@ classdef Obstacle < robotics.ros.Message
             % Iterate over all primitive properties
             cpObj.MajorSemiaxis = obj.MajorSemiaxis;
             cpObj.MinorSemiaxis = obj.MinorSemiaxis;
+            cpObj.Ns = obj.Ns;
             
             % Recursively copy compound properties
             cpObj.Pose = copy(obj.Pose);
@@ -183,6 +197,7 @@ classdef Obstacle < robotics.ros.Message
             %reload Called by loadobj to assign properties
             obj.MajorSemiaxis = strObj.MajorSemiaxis;
             obj.MinorSemiaxis = strObj.MinorSemiaxis;
+            obj.Ns = strObj.Ns;
             obj.Pose = feval([obj.GeometryMsgsPoseClass '.loadobj'], strObj.Pose);
             obj.Twist = feval([obj.GeometryMsgsTwistClass '.loadobj'], strObj.Twist);
         end
@@ -200,6 +215,7 @@ classdef Obstacle < robotics.ros.Message
             
             strObj.MajorSemiaxis = obj.MajorSemiaxis;
             strObj.MinorSemiaxis = obj.MinorSemiaxis;
+            strObj.Ns = obj.Ns;
             strObj.Pose = saveobj(obj.Pose);
             strObj.Twist = saveobj(obj.Twist);
         end

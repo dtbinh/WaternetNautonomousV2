@@ -1,0 +1,6 @@
+free_thresh: 0.196
+image: amsterdam_cropped_Moeselhaven.png
+negate: 0
+occupied_thresh: 0.65
+origin: [623608.11, 5806197.58, -0.03070550159469011]
+resolution: 0.5

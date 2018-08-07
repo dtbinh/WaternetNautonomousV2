@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+   
+  <rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/local_planner.yaml"/>
+
+  <!-- Launch mission_control_sim -->
+  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="screen" respawn="true"/>
+
+  <!-- Launch map_server -->
+  <include file="$(find nautonomous_map_server)/launch/nautonomous_map_server.launch" > </include>
+
+  <!-- Launch mission_control_sim -->
+  <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>
+
+</launch>

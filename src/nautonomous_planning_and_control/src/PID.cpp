@@ -56,7 +56,7 @@ VectorXd temp(4);
 /* A template for testing of the solver. */
 void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 {
-	std::cout << "Start PID" << std::endl;
+        ROS_DEBUG_STREAM("Start PID" );
 
 	current_state = *state_msg;
 	
@@ -70,9 +70,11 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 	Transformation(1,3) = current_state.y;
 
 
+        double start_time =ros::Time::now().toSec();
+
 	if (not(use_fuzzy))
 	{
-		std::cout << "Don't use fuzzy" << std::endl;
+                ROS_DEBUG_STREAM("Don't use fuzzy" );
 		temp[0] = reference_state.stage.x;
 		temp[1] = reference_state.stage.y;
 		temp[2] = 0;
@@ -88,30 +90,30 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 		{
 			uf = 0;
 			ut = copysign(1,a2);
-			std::cout << "Facing the wrong way" << std::endl;
+                        ROS_DEBUG_STREAM("Facing the wrong way" );
 		}
 		else if (fabs(theta_error) > max_theta_error)
 		{
 			uf = 0;
 			ut = copysign(1,a2);
-			std::cout << "Angle error is too large" << std::endl;
+                        ROS_DEBUG_STREAM("Angle error is too large" );
 		}
 		else
 		{
 			integral += (reference_state.stage.u - current_state.u) * sampling_time;
 			uf = fmax(fmin(uf_gain*a1 + u_gain*(reference_state.stage.u - current_state.u) + I_gain * integral,max_uf),min_uf);
 			ut = fmax(fmin(ut_gain*theta_error,max_ut),min_ut);
-			std::cout << "Calculating actions" << std::endl;
+                        ROS_DEBUG_STREAM("Calculating actions" );
 		}
 
-		std::cout << "Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << uf << " Turning action: " << ut << " Theta_error: " << theta_error << std::endl;
+                ROS_DEBUG_STREAM("Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << uf << " Turning action: " << ut << " Theta_error: " << theta_error );
 	}
 
 	else
 	{
 		if (!reference_states.stages.empty())
 		{
-			std::cout << "Use fuzzy" << std::endl;
+                        ROS_DEBUG_STREAM("Use fuzzy" );
 			uf = 0;
 			ut = 0;
 			fuzzy_total_partition = 0;
@@ -147,7 +149,7 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 					uf += fuzzy_partition * temp_uf;
 					ut += fuzzy_partition * temp_ut;
 
-					std::cout << "Facing the wrong way, ut = " << temp_ut  << std::endl;
+                                        ROS_DEBUG_STREAM("Facing the wrong way, ut = " << temp_ut  );
 				}
 				else if (fabs(theta_error) > max_theta_error)
 				{
@@ -156,7 +158,7 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 					uf += fuzzy_partition * temp_uf;
 					ut += fuzzy_partition * temp_ut;
 
-					std::cout << "Angle error is too large, ut = " << temp_ut << std::endl;
+                                        ROS_DEBUG_STREAM("Angle error is too large, ut = " << temp_ut );
 				}
 				else
 				{	
@@ -165,14 +167,14 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 					uf += fuzzy_partition * temp_uf;
 					ut += fuzzy_partition * temp_ut;
 
-					std::cout << "Calculating actions" << std::endl;
-					std::cout << "Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << temp_uf << " Turning action: " << temp_ut << " Theta_error: " << theta_error << " Fuzzy partition: " << fuzzy_partition <<  std::endl;
+                                        ROS_DEBUG_STREAM("Calculating actions" );
+                                        ROS_DEBUG_STREAM("Parallel error: " << a1 << " Perpendicular error: " << a2 << " Forward action: " << temp_uf << " Turning action: " << temp_ut << " Theta_error: " << theta_error << " Fuzzy partition: " << fuzzy_partition );
 				}			
 			}
 		}
 		else
 		{
-			std::cout << "Reference states is empty" <<std::endl;
+                        ROS_DEBUG_STREAM("Reference states is empty" );
 			uf = 0;
 			ut = 0;
 			fuzzy_total_partition = 1;
@@ -180,10 +182,11 @@ void state_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg )
 		uf /= fuzzy_total_partition;
 		ut /= fuzzy_total_partition;
 	}
-	std::cout << "Publish action" << std::endl;
+        ROS_DEBUG_STREAM("Publish action" );
 	temp_state.T_l = fmax(fmin(uf,max_uf),min_uf);
 	temp_state.T_r = fmax(fmin(ut,max_ut),min_ut);
 
+        ROS_INFO_STREAM(ros::Time::now().toSec() - start_time);
 	action_pub.publish(temp_state);
 
 }
@@ -196,7 +199,7 @@ void ref_cb( const nautonomous_mpc_msgs::Waypoint::ConstPtr& ref_msg )
 void refs_cb( const nautonomous_mpc_msgs::WaypointList::ConstPtr& refs_msg )
 {
 	reference_states = *refs_msg;
-	std::cout << "Received references" << std::endl;
+        ROS_DEBUG_STREAM("Received references" );
 }
 
 int main (int argc, char** argv)

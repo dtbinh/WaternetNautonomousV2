@@ -32,11 +32,14 @@ ros::Publisher	obstacle_pub;
 ros::Publisher	obstacles_pub;
 ros::Publisher	borders_pub;
 ros::Publisher	gazebo_pub;
+ros::Publisher	ekf_pub;
 
 ros::Subscriber	next_state_sub;
+ros::Subscriber	ekf_sub;
 ros::Subscriber	route_sub;
 ros::Subscriber	obstacles_sub;
 ros::Subscriber	borders_sub;
+ros::Subscriber	action_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable start_state;
@@ -55,6 +58,8 @@ nav_msgs::Path Full_path;
 geometry_msgs::Point p;
 geometry_msgs::Quaternion q;
 
+geometry_msgs::Twist action;
+
 tf::StampedTransform transform_world_grid;
 tf::StampedTransform transform_lidar_grid;
 
@@ -68,6 +73,7 @@ double Current_loop_time;
 double Time_of_last_path_call;
 double Time_of_last_mpc_call;
 double Time_of_last_obstacle_call;
+double const_angle_diff = 0.5;
 
 int waypoint_iterator = 0;
 
@@ -146,10 +152,22 @@ void Call_MPC_generator()
 
 void pose_cb(const geometry_msgs::PoseStamped::ConstPtr& pose_msg)
 {
+	nautonomous_mpc_msgs::StageVariable pre_ekf_state;
+
 	pose_state = *pose_msg;	
-	current_state.x = (pose_state.pose.position.x - transform_world_grid.getOrigin().x()) * cos(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.position.y - transform_world_grid.getOrigin().y()) * sin(tf::getYaw(transform_world_grid.getRotation()));
-	current_state.y = -(pose_state.pose.position.x - transform_world_grid.getOrigin().x()) * sin(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.position.y - transform_world_grid.getOrigin().y()) * cos(tf::getYaw(transform_world_grid.getRotation()));
-	current_state.theta = toEulerAngle(pose_state.pose.orientation) + angle_offset;
+	pre_ekf_state.x = (pose_state.pose.position.x - transform_world_grid.getOrigin().x()) * cos(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.position.y - transform_world_grid.getOrigin().y()) * sin(tf::getYaw(transform_world_grid.getRotation()));
+	pre_ekf_state.y = -(pose_state.pose.position.x - transform_world_grid.getOrigin().x()) * sin(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.position.y - transform_world_grid.getOrigin().y()) * cos(tf::getYaw(transform_world_grid.getRotation()));
+	pre_ekf_state.theta = toEulerAngle(pose_state.pose.orientation) + angle_offset;
+	pre_ekf_state.T_r = (action.linear.x + action.angular.z)/2.0;
+	pre_ekf_state.T_l = (action.linear.x - action.angular.z)/2.0;
+
+	ekf_pub.publish(pre_ekf_state);
+}
+
+void ekf_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& pose_msg)
+{
+	current_state = *pose_msg;	
+	
 	current_state_received = true;
 
 	Check_if_goal_is_close();
@@ -167,12 +185,12 @@ void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
 	obstacles.obstacles.clear();
 	for (int i = 0; i < obstacle_msg->obstacles.size(); i++)
 	{
-		/*obstacle.pose.position.x = (obstacle_msg->obstacles.at(i).pose.position.x - transform_lidar_grid.getOrigin().x()) * cos(tf::getYaw(transform_lidar_grid.getRotation())) + (obstacle_msg->obstacles.at(i).pose.position.y - transform_lidar_grid.getOrigin().y()) * sin(tf::getYaw(transform_lidar_grid.getRotation()));
+                /*obstacle.pose.position.x = (obstacle_msg->obstacles.at(i).pose.position.x - transform_lidar_grid.getOrigin().x()) * cos(tf::getYaw(transform_lidar_grid.getRotation())) + (obstacle_msg->obstacles.at(i).pose.position.y - transform_lidar_grid.getOrigin().y()) * sin(tf::getYaw(transform_lidar_grid.getRotation()));
 		obstacle.pose.position.y = -(obstacle_msg->obstacles.at(i).pose.position.x - transform_lidar_grid.getOrigin().x()) * sin(tf::getYaw(transform_lidar_grid.getRotation())) + (obstacle_msg->obstacles.at(i).pose.position.y - transform_lidar_grid.getOrigin().y()) * cos(tf::getYaw(transform_lidar_grid.getRotation()));
-		obstacle.pose.orientation = toQuaternion(0,0,toEulerAngle(obstacle_msg->obstacles.at(i).pose.orientation) - tf::getYaw(transform_lidar_grid.getRotation()));*/
-		obstacle.pose.position.x = obstacle_msg->obstacles.at(i).pose.position.x;
+                obstacle.pose.orientation = toQuaternion(0,0,toEulerAngle(obstacle_msg->obstacles.at(i).pose.orientation) - tf::getYaw(transform_lidar_grid.getRotation()));*/
+                obstacle.pose.position.x = obstacle_msg->obstacles.at(i).pose.position.x;
 		obstacle.pose.position.y = obstacle_msg->obstacles.at(i).pose.position.y;
-		obstacle.pose.orientation = obstacle_msg->obstacles.at(i).pose.orientation;
+                obstacle.pose.orientation = obstacle_msg->obstacles.at(i).pose.orientation;
 		obstacle.minor_semiaxis = obstacle_msg->obstacles.at(i).minor_semiaxis;
 		obstacle.major_semiaxis = obstacle_msg->obstacles.at(i).major_semiaxis;
 		obstacles.obstacles.push_back(obstacle);
@@ -192,6 +210,11 @@ void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
 	borders_received = true;
 
 	ros::Duration(1).sleep();
+}
+
+void action_cb(const geometry_msgs::Twist::ConstPtr& action_msg)
+{
+	action = *action_msg;
 }
 
 int main(int argc, char **argv)
@@ -252,11 +275,14 @@ int main(int argc, char **argv)
 	obstacles_pub = 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("obstacles",10);
 	borders_pub =	 	nh_private.advertise<nautonomous_mpc_msgs::Obstacles>("borders",10);
 	gazebo_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("set_gazebo_start",10);
+	ekf_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_ekf",10);
 
 	next_state_sub = 	nh.subscribe<geometry_msgs::PoseStamped>("/predict_pose",10, pose_cb);
+	ekf_sub = 		nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/Ekf/next_state",10, ekf_cb);
 	route_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/route", 10, route_cb);
 	obstacles_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obstacles", 10, obstacle_cb);
 	borders_sub =	 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Map_modifier/borders", 10, borders_cb);
+	action_sub = 		nh.subscribe<geometry_msgs::Twist>("cmd_vel",10,action_cb);
 
 	ros::Rate loop_rate(100);
 

@@ -27,6 +27,7 @@ include_directories(
 
 
 add_executable(Ellipse src/Ellipse.cpp)
+add_executable(Ellipse_without_tf src/Ellipse_without_tf.cpp)
 add_executable(Laserscan src/Laserscan.cpp)
 add_executable(map_modifier src/Map_modifier.cpp)
 add_executable(Obstacle_tracker src/Obstacle_tracker.cpp)
@@ -37,9 +38,9 @@ add_executable(TestFile_2 src/TestFile_2.cpp)
 add_executable(visualization src/visualization.cpp)
 
 
-target_link_libraries(Ellipse ${catkin_LIBRARIES})
+target_link_libraries(Ellipse ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(Ellipse_without_tf ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(Laserscan ${catkin_LIBRARIES})
-target_link_libraries(Ellipse ${OpenCV_LIBRARIES})
 target_link_libraries(map_modifier ${catkin_LIBRARIES} )
 target_link_libraries(Obstacle_tracker ${catkin_LIBRARIES} )
 target_link_libraries(Obstacle_tracker_V2 ${catkin_LIBRARIES} )

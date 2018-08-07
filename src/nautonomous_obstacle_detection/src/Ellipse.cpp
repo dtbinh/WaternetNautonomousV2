@@ -151,7 +151,7 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 		y_pos = rint(temp_cloud->points[i].y/voxelSize)*voxelSize;
 		z_pos = rint(temp_cloud->points[i].z/voxelSize)*voxelSize;
 
-		if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < 0) && (z_pos > -3)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
+                if (((x_pos > -(gridSize*voxelSize)/2) && (x_pos < (gridSize*voxelSize)/2) && (y_pos > -(gridSize*voxelSize)/2) && (y_pos < (gridSize*voxelSize)/2) && (z_pos < -0.5) && (z_pos > -3)) && not((x_pos > (BoatLengthOffset - BoatLength/2)) && (x_pos < (BoatLengthOffset + BoatLength/2)) && (y_pos > (BoatWidthOffset - BoatWidth/2)) && (y_pos < (BoatWidthOffset + BoatWidth/2))))
 		{
 			x_pos_to_map = rint(transformed_cloud->points[i].x/voxelSize)*voxelSize;
 			y_pos_to_map = rint(transformed_cloud->points[i].y/voxelSize)*voxelSize;
@@ -470,9 +470,15 @@ int main (int argc, char** argv)
 	Transformed_pcl_pub = nh_private.advertise<sensor_msgs::PointCloud2>("transformed_pcl",10);
 	map_pub = 	nh_private.advertise<nav_msgs::OccupancyGrid>("map_tree_opt",10);
 
+	ROS_DEBUG_STREAM("Messages setup, waiting for tf");
+
 	listener    = new tf::TransformListener();
 
+	ROS_DEBUG_STREAM("Tf found");
+
 	ros::Rate loop_rate(100);
+
+	ROS_DEBUG_STREAM("Loop rate set");
 
 	ghost_obstacle.pose.position.x = 1000;
 	ghost_obstacle.pose.position.y = 1000;
@@ -480,6 +486,8 @@ int main (int argc, char** argv)
 	ghost_obstacle.pose.orientation = toQuaternion(0,0,0);
 	ghost_obstacle.major_semiaxis = 0.1;
 	ghost_obstacle.minor_semiaxis = 0.1;
+
+	ROS_DEBUG_STREAM("Ghost obstacle set");
 
 	ros::Duration(1).sleep();
 
@@ -493,5 +501,6 @@ int main (int argc, char** argv)
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
+	ROS_DEBUG_STREAM("ROS ended");
 	return 0;
 }

@@ -59,8 +59,8 @@ int main (int argc, char** argv)
 
 		for (int i = 0; i < obstacles.obstacles.size(); i++)
 		{
-			noise_x[i] = noise_cov * (rand() % 100 - 50);
-			noise_y[i] = noise_cov * (rand() % 100 - 50);
+                        noise_x[i] = 0;//noise_cov * (rand() % 100 - 50);
+                        noise_y[i] = 0;//noise_cov * (rand() % 100 - 50);
 			obstacles.obstacles[i].pose.position.x += dt * (cos(obstacles.obstacles[i].pose.orientation.z) * obstacles.obstacles[i].twist.linear.x) + noise_x[i];
 			obstacles.obstacles[i].pose.position.y += dt * (sin(obstacles.obstacles[i].pose.orientation.z) * obstacles.obstacles[i].twist.linear.x) + noise_y[i];
 		}

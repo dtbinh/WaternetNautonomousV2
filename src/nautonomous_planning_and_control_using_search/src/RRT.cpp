@@ -62,7 +62,7 @@ float current_y;
 float rand_x;
 float rand_y;
 
-float step_size = 1;
+float step_size = 5;
 int weighted_map_border = 10;
 
 float cost_c;
@@ -372,6 +372,7 @@ void goal_cb (const nautonomous_mpc_msgs::StageVariable::ConstPtr& state_msg)
 void make_weighted_map()
 {
 	weighted_map = map;
+	ROS_DEBUG_STREAM("Make weighted map binary");
 	for (i = 0; i < map_width; i++)
 	{
 		for (int j = 0; j < map_height; j++)
@@ -382,32 +383,33 @@ void make_weighted_map()
 			}
 			else if ((int)map.data[j * map_width + i] < 0)
 			{
-				weighted_map.data[j * map_width + i] = 100;
+				weighted_map.data[j * map_width + i] = 50;
 			}
 		}
 	}
 
+	ROS_DEBUG_STREAM("Calculate vertical weights");
 	for (i = 0; i < map_width; i++)
 	{
-		for (int j = 1; j < map_height-1; j++)
+		for (int j = weighted_map_border; j < map_height-weighted_map_border; j++)
 		{
 			for (int k = -weighted_map_border; k <= weighted_map_border ; k++)
 			{
 				if (k == -weighted_map_border)
 				{	
-					map_weight = map.data[(j+k) * map_width + i];
+					map_weight = weighted_map.data[(j+k) * map_width + i];
 				}
 				else
 				{
-					map_weight += map.data[(j+k) * map_width + i];
+					map_weight += weighted_map.data[(j+k) * map_width + i];
 				}
 			}
 			temp_map.data[j * map_width + i] = (int)(map_weight / (2 * weighted_map_border + 1));
 		}
 	}
 		
-
-	for (i = 1; i < map_width-1; i++)
+	ROS_DEBUG_STREAM("Calculate horizontal weights");
+	for (i = weighted_map_border; i < map_width-weighted_map_border; i++)
 	{
 		for (int j = 0; j < map_height; j++)
 		{
@@ -426,15 +428,12 @@ void make_weighted_map()
 		}
 	}
 
+	ROS_DEBUG_STREAM("Make ");
 	for (i = 0; i < map_width; i++)
 	{
 		for (int j = 0; j < map_height; j++)
 		{
 			if ((int)map.data[j * map_width + i] > 0)
-			{
-				weighted_map.data[j * map_width + i] = 100;
-			}
-			else if ((int)map.data[j * map_width + i] < 0)
 			{
 				weighted_map.data[j * map_width + i] = 100;
 			}
@@ -508,7 +507,7 @@ int main (int argc, char** argv)
 	p1.pose.position.z = 0;
 	p1.pose.orientation.w = 1;
 
-	line_list.header.frame_id = "/map";
+	line_list.header.frame_id = "/occupancy_grid";
 	line_list.header.stamp = ros::Time::now();
 	line_list.ns = "points_and_lines";
 	line_list.action = visualization_msgs::Marker::ADD;
@@ -516,11 +515,11 @@ int main (int argc, char** argv)
 
 	line_list.id = 0;
 	line_list.type = visualization_msgs::Marker::LINE_LIST;
-	line_list.scale.x = 0.05;
+	line_list.scale.x = 0.2;
 	line_list.color.r = 1.0;
 	line_list.color.a = 1.0;
 
-	marker.header.frame_id = "/map";
+	marker.header.frame_id = "/occupancy_grid";
 	marker.header.stamp = ros::Time::now();
 	marker.ns = "my_namespace";
 	marker.id = 0;
@@ -535,7 +534,7 @@ int main (int argc, char** argv)
 	marker.color.g = 1.0;
 	marker.color.b = 0.0;
 
-	route_list.header.frame_id = "/map";
+	route_list.header.frame_id = "/occupancy_grid";
 	route_list.header.stamp = ros::Time::now();
 
 	flipped_route_list.header.frame_id = "/map";

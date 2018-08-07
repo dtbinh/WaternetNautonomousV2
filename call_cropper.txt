@@ -1,0 +1,16 @@
+rosservice call /crop "route:
+- x: 623744.8
+  y: 5806218.4
+  theta: 0.0
+- x: 623739.5
+  y: 5806499.4
+  theta: 0.0
+- x: 623642.4
+  y: 5806499.9
+  theta: 0.0
+- x: 623636.3
+  y: 5806226
+  theta: 0.0
+name: 'Moeselhaven'
+rectangular: false" 
+

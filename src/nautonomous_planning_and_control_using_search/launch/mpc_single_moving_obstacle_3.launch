@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Load default parameters -->
+  <rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/mpc_single_moving_obstacle_3.yaml"/>
+
+  <!-- Launch mission_control_sim -->
+  <node name="mission_coordinator" pkg="nautonomous_planning_and_control_using_search" type="mission_control" output="screen" respawn="true"/>
+   
+  <!-- Launch mission_control_sim -->
+  <node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="log" respawn="true"/>
+
+  <!-- Launch mpc -->
+  <node name="MPC" pkg="nautonomous_planning_and_control" type="mpc" output="log" respawn="true"/>
+
+  <!-- Launch visualization -->
+  <node name="visualization" pkg="nautonomous_planning_and_control_using_search" type="visualization" output="log"/>
+
+  <!-- Launch EKF -->
+  <node name="Ekf" pkg="nautonomous_planning_and_control" type="ExtendedKalmanFilter_sim" output="log" respawn="true"/>
+
+  <!-- Launch map_server -->
+  <include file="$(find nautonomous_map_server)/launch/nautonomous_map_server.launch" > </include>
+
+  <!-- Set map to odom transform>
+  <node pkg="tf" type="static_transform_publisher" name="camera_link_broadcaster" 	args="	0 	0 	0 	0 	0 	0 	1 map 	odom 	50"/-->
+
+</launch>

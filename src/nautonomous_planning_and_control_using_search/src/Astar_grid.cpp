@@ -12,6 +12,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Path.h>
 #include <nautonomous_planning_and_control_using_search/node_grid.h>
+#include <nautonomous_planning_and_control_using_search/Quaternion_conversion.h>
 #include <Eigen/Dense>
 
 #define INF 1000000
@@ -31,6 +32,7 @@ ros::Subscriber goal_sub;
 ros::Subscriber obstacle_sub;
 
 ros::Publisher map_pub;
+ros::Publisher map_blur_pub;
 ros::Publisher marker_pub;
 ros::Publisher marker_2_pub;
 ros::Publisher marker_3_pub;
@@ -61,6 +63,8 @@ float current_y;
 
 float step_size = 1;
 int weighted_map_border = 5;
+bool use_obstacles = false;
+bool use_extended_obstacles = false;
 
 float cost_c;
 float cost_i;
@@ -150,31 +154,55 @@ void smooth_path()
 				temp_y = current_y + sin(temp_theta) * 0.2 * j;
 
 				obstacle_is_blocking = false;
-				for (int k = 0; k < Obstacles.obstacles.size(); k++)
-				{
-					obstacle_x = Obstacles.obstacles[k].pose.position.x;
-					obstacle_y = Obstacles.obstacles[k].pose.position.y;
-					obstacle_th = Obstacles.obstacles[k].pose.orientation.z;
-					obstacle_u = Obstacles.obstacles[k].twist.linear.x;
-					obstacle_v = Obstacles.obstacles[k].twist.linear.y;
-					obstacle_w = Obstacles.obstacles[k].twist.angular.z;
-					obstacle_a = Obstacles.obstacles[k].major_semiaxis;
-					obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
 
-					Xobst = obstacle_x;// + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
-					Yobst = obstacle_y;// + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
-					Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
-					Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
+                                if(use_obstacles)
+                                {
+                                    for (int k = 0; k < Obstacles.obstacles.size(); k++)
+                                    {
+                                        obstacle_x = Obstacles.obstacles[k].pose.position.x;
+                                        obstacle_y = Obstacles.obstacles[k].pose.position.y;
+                                        obstacle_th = toEulerAngle(Obstacles.obstacles[k].pose.orientation);
+                                        obstacle_u = Obstacles.obstacles[k].twist.linear.x;
+                                        obstacle_v = Obstacles.obstacles[k].twist.linear.y;
+                                        obstacle_w = Obstacles.obstacles[k].twist.angular.z;
+                                        obstacle_a = Obstacles.obstacles[k].major_semiaxis;
+                                        obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
 
-					//if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
-					if((pow(Xcan/(obstacle_a),2) + pow(Ycan/(obstacle_b),2)) < 1)
-					{
-						obstacle_is_blocking = true;
-					}
-				}
+                                        if (use_extended_obstacles)
+                                        {
+                                            Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th);
+                                            Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th);
+                                        }
+                                        else
+                                        {
+                                            Xobst = obstacle_x;
+                                            Yobst = obstacle_y;
+                                        }
+                                        Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
+                                        Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
+
+                                        if (use_extended_obstacles)
+                                        {
+                                            if((pow(Xcan/(obstacle_a * 3),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
+                                            {
+                                                    obstacle_is_blocking = true;
+                                                    ROS_DEBUG_STREAM("Obstacle " << k << " is blocking");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if((pow(Xcan/(obstacle_a),2) + pow(Ycan/(obstacle_b),2)) < 1)
+                                            {
+                                                    obstacle_is_blocking = true;
+                                                    ROS_DEBUG_STREAM("Obstacle " << k << " is blocking");
+                                            }
+                                        }
+                                    }
+                                }
 				if ((int)weighted_map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] > 10)
 				{
 					tile_is_occupied = true;
+                                        ROS_DEBUG_STREAM("Map is blocking");
 					break;
 				}
 				else if	(obstacle_is_blocking)
@@ -246,29 +274,56 @@ void add_new_node()
 	ROS_DEBUG_STREAM( "new_node_nr: " << new_node_nr );
 
 	obstacle_is_blocking = false;
-	/*for (i = 0; i < Obstacles.obstacles.size(); i++)
-	{
-		obstacle_x = Obstacles.obstacles[i].pose.position.x;
-		obstacle_y = Obstacles.obstacles[i].pose.position.y;
-		obstacle_th = Obstacles.obstacles[i].pose.orientation.z;
-		obstacle_u = Obstacles.obstacles[i].twist.linear.x;
-		obstacle_v = Obstacles.obstacles[i].twist.linear.y;
-		obstacle_w = Obstacles.obstacles[i].twist.linear.z;
-		obstacle_a = Obstacles.obstacles[i].major_semiaxis;
-		obstacle_b = Obstacles.obstacles[i].minor_semiaxis;
+        if(use_obstacles)
+        {
+            for (int k = 0; k < Obstacles.obstacles.size(); k++)
+            {
+                obstacle_x = Obstacles.obstacles[k].pose.position.x;
+                obstacle_y = Obstacles.obstacles[k].pose.position.y;
+                obstacle_th = toEulerAngle(Obstacles.obstacles[k].pose.orientation);
+                obstacle_u = Obstacles.obstacles[k].twist.linear.x;
+                obstacle_v = Obstacles.obstacles[k].twist.linear.y;
+                obstacle_w = Obstacles.obstacles[k].twist.angular.z;
+                obstacle_a = Obstacles.obstacles[k].major_semiaxis;
+                obstacle_b = Obstacles.obstacles[k].minor_semiaxis;
 
-		Xobst = obstacle_x;// + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th) + obstacle_u * cos(obstacle_th) * replan_interval;
-		Yobst = obstacle_y;// + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th) + obstacle_u * sin(obstacle_th) * replan_interval;
-		Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
-		Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
+                if (use_extended_obstacles)
+                {
+                    Xobst = obstacle_x + 2 * obstacle_a * cos(obstacle_th) + obstacle_b  * sin(obstacle_th);
+                    ROS_DEBUG_STREAM("Xobst: " << Xobst);
+                    Yobst = obstacle_y + 2 * obstacle_a * sin(obstacle_th) - obstacle_b  * cos(obstacle_th);
+                    ROS_DEBUG_STREAM("Yobst: " << Yobst);
+                }
+                else
+                {
+                    Xobst = obstacle_x;
+                    ROS_DEBUG_STREAM("Xobst: " << Xobst);
+                    Yobst = obstacle_y;
+                    ROS_DEBUG_STREAM("Yobst: " << Yobst);
+                }
+                Xcan = (Xobst - temp_x) * cos(obstacle_th) + (Yobst - temp_y) * sin(obstacle_th);
+                ROS_DEBUG_STREAM("Xcan: " << Xcan);
+                Ycan = -(Xobst - temp_x) * sin(obstacle_th) + (Yobst - temp_y) * cos(obstacle_th);
+                ROS_DEBUG_STREAM("Ycan: " << Ycan);
 
-		//if((pow(Xcan/(obstacle_a * 3 + obstacle_u * replan_interval),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
-		if((pow(Xcan/(obstacle_a),2) + pow(Ycan/(obstacle_b),2)) < 1)
-		{
-			obstacle_is_blocking = true;
-			break;
-		}
-	}*/
+                if (use_extended_obstacles)
+                {
+                    if((pow(Xcan/(obstacle_a * 3),6) + pow(Ycan/(obstacle_b * 2),6)) < 1.5)
+                    {
+                            obstacle_is_blocking = true;
+                            ROS_DEBUG_STREAM("Obstacle " << k << " is blocking");
+                    }
+                }
+                else
+                {
+                    if((pow(Xcan/(obstacle_a),2) + pow(Ycan/(obstacle_b),2)) < 1)
+                    {
+                            obstacle_is_blocking = true;
+                            ROS_DEBUG_STREAM("Obstacle " << k << " is blocking");
+                    }
+                }
+            }
+        }
 
 	if (useplot)
 	{
@@ -283,11 +338,13 @@ void add_new_node()
 	if((temp_x < -(map_width*resolution/2)) || (temp_x > (map_width*resolution/2)) || (temp_y < -(map_height*resolution/2)) || (temp_y > (map_height*resolution/2)))
 	{	
 		new_dist = INF;
+                ROS_DEBUG_STREAM("Point outside of map");
 	}
 	else if((int)map.data[(floor((temp_y-map_center_y)/resolution)-1) * map_width + floor((temp_x-map_center_x)/resolution)] > 90)
 	{
 		new_dist = INF;
-	}	
+                ROS_DEBUG_STREAM("Map is blocking");
+        }
 	else if	(obstacle_is_blocking)
 	{
 		new_dist = INF;
@@ -633,6 +690,8 @@ void make_weighted_map()
 		}
 	}
 
+	map_blur_pub.publish(weighted_map);
+
 	ROS_DEBUG_STREAM("Make ");
 	for (i = 0; i < map_width; i++)
 	{
@@ -680,7 +739,8 @@ void obstacle_cb (const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacles_msg
 {
 	Obstacles = *obstacles_msg;
 
-	std::cout << "Obstacle received" << std::endl;
+        std::cout << "Obstacle received at:" << std::endl;
+        std::cout << Obstacles << std::endl;
 }
 
 int main (int argc, char** argv)
@@ -690,11 +750,14 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh_private("~");
 
 
-       /* if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
+        /*if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		{
    		ros::console::notifyLoggerLevelsChanged();
         }*/
 
-
+        nh_private.getParam("step_size", step_size);
+        nh_private.getParam("weighted_map_border", weighted_map_border);
+        nh_private.getParam("use_obstacles", use_obstacles);
+        nh_private.getParam("use_extended_obstacles", use_extended_obstacles);
 
 	map_sub = 	nh.subscribe<nav_msgs::OccupancyGrid>("/map",10,map_cb);
 	start_sub = 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_state",10,start_cb);
@@ -702,6 +765,7 @@ int main (int argc, char** argv)
 	obstacle_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",10,obstacle_cb);
 
 	map_pub = 	nh.advertise<nav_msgs::OccupancyGrid>("map_tree_opt",10);
+	map_blur_pub = 	nh.advertise<nav_msgs::OccupancyGrid>("map_blur",10);
 	marker_pub = 	nh_private.advertise<visualization_msgs::Marker>("visualization_marker", 10);
 	marker_2_pub = 	nh_private.advertise<nav_msgs::Path>("non_smooth_route", 10);
 	marker_3_pub = 	nh_private.advertise<nav_msgs::Path>("route", 10);

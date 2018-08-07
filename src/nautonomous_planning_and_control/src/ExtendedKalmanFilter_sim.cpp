@@ -48,6 +48,9 @@ double dist_x2;
 double dist_y1;
 double dist_y2;
 
+double t_start = 0.0;
+double t_end = 0.1;
+
 nautonomous_mpc_msgs::StageVariable start_state;
 nautonomous_mpc_msgs::StageVariable next_state;
 
@@ -103,12 +106,9 @@ void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
 	K = MatrixXd::Zero(6,3);
 
 	// Define initial values:
-	// ----------------------
-	double t_start = 0.0;
-	double t_end = 0.1;
-
+	// ---------------------
     	state_type x = {{ start_state.x , start_state.y, start_state.theta, start_state.u, start_state.v, start_state.omega }}; // initial conditions
-    	integrate( lorenz , x , t_start , t_end , 0.5 , write_lorenz );
+    	integrate( lorenz , x , t_start , t_end , 0.1 , write_lorenz );
 
 	x_est[0] = x[0];
 	x_est[1] = x[1];

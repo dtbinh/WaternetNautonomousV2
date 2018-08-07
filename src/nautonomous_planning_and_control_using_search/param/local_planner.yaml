@@ -1,0 +1,5 @@
+Local_planner:
+  step_size: 5
+  weighted_map_border: 5
+  use_obstacles: true
+  use_extended_obstacles: false

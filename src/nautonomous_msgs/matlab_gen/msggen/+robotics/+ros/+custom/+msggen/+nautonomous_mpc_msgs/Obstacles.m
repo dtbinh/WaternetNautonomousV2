@@ -12,7 +12,7 @@ classdef Obstacles < robotics.ros.Message
     end
     
     properties (Constant, Hidden)
-        MD5Checksum = '0325d155a9f4091f804be067e2f1e241' % The MD5 Checksum of the message definition
+        MD5Checksum = 'fe7999e0444c9ee0a588cc9f67871716' % The MD5 Checksum of the message definition
     end
     
     properties (Access = protected)
