@@ -215,7 +215,6 @@ int main(int argc, char **argv)
 		listener.lookupTransform("/lidar_link", "/occupancy_grid", ros::Time(0), transform_lidar_grid);
 
 		Current_loop_time = ros::Time::now().toSec();
-                ROS_DEBUG_STREAM("Time checked");
 		if(borders_received && current_state_received)
 		{
 			if (Current_loop_time - Time_of_last_path_call > 2)
@@ -236,3 +235,4 @@ int main(int argc, char **argv)
         ROS_INFO_STREAM("Shizzle finished");
 	return 0;
 }
+
