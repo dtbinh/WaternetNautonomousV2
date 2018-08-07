@@ -108,7 +108,7 @@ void Call_Route_generator()
 }
 
 void Call_MPC_generator()
-{
+{    
 	if(path_received)
 	{
 		current_state_pub.publish(current_state);
@@ -118,6 +118,9 @@ void Call_MPC_generator()
 
 void pose_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg)
 {
+
+    ROS_INFO_STREAM("Pose received");
+
         pose_state = *pose_msg;
         current_state.x = (pose_state.pose.pose.position.x - transform_world_grid.getOrigin().x()) * cos(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.pose.position.y - transform_world_grid.getOrigin().y()) * sin(tf::getYaw(transform_world_grid.getRotation()));
         current_state.y = -(pose_state.pose.pose.position.x - transform_world_grid.getOrigin().x()) * sin(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.pose.position.y - transform_world_grid.getOrigin().y()) * cos(tf::getYaw(transform_world_grid.getRotation()));
@@ -137,6 +140,7 @@ void route_cb(const nav_msgs::Path::ConstPtr& route_msg)
 
 void obstacle_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& obstacle_msg)
 {
+        ROS_INFO_STREAM("Obstacles received");
 	obstacles.obstacles.clear();
 	for (int i = 0; i < obstacle_msg->obstacles.size(); i++)
 	{
@@ -165,11 +169,6 @@ void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
 	borders_received = true;
 
 	ros::Duration(1).sleep();
-}
-
-void action_cb(const geometry_msgs::Twist::ConstPtr& action_msg)
-{
-	action = *action_msg;
 }
 
 int main(int argc, char **argv)
