@@ -56,8 +56,14 @@
 
 	<node name="rviz_visualizer" pkg="rviz" type="rviz" />
 
-  	<!-- Launch mission_control_sim -->
+
+	<rosparam command="load" file="$(find nautonomous_planning_and_control_using_search)/param/mission_planner.yaml"/>
+
+  	<!-- Launch Local planner -->
   	<node name="Local_planner" pkg="nautonomous_planning_and_control_using_search" type="grid_planner" output="screen" respawn="true"/>
+
+	<!-- Launch PID -->
+  	<node name="PID" pkg="nautonomous_planning_and_control" type="PID" output="screen" respawn="true"/>
 
 
 </launch>
