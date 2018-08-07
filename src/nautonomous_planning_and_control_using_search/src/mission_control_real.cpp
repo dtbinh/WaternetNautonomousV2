@@ -232,5 +232,6 @@ int main(int argc, char **argv)
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
+        ROS_INFO_STREAM("Shizzle finished");
 	return 0;
 }
