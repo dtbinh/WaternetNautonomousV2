@@ -1,3 +1,7 @@
+mission_coordinator:
+  goal_x: 0
+  goal_y: 0
+
 Local_planner:
   step_size: 5
   weighted_map_border: 10

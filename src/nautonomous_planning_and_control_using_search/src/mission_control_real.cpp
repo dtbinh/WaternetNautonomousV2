@@ -83,11 +83,13 @@ bool current_state_received = false;
 bool path_received = false;
 bool borders_received = false;
 
+double goal_x;
+double goal_y;
 
 void Initialization()
 {
-    goal_state.x = -60;
-    goal_state.y = 80;
+    goal_state.x = goal_x;
+    goal_state.y = goal_y;
 }
 
 
@@ -213,6 +215,9 @@ int main(int argc, char **argv)
 	tf::TransformListener listener;
 
 	ROS_INFO_STREAM("Transform listener setup");
+
+        nh_private.getParam("goal_x", goal_x);
+        nh_private.getParam("goal_y", goal_y);
 
 	current_state_pub = 	nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("current_state",10);
 	start_pub = 		nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("start_state",10);
