@@ -86,8 +86,8 @@ bool borders_received = false;
 
 void Initialization()
 {
-    goal_state.x = 0;
-    goal_state.y = 0;
+    goal_state.x = -60;
+    goal_state.y = 80;
 }
 
 
