@@ -22,6 +22,7 @@ ros::Publisher pubMag;
 ros::Publisher pubPressure;
 ros::Publisher pubFilter;
 std::string frameId;
+geometry_msgs::Quaternion q;
 
 Imu::Info info;
 Imu::DiagnosticFields fields;
@@ -57,9 +58,10 @@ void publishData(const Imu::IMUData &data) {
     field.header.frame_id = frameId;
   }
 
-  imu.orientation_covariance[0] =
-      -1; //  orientation data is on a separate topic
-
+  imu.orientation.w = q.w;
+  imu.orientation.x = q.x;
+  imu.orientation.y = q.y;
+  imu.orientation.z = q.z;
   imu.linear_acceleration.x = data.accel[0] * kEarthGravity;
   imu.linear_acceleration.y = data.accel[1] * kEarthGravity;
   imu.linear_acceleration.z = data.accel[2] * kEarthGravity;
@@ -91,13 +93,13 @@ void publishFilter(const Imu::FilterData &data) {
   assert(data.fields & Imu::FilterData::Bias);
   assert(data.fields & Imu::FilterData::AngleUnertainty);
   assert(data.fields & Imu::FilterData::BiasUncertainty);
-  
- /* geometry_msgs::Quaternion q;
+
   q.w = data.quaternion[0];
   q.x = data.quaternion[1];
   q.y = data.quaternion[2];
   q.z = data.quaternion[3];
 
+  /*
   double yaw;
   yaw = toEulerAngle(q);
 
