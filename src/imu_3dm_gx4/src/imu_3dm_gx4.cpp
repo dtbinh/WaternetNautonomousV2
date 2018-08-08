@@ -102,11 +102,10 @@ void publishFilter(const Imu::FilterData &data) {
   q.y = data.quaternion[2];
   q.z = data.quaternion[3];
 
-  double yaw;
+ /* double yaw;
   yaw = toEulerAngle(q);
 
-  q = toQuaternion(0, 0, angle_multi * yaw + angle_offset);
-
+  q = toQuaternion(0, 0, angle_multi * yaw + angle_offset);*/
 
   imu_3dm_gx4::FilterOutput output;
   output.header.stamp = ros::Time::now();

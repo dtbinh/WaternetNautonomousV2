@@ -208,6 +208,11 @@ int main (int argc, char** argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 	
+if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) ) 		
+	{
+   		ros::console::notifyLoggerLevelsChanged();
+        }
+
 	nh_private.getParam("parallel_error_gain", uf_gain);
 	nh_private.getParam("perpendicular_error_gain", ut_gain);
 	nh_private.getParam("velocity_error_gain", u_gain);
