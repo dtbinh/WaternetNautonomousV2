@@ -11,6 +11,7 @@
 
 #include <imu_3dm_gx4/FilterOutput.h>
 #include "imu.hpp"
+#include "Quaternion_conversion.h"
 
 using namespace imu_3dm_gx4;
 
@@ -91,13 +92,25 @@ void publishFilter(const Imu::FilterData &data) {
   assert(data.fields & Imu::FilterData::AngleUnertainty);
   assert(data.fields & Imu::FilterData::BiasUncertainty);
   
+  geometry_msgs::Quaternion q;
+  q.w = data.quaternion[0];
+  q.x = data.quaternion[1];
+  q.y = data.quaternion[2];
+  q.z = data.quaternion[3];
+
+  double yaw;
+  yaw = toEulerAngle(q);
+
+  q = toQuaternion(0, 0, yaw);
+
+
   imu_3dm_gx4::FilterOutput output;
   output.header.stamp = ros::Time::now();
   output.header.frame_id = frameId;
-  output.orientation.w = data.quaternion[0];
-  output.orientation.x = data.quaternion[1];
-  output.orientation.y = data.quaternion[2];
-  output.orientation.z = data.quaternion[3];
+  output.orientation.w = q.w;
+  output.orientation.x = q.x;
+  output.orientation.y = q.y;
+  output.orientation.z = q.z;
   output.bias.x = data.bias[0];
   output.bias.y = data.bias[1];
   output.bias.z = data.bias[2];
