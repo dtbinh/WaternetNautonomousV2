@@ -33,6 +33,9 @@ std::shared_ptr<diagnostic_updater::Updater> updater;
 std::shared_ptr<diagnostic_updater::TopicDiagnostic> imuDiag;
 std::shared_ptr<diagnostic_updater::TopicDiagnostic> filterDiag;
 
+float angle_multi;
+float angle_offset;
+
 void publishData(const Imu::IMUData &data) {
   sensor_msgs::Imu imu;
   sensor_msgs::MagneticField field;
@@ -99,11 +102,10 @@ void publishFilter(const Imu::FilterData &data) {
   q.y = data.quaternion[2];
   q.z = data.quaternion[3];
 
-  /*
   double yaw;
   yaw = toEulerAngle(q);
 
-  q = toQuaternion(0, 0, yaw);*/
+  q = toQuaternion(0, 0, angle_multi * yaw + angle_offset);
 
 
   imu_3dm_gx4::FilterOutput output;
@@ -194,6 +196,8 @@ int main(int argc, char **argv) {
   nh.param<std::string>("frame_id", frameId, std::string("imu"));
   nh.param<int>("imu_rate", requestedImuRate, 100);
   nh.param<int>("filter_rate", requestedFilterRate, 100);
+  nh.param<float>("angle_multi", angle_multi, 0);
+  nh.param<float>("angle_offset", angle_offset, 0);
   nh.param<bool>("enable_magnetometer", enableMagnetometer, true);
   nh.param<bool>("enable_filter", enableFilter, false);
   nh.param<bool>("enable_mag_update", enableMagUpdate, false);
