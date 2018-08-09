@@ -193,7 +193,7 @@ void borders_cb(const nautonomous_mpc_msgs::Obstacles::ConstPtr& border_msg)
 void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 {
 	action.linear.x = action_msg->T_l;
-	action.angular.z = action_msg->T_r;
+	action.angular.z = -1*action_msg->T_r;
 	action_pub.publish(action);
 }
 
