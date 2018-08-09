@@ -202,6 +202,8 @@ void new_goal_cb(const geometry_msgs::PointStamped::ConstPtr& new_goal_msg)
 {
     goal_x = new_goal_msg->point.x;
     goal_y = new_goal_msg->point.y;
+    goal_state.x = goal_x;
+    goal_state.y = goal_y;
 
     Call_Route_generator();
     Time_of_last_path_call = Current_loop_time;
