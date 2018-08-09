@@ -91,18 +91,18 @@ void goal_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& position_msg)
         marker_pub_5.publish(goal_marker);
 }
 
-void position_cb(const nav_msgs::Odometry::ConstPtr& position_msg)
+void position_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& position_msg)
 {
-        /*std::cout << "Pos found" << std::endl;
-        position_marker.pose.position.x = position_msg->pose.pose.position.x;
-        position_marker.pose.position.y = position_msg->pose.pose.position.y;
+        std::cout << "Pos found" << std::endl;
+        position_marker.pose.position.x = position_msg->x;
+        position_marker.pose.position.y = position_msg->y;
         position_marker.pose.position.z = 1.0;
         position_marker.pose.orientation = toQuaternion(0.0, 0.0, position_msg->theta);
 
-        marker_pub_1.publish(position_marker);*/
+        marker_pub_1.publish(position_marker);
 
-        p.x = position_msg->pose.pose.position.x;
-        p.y = position_msg->pose.pose.position.y;
+        p.x = position_msg->x;
+        p.y = position_msg->y;
 
         line_strip.points.push_back(p);
 
@@ -175,7 +175,7 @@ int main(int argc, char **argv)
         marker_pub_5 = 		nh_private.advertise<visualization_msgs::Marker>("Goal_marker",10);
 
 	obstacle_sub = 		nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/mission_coordinator/obstacles",1,obstacle_cb);
-        position_sub = 		nh.subscribe<nav_msgs::Odometry>("/state/odom/utm",1,position_cb);
+        position_sub = 		nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/current_state",1,position_cb);
         goal_sub = 		nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/goal_state",1,goal_cb);
         ref_sub = 		nh.subscribe<nautonomous_mpc_msgs::Waypoint>("/mission_coordinator/reference_state",1,ref_cb);
         route_sub = 		nh.subscribe<nav_msgs::Path>("/Local_planner/non_smooth_route",1,non_smooth_route_cb);
