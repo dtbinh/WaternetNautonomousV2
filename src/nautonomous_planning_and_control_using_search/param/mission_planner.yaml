@@ -1,6 +1,6 @@
 mission_coordinator:
-  goal_x: 0
-  goal_y: 0
+  goal_x: -60
+  goal_y: 85
 
 Local_planner:
   step_size: 5

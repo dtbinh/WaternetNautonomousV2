@@ -31,11 +31,11 @@
 
     <!-- Offset angle -->
     <arg name="angle_offset" default="0"/>
-    <arg name="angle_multi" default="0"/>
+    <arg name="angle_multi" default="1"/>
 
     <node ns="/sensor/" pkg="imu_3dm_gx4" name="$(arg imu)" type="imu_3dm_gx4" output="$(arg output)" respawn="true">
-	<param name="angle_offset" type="double" value="0" />
-        <param name="angle_multi" type="double" value="0"/>
+	<param name="angle_offset" type="double" value="3.5" />
+        <param name="angle_multi" type="double" value="-1"/>
         <param name="device" type="string" value="$(arg device)" />
         <param name="verbose" type="bool" value="$(arg verbose)"/>
         <param name="baudrate" type="int" value="$(arg baudrate)" />
