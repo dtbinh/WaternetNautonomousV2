@@ -39,6 +39,7 @@ ros::Subscriber	route_sub;
 ros::Subscriber	obstacles_sub;
 ros::Subscriber	borders_sub;
 ros::Subscriber	action_sub;
+ros::Subscriber	new_goal_sub;
 
 nautonomous_mpc_msgs::StageVariable current_state;
 nautonomous_mpc_msgs::StageVariable start_state;
@@ -197,6 +198,15 @@ void action_cb(const nautonomous_mpc_msgs::StageVariable::ConstPtr& action_msg)
 	action_pub.publish(action);
 }
 
+void new_goal_cb(const geometry_msgs::PointStamped::ConstPtr& new_goal_msg)
+{
+    goal_x = new_goal_msg->point.x;
+    goal_y = new_goal_msg->point.y;
+
+    Call_Route_generator();
+    Time_of_last_path_call = Current_loop_time;
+}
+
 int main(int argc, char **argv)
 {
  	/* Initialize ROS */
@@ -233,6 +243,7 @@ int main(int argc, char **argv)
 	obstacles_sub = 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Obstacle_detection/obstacles", 10, obstacle_cb);
 	borders_sub =	 	nh.subscribe<nautonomous_mpc_msgs::Obstacles>("/Map_modifier/borders", 10, borders_cb);
 	action_sub =	 	nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/PID/next_state", 10, action_cb);
+        new_goal_sub =          nh.subscribe<geometry_msgs::PointStamped>("/clicked_point", 10, new_goal_cb);
 
 	ros::Rate loop_rate(100);
 
