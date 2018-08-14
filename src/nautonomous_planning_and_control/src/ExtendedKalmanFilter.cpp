@@ -5,6 +5,7 @@
 
 #include <ros/ros.h>
 #include <nautonomous_mpc_msgs/StageVariable.h>
+
 #include <cmath>
 
 #include <Eigenvalues>
@@ -12,6 +13,11 @@
 #include "nav_msgs/Odometry.h"
 #include "sensor_msgs/Imu.h"
 #include "std_msgs/Float64.h"
+#include "geometry_msgs/Point.h"
+#include "geometry_msgs/Quaternion.h"
+#include "geometry_msgs/PoseWithCovarianceStamped.h"
+#include <tf/transform_listener.h>
+#include "nautonomous_planning_and_control/Quaternion_conversion.h"
 
 
 using namespace std;
@@ -20,10 +26,8 @@ using namespace boost::numeric::odeint;
 
 typedef boost::array< double , 6 > state_type;
 
-ros::Subscriber gps_sub;
-ros::Subscriber imu_sub;
-ros::Subscriber start_sub;
-ros::Subscriber start_orientation_sub;
+ros::Subscriber next_state_sub;
+ros::Subscriber action_sub;
 
 ros::Publisher state_pub;
 
@@ -43,9 +47,19 @@ double f1 = 0;
 double f2 = 0;
 
 float angle_correction = 0;
+bool current_state_received = false;
+bool first_time_received = true;
+double Time_of_last_call;
+double Current_loop_time;
 
 nautonomous_mpc_msgs::StageVariable start_state;
+nautonomous_mpc_msgs::StageVariable current_state;
+
 nautonomous_mpc_msgs::StageVariable next_state;
+geometry_msgs::PoseWithCovarianceStamped pose_state;
+
+tf::StampedTransform transform_world_grid;
+
 
 MatrixXd A(6,6);
 MatrixXd C(3,6);
@@ -84,103 +98,111 @@ void write_lorenz( const state_type &x , const double t )
 	cout << t << '\t' << x[0] << '\t' << x[1] << endl;
 }
 
-void start_cb( const nautonomous_mpc_msgs::StageVariable::ConstPtr& start_msg )
+void Call_Observer()
 {
-	start_state = *start_msg;
-	f1 = start_state.T_l;
-	f2 = start_state.T_r;
-	
-	A = MatrixXd::Zero(6,6);
-	C = MatrixXd::Zero(3,6);
-	Q = MatrixXd::Identity(6,6);
-	R = MatrixXd::Identity(3,3);
-	P = MatrixXd::Zero(6,6);
-	I = MatrixXd::Identity(6,6);
-	S = MatrixXd::Zero(3,3);
-	K = MatrixXd::Zero(6,3);
+        if (current_state_received)
+        {
+            f1 = start_state.T_l;
+            f2 = start_state.T_r;
 
-	// Define initial values:
-	// ----------------------
-	double t_start = 0.0;
-	double t_end = 0.1;
+            A = MatrixXd::Zero(6,6);
+            C = MatrixXd::Zero(3,6);
+            Q = MatrixXd::Identity(6,6);
+            R = MatrixXd::Identity(3,3);
+            P = MatrixXd::Zero(6,6);
+            I = MatrixXd::Identity(6,6);
+            S = MatrixXd::Zero(3,3);
+            K = MatrixXd::Zero(6,3);
 
-    	state_type x = {{ start_state.x , start_state.y, start_state.theta, start_state.u, start_state.v, start_state.omega }}; // initial conditions
-    	integrate( lorenz , x , t_start , t_end , 0.5 , write_lorenz );
+            // Define initial values:
+            // ----------------------
+            double t_start = 0.0;
+            double t_end = 1.0;
 
-	x_est[0] = x[0];
-	x_est[1] = x[1];
-	x_est[2] = x[2];
-	x_est[3] = x[3];
-	x_est[4] = x[4];
-	x_est[5] = x[5];
+            state_type x = {{ start_state.x , start_state.y, start_state.theta, start_state.u, start_state.v, start_state.omega }}; // initial conditions
+            integrate( lorenz , x , t_start , t_end , 0.5 , write_lorenz );
 
-	A(0,2) = -start_state.u * sin(start_state.theta) + start_state.v * cos(start_state.theta);
-	A(1,2) =  start_state.u * cos(start_state.theta) + start_state.v * sin(start_state.theta);
-	A(0,3) = cos(start_state.theta);
-	A(1,3) = sin(start_state.theta);
-	A(3,3) = -D_x / m;
-	A(4,3) = -start_state.omega;
-	A(0,4) = sin(start_state.theta);
-	A(1,4) = -cos(start_state.theta);
-	A(3,4) = start_state.omega;
-	A(4,4) = -D_y / m;
-	A(2,5) = -1;
-	A(3,5) = start_state.u;
-	A(4,5) = -start_state.v;
-	A(5,5) = -D_t / I_z;
+            x_est[0] = x[0];
+            x_est[1] = x[1];
+            x_est[2] = x[2];
+            x_est[3] = x[3];
+            x_est[4] = x[4];
+            x_est[5] = x[5];
 
-	C(0,0) = 1;
-	C(1,1) = 1;
-	C(2,2) = 1;
+            A(0,2) = -start_state.u * sin(start_state.theta) + start_state.v * cos(start_state.theta);
+            A(1,2) =  start_state.u * cos(start_state.theta) + start_state.v * sin(start_state.theta);
+            A(0,3) = cos(start_state.theta);
+            A(1,3) = sin(start_state.theta);
+            A(3,3) = -D_x / m;
+            A(4,3) = -start_state.omega;
+            A(0,4) = sin(start_state.theta);
+            A(1,4) = -cos(start_state.theta);
+            A(3,4) = start_state.omega;
+            A(4,4) = -D_y / m;
+            A(2,5) = -1;
+            A(3,5) = start_state.u;
+            A(4,5) = -start_state.v;
+            A(5,5) = -D_t / I_z;
 
-	Q = Q * 1e6;
+            C(0,0) = 1;
+            C(1,1) = 1;
+            C(2,2) = 1;
 
-	P = A * P * A.transpose() + Q;
+            Q = Q * 1e6;
+            R = R * 1e-6;
 
-	y_est = y_meas - x_est.head(3);
+            P = A * P * A.transpose() + Q;
 
-	S = C * P * C.transpose() + R;
+            y_est = y_meas - x_est.head(3);
 
-	K = P * C.transpose() * S.inverse();
+            S = C * P * C.transpose() + R;
 
-	x_upd = x_est + K * y_est;
+            K = P * C.transpose() * S.inverse();
 
-	P = (I - K * C) * P;
+            x_upd = x_est + K * y_est;
 
-	next_state.x = x_upd[0];
-	next_state.y = x_upd[1];
-	next_state.theta = x_upd[2];
-	next_state.u = x_upd[3];
-	next_state.v = x_upd[4];
-	next_state.omega = x_upd[5];
-	next_state.T_l = f1;
-	next_state.T_r = f2;
+            P = (I - K * C) * P;
 
-	state_pub.publish(next_state);
+            next_state.x = x_upd[0];
+            next_state.y = x_upd[1];
+            next_state.theta = x_upd[2];
+            next_state.u = x_upd[3];
+            next_state.v = x_upd[4];
+            next_state.omega = x_upd[5];
+            next_state.T_l = f1;
+            next_state.T_r = f2;
+
+            state_pub.publish(next_state);
+        }
+
 }
 
-void gps_cb(const nav_msgs::Odometry::ConstPtr& pos_msg)
+void pose_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& pose_msg)
 {
-	Position = *pos_msg;
-	y_meas[0] = Position.pose.pose.position.x;
-	y_meas[1] = Position.pose.pose.position.y;
+    pose_state = *pose_msg;
+
+    if (first_time_received)
+    {
+        first_time_received = false;
+        start_state.x = (pose_state.pose.pose.position.x - transform_world_grid.getOrigin().x()) * cos(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.pose.position.y - transform_world_grid.getOrigin().y()) * sin(tf::getYaw(transform_world_grid.getRotation()));
+        start_state.y = -(pose_state.pose.pose.position.x - transform_world_grid.getOrigin().x()) * sin(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.pose.position.y - transform_world_grid.getOrigin().y()) * cos(tf::getYaw(transform_world_grid.getRotation()));
+        start_state.theta = toEulerAngle(pose_state.pose.pose.orientation);
+    }
+    else
+    {
+        y_meas[0] = (pose_state.pose.pose.position.x - transform_world_grid.getOrigin().x()) * cos(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.pose.position.y - transform_world_grid.getOrigin().y()) * sin(tf::getYaw(transform_world_grid.getRotation()));
+        y_meas[1] = -(pose_state.pose.pose.position.x - transform_world_grid.getOrigin().x()) * sin(tf::getYaw(transform_world_grid.getRotation())) + (pose_state.pose.pose.position.y - transform_world_grid.getOrigin().y()) * cos(tf::getYaw(transform_world_grid.getRotation()));
+        y_meas[2] = toEulerAngle(pose_state.pose.pose.orientation);
+
+    }
+
+    current_state_received = true;
 }
 
-void imu_cb(const sensor_msgs::Imu::ConstPtr& imu_msg)
+void action_cb (const geometry_msgs::Twist::ConstPtr& action_msg)
 {
-	Imu = *imu_msg;
-	float q0 = Imu.orientation.w;
-	float q1 = Imu.orientation.x;
-	float q2 = Imu.orientation.y;
-	float q3 = Imu.orientation.z;
-
-	
-	y_meas[2] = angle_correction - atan2(2*(q0*q3+q1*q2),1-2*(pow(q2,2) + pow(q3,2)));
-}
-
-void st_or_cb(const std_msgs::Float64::ConstPtr& st_or_msg)
-{
-	angle_correction = st_or_msg->data;
+    start_state.T_l = 100 * (action_msg->linear.x - action_msg->angular.z);
+    start_state.T_r = 100 * (action_msg->linear.x + action_msg->angular.z);
 }
 
 int main(int argc, char **argv)
@@ -189,14 +211,37 @@ int main(int argc, char **argv)
 	ros::NodeHandle nh("");
 	ros::NodeHandle nh_private("~");
 
-	start_sub = nh.subscribe<nautonomous_mpc_msgs::StageVariable>("/mission_coordinator/start_ekf",10,start_cb);
-	imu_sub = nh.subscribe<sensor_msgs::Imu>("/sensor/imu/imu",10,imu_cb);
-	gps_sub = nh.subscribe<nav_msgs::Odometry>("/state/odom/utm",10,gps_cb);
-	start_orientation_sub = nh.subscribe<std_msgs::Float64>("/start_orientation",10,st_or_cb);
+        ROS_INFO_STREAM("Startup started");
+
+        tf::TransformListener listener;
+
+        ROS_INFO_STREAM("Transform listener setup");
+
+        next_state_sub = nh.subscribe<geometry_msgs::PoseWithCovarianceStamped>("/state/pose/robot_pose_ekf/odom_combined",10, pose_cb);
+        action_sub = nh.subscribe<geometry_msgs::Twist>("/cmd_vel",10, action_cb);
 
 	state_pub = nh_private.advertise<nautonomous_mpc_msgs::StageVariable>("next_state",10);
 
-	ros::spin();
+        ros::Rate loop_rate(100);
 
-	return 0;
+        ros::Duration(1).sleep();
+
+        ROS_INFO_STREAM("Startup finished");
+
+        while (ros::ok())
+        {
+                listener.lookupTransform("/map", "/occupancy_grid", ros::Time(0), transform_world_grid);
+
+                Current_loop_time = ros::Time::now().toSec();
+                if (Current_loop_time - Time_of_last_call > 1)
+                {
+                        Time_of_last_call = Current_loop_time;
+                        Call_Observer();
+                }
+
+                ros::spinOnce();
+                loop_rate.sleep();
+        }
+        ROS_INFO_STREAM("Shizzle finished");
+        return 0;
 }

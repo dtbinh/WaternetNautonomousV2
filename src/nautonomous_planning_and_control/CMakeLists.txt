@@ -11,6 +11,7 @@ nautonomous_mpc_msgs
 nautonomous_state_msgs
 nautonomous_pose_msgs
 gazebo_msgs
+tf
 )
 
 #find_package( ACADO REQUIRED )

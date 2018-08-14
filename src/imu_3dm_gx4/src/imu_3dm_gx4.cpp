@@ -35,6 +35,10 @@ std::shared_ptr<diagnostic_updater::TopicDiagnostic> filterDiag;
 
 float angle_multi;
 float angle_offset;
+float drift;
+
+double start_time;
+bool first_msg = true;
 
 void publishData(const Imu::IMUData &data) {
   sensor_msgs::Imu imu;
@@ -102,10 +106,15 @@ void publishFilter(const Imu::FilterData &data) {
   q.y = data.quaternion[2];
   q.z = data.quaternion[3];
 
+  if (first_msg)
+  {
+      start_time = ros::Time::now().toSec();
+      first_msg = false;
+  }
   double yaw;
   yaw = toEulerAngle(q);
 
-  q = toQuaternion(0, 0, angle_multi * yaw + angle_offset);
+  q = toQuaternion(0, 0, angle_multi * yaw + angle_offset + drift * (ros::Time::now().toSec() - start_time));
 
   imu_3dm_gx4::FilterOutput output;
   output.header.stamp = ros::Time::now();
@@ -197,6 +206,7 @@ int main(int argc, char **argv) {
   nh.param<int>("filter_rate", requestedFilterRate, 100);
   nh.param<float>("angle_multi", angle_multi, 0);
   nh.param<float>("angle_offset", angle_offset, 0);
+  nh.param<float>("drift", drift, 0);
   nh.param<bool>("enable_magnetometer", enableMagnetometer, true);
   nh.param<bool>("enable_filter", enableFilter, false);
   nh.param<bool>("enable_mag_update", enableMagUpdate, false);
